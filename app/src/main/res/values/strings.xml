@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Planner</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Recherche</string>
+    <string name="action_today">Aujourd\'hui</string>
+    <string name="action_notifications">Notifications</string>
+
+    <string name="menu_calendar">Calendrier</string>
+    <string name="menu_tasks">Tâches</string>
+    <string name="menu_study">Mode études</string>
+    <string name="menu_settings">Paramètres</string>
+</resources>
