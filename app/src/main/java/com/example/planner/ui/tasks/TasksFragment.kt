@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.planner.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TasksFragment : Fragment() {
 
@@ -17,7 +19,14 @@ class TasksFragment : Fragment() {
     ): View? {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_tasks, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
+        val floatingActionButton: FloatingActionButton = view.findViewById(R.id.floatingActionButton)
+
+        floatingActionButton.setOnClickListener{
+            MaterialAlertDialogBuilder(requireContext()).setTitle("Ajouter").show()
+        }
+
+        return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
