@@ -1,7 +1,11 @@
 package com.example.planner
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
+import android.widget.ScrollView
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -13,22 +17,24 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.shrikanthravi.collapsiblecalendarview.data.Day
+import com.shrikanthravi.collapsiblecalendarview.view.OnSwipeTouchListener
+import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var collapsibleCalendar : CollapsibleCalendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //val toolbar: Toolbar = findViewById(R.id.toolbar)
-        //setSupportActionBar(toolbar)
 
-        /*val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }*/
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.elevation = 0f
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -36,10 +42,71 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_calendar, R.id.nav_tasks, R.id.nav_study, R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        collapsibleCalendar = findViewById(R.id.collapsibleCalendar)
+        collapsibleCalendar.setExpandIconVisible(true)
+        val today = GregorianCalendar()
+        collapsibleCalendar.selectedDay = Day(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
+        collapsibleCalendar.setCalendarListener(object : CollapsibleCalendar.CalendarListener {
+            override fun onDayChanged() {
+
+            }
+
+            override fun onClickListener() {
+                if(collapsibleCalendar.expanded){
+                    collapsibleCalendar.collapse(400)
+                }
+                else{
+                    collapsibleCalendar.expand(400)
+                }
+            }
+
+            override fun onDaySelect() {
+
+            }
+
+            override fun onItemClick(v: View) {
+
+            }
+
+            override fun onDataUpdate() {
+
+            }
+
+            override fun onMonthChange() {
+
+            }
+
+            override fun onWeekChange(position: Int) {
+
+            }
+        })
+
+        var scrollView: ScrollView = findViewById(R.id.scrollView)
+        scrollView.setOnTouchListener(object:OnSwipeTouchListener(this@MainActivity){
+            override fun onSwipeRight() {
+                collapsibleCalendar.nextDay()
+            }
+
+            override fun onSwipeLeft() {
+                collapsibleCalendar.prevDay()
+            }
+
+            override fun onSwipeTop() {
+                if (collapsibleCalendar.expanded) {
+                    collapsibleCalendar.collapse(400)
+                }
+            }
+
+            override fun onSwipeBottom() {
+                if (!collapsibleCalendar.expanded){
+                    collapsibleCalendar.expand(400)
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
