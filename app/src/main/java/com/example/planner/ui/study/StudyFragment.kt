@@ -19,13 +19,10 @@ class StudyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        studyViewModel =
-            ViewModelProvider(this).get(StudyViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_study, container, false)
-        val textView: TextView = root.findViewById(R.id.text_study)
-        studyViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        val view: View = inflater.inflate(R.layout.fragment_calendar, container, false)
+
+        return view
     }
 }

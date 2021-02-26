@@ -8,10 +8,4 @@
         android:icon="@drawable/baseline_search_24"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/action_today"
-        android:title="@string/action_today"
-        android:icon="@drawable/baseline_today_24"
-        app:showAsAction="ifRoom"/>
-
 </menu>
