@@ -44,6 +44,6 @@
 
         <include layout="@layout/content_main" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

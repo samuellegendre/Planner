@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/className"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/class_name"
+        android:inputType="textAutoCorrect"
+        android:layout_marginTop="@dimen/dialog_vertical_margin"
+        android:layout_marginLeft="@dimen/dialog_vertical_margin"
+        android:layout_marginRight="@dimen/dialog_vertical_margin"
+        android:layout_marginBottom="@dimen/dialog_horizontal_margin"/>
+
+    <Button
+        android:id="@+id/dateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2021-03-01"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dialog_horizontal_margin"
+        android:layout_marginLeft="@dimen/dialog_vertical_margin"
+        android:layout_marginRight="@dimen/dialog_vertical_margin"
+        android:layout_marginBottom="@dimen/dialog_horizontal_margin"/>
+
+    <Button
+        android:id="@+id/timeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8 h 00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dialog_horizontal_margin"
+        android:layout_marginLeft="@dimen/dialog_vertical_margin"
+        android:layout_marginRight="@dimen/dialog_vertical_margin"
+        android:layout_marginBottom="@dimen/dialog_horizontal_margin"/>
+
+    <EditText
+        android:id="@+id/classLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/class_location"
+        android:inputType="textAutoCorrect"
+        android:layout_marginTop="@dimen/dialog_horizontal_margin"
+        android:layout_marginLeft="@dimen/dialog_vertical_margin"
+        android:layout_marginRight="@dimen/dialog_vertical_margin"
+        android:layout_marginBottom="@dimen/dialog_horizontal_margin"/>
+
+    <Spinner
+        android:id="@+id/classMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_horizontal_margin"
+        android:layout_marginLeft="@dimen/dialog_vertical_margin"
+        android:layout_marginRight="@dimen/dialog_vertical_margin"
+        android:layout_marginBottom="@dimen/dialog_vertical_margin"/>
+
+</LinearLayout>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        collapsibleCalendar = findViewById(R.id.collapsibleCalendar)
+        /*collapsibleCalendar = findViewById(R.id.collapsibleCalendar)
         collapsibleCalendar.setExpandIconVisible(true)
         val today = GregorianCalendar()
         collapsibleCalendar.selectedDay = Day(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                     collapsibleCalendar.expand(400)
                 }
             }
-        })
+        })*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

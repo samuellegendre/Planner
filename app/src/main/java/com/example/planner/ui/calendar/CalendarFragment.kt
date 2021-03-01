@@ -1,17 +1,20 @@
 package com.example.planner.ui.calendar
 
-import android.content.Context
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.alamkanak.weekview.WeekView
-import com.alamkanak.weekview.WeekViewEntity
+import androidx.fragment.app.FragmentManager
 import com.example.planner.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-import java.util.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment()/*,
+    AddClassDialogFragment.AddClassDialogListener*/ {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,7 +23,21 @@ class CalendarFragment : Fragment() {
     ): View? {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
         val view: View = inflater.inflate(R.layout.fragment_calendar, container, false)
+        val floatingActionButton: FloatingActionButton = view.findViewById(R.id.floatingActionButton)
+
+        floatingActionButton.setOnClickListener{
+            val dialog = AddClassDialogFragment()
+            dialog.show(childFragmentManager, "addClass")
+
+            /*val timeButton: Button = dialog.requireView().findViewById(R.id.timeButton)
+
+            timeButton.setOnClickListener {
+                TimePickerDialog().show(childFragmentManager, "timePicker")
+            }*/
+        }
+
         return view
     }
 
@@ -38,6 +55,12 @@ class CalendarFragment : Fragment() {
         }
     }
 
+    /*override fun onDialogPositiveClick(dialog: DialogFragment) {
+        TODO("Not yet implemented")
+    }
 
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        TODO("Not yet implemented")
+    }*/
 
 }

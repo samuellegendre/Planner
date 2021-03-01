@@ -5,6 +5,16 @@
     <string name="action_search">Recherche</string>
     <string name="action_today">Aujourd\'hui</string>
     <string name="action_notifications">Notifications</string>
+    <string name="action_class_date">Date</string>
+    <string name="action_class_hour">Heure</string>
+
+    <string name="class_name">Nom</string>
+    <string name="class_location">Emplacement</string>
+    <string name="class_method">
+        <item>Présentiel</item>
+        <item>À distance</item>
+        <item>Hybride</item>
+    </string>
 
     <string name="menu_calendar">Calendrier</string>
     <string name="menu_tasks">Tâches</string>

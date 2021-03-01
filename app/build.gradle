@@ -47,6 +47,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
     implementation 'com.github.shrikanth7698:Collapsible-Calendar-View-Android:v1.0.3'
     implementation 'com.github.thellmund.Android-Week-View:core:5.2.4'
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
