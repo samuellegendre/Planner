@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        /*collapsibleCalendar = findViewById(R.id.collapsibleCalendar)
+        collapsibleCalendar = findViewById(R.id.collapsibleCalendar)
         collapsibleCalendar.setExpandIconVisible(true)
         val today = GregorianCalendar()
         collapsibleCalendar.selectedDay = Day(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                     collapsibleCalendar.expand(400)
                 }
             }
-        })*/
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
