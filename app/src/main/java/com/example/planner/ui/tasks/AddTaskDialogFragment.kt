@@ -1,4 +1,4 @@
-package com.example.planner.ui.calendar
+package com.example.planner.ui.tasks
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,36 +9,19 @@ import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
+import com.example.planner.ui.calendar.DatePickerFragment
+import com.example.planner.ui.calendar.TimePickerFragment
 
-class AddClassDialogFragment : DialogFragment() {
-
-    /*private lateinit var listener: AddClassDialogListener
-
-    interface AddClassDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment)
-        fun onDialogNegativeClick(dialog: DialogFragment)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        try {
-            listener = context as AddClassDialogListener
-            val listener: AddClassDialogListener = context
-        } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() + "must implement NoticeDialogListener"))
-        }
-    }*/
-
+class AddTaskDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.dialog_add_class, null)
+            val view = inflater.inflate(R.layout.dialog_add_task, null)
 
             val dateButton: Button = view.findViewById(R.id.dateButton)
             val timeButton: Button = view.findViewById(R.id.timeButton)
-            val spinner: Spinner = view.findViewById(R.id.classMethod)
+            val spinner: Spinner = view.findViewById(R.id.tags)
 
             dateButton.setOnClickListener {
                 DatePickerFragment().show(childFragmentManager, "datePicker")
@@ -50,7 +33,7 @@ class AddClassDialogFragment : DialogFragment() {
 
             ArrayAdapter.createFromResource(
                     requireContext(),
-                    R.array.teaching_methods,
+                    R.array.tags,
                     android.R.layout.simple_spinner_item
             ).also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -58,17 +41,14 @@ class AddClassDialogFragment : DialogFragment() {
             }
 
             builder.setView(view)
-                    .setTitle(R.string.addClass)
+                    .setTitle(R.string.add_task)
                     .setPositiveButton(R.string.add,
                             DialogInterface.OnClickListener { dialog, id ->
-                                //listener.onDialogPositiveClick(this)
                             })
                     .setNegativeButton(R.string.cancel,
                             DialogInterface.OnClickListener { dialog, id ->
-                                //listener.onDialogNegativeClick(this)
                             })
             builder.create()
         } ?: throw IllegalStateException()
-
     }
 }

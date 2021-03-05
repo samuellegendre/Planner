@@ -8,24 +8,24 @@
     <fragment
         android:id="@+id/nav_calendar"
         android:name="com.example.planner.ui.calendar.CalendarFragment"
-        android:label="@string/menu_calendar"
+        android:label="@string/calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/nav_tasks"
         android:name="com.example.planner.ui.tasks.TasksFragment"
-        android:label="@string/menu_tasks"
+        android:label="@string/tasks"
         tools:layout="@layout/fragment_tasks" />
 
     <fragment
         android:id="@+id/nav_study"
         android:name="com.example.planner.ui.study.StudyFragment"
-        android:label="@string/menu_study"
+        android:label="@string/study_mode"
         tools:layout="@layout/fragment_study" />
 
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.planner.ui.settings.SettingsFragment"
-        android:label="@string/menu_settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

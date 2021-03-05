@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title="@string/notifications"
+        app:showAsAction="ifRoom" />
+
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/hideTasks"
+            android:checked="false"
+            android:title="@string/see_done_tasks" />
+    </group>
+
+    <item
+        android:id="@+id/actionSort"
+        android:title="@string/sort">
+
+        <menu>
+
+            <item
+                android:id="@+id/actionSortByDueDate"
+                android:title="@string/sort_due_date" />
+
+            <item
+                android:id="@+id/actionSortByAlphabetical"
+                android:title="@string/sort_alphabetical" />
+
+        </menu>
+
+    </item>
+
+</menu>

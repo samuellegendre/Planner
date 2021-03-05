@@ -1,23 +1,49 @@
 <resources>
     <string name="app_name">Planner</string>
+    <string name="settings">Paramètres</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="notifications">Notifications</string>
+    <string name="date">Date</string>
+    <string name="hour">Heure</string>
+    <string name="add_task">Ajouter une tâche</string>
+    <string name="add_list">Ajouter une liste</string>
+    <string name="dismiss_notif">Marquer tout comme lu</string>
+    <string name="sort">Trier</string>
+    <string name="sort_due_date">Par date d\'échance</string>
+    <string name="sort_alphabetical">Par ordre alphabétique</string>
+    <string name="rename_list">Renommer la liste</string>
+    <string name="duplicate_list">Dupliquer la liste</string>
+    <string name="move_list">Déplacer la liste</string>
+    <string name="delete_list">Supprimer la liste</string>
+    <string name="modify_task">Modifier la tâche</string>
+    <string name="move_task">Déplacer la tâche</string>
+    <string name="duplicate_task">Dupliquer la tâche</string>
+    <string name="delete_task">Supprimer la tâche</string>
+    <string name="name">Nom</string>
+    <string name="location">Emplacement</string>
+    <string name="calendar">Calendrier</string>
+    <string name="tasks">Tâches</string>
+    <string name="study_mode">Mode études</string>
+    <string name="day">Jour</string>
+    <string name="three_day">3 jours</string>
+    <string name="week">Semaine</string>
+    <string name="see_PDF">Voir le PDF</string>
+    <string name="see_done_tasks">Voir les tâches achevées</string>
+    <string name="cancel">Annuler</string>
+    <string name="add">Ajouter</string>
+    <string name="addClass">Ajouter un cours</string>
+    <string name="search">Rechercher</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="action_search">Recherche</string>
-    <string name="action_today">Aujourd\'hui</string>
-    <string name="action_notifications">Notifications</string>
-    <string name="action_class_date">Date</string>
-    <string name="action_class_hour">Heure</string>
-
-    <string name="class_name">Nom</string>
-    <string name="class_location">Emplacement</string>
-    <string name="class_method">
+    <string-array name="teaching_methods">
         <item>Présentiel</item>
         <item>À distance</item>
         <item>Hybride</item>
-    </string>
+    </string-array>
 
-    <string name="menu_calendar">Calendrier</string>
-    <string name="menu_tasks">Tâches</string>
-    <string name="menu_study">Mode études</string>
-    <string name="menu_settings">Paramètres</string>
+    <string name="description">Description</string>
+    <string-array name="tags">
+        <item>Cours 1</item>S
+        <item>Cours 2</item>
+        <item>Cours 3</item>
+    </string-array>
 </resources>

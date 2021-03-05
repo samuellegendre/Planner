@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionModifyTask"
+        android:title="@string/modify_task" />
+
+    <item
+        android:id="@+id/actionDuplicateTask"
+        android:title="@string/duplicate_task" />
+
+    <item
+        android:id="@+id/actionMoveTask"
+        android:title="@string/move_task" />
+
+    <item
+        android:id="@+id/actionDeleteTask"
+        android:title="@string/delete_task" />
+
+</menu>

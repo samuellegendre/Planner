@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/viewByDay"
+            android:checked="true"
+            android:title="@string/day" />
+        <item
+            android:id="@+id/viewBy3Day"
+            android:title="@string/three_day" />
+        <item
+            android:id="@+id/viewByWeek"
+            android:title="@string/week" />
+    </group>
+
+    <item android:title="@string/see_PDF" />
+
+
+</menu>
