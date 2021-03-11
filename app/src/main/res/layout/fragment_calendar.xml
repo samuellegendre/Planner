@@ -6,21 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.calendar.CalendarFragment">
 
-    <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-        android:id="@+id/collapsibleCalendar"
+    <com.alamkanak.weekview.WeekView
+        android:id="@+id/weekView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:buttonLeft_drawableTintColor="@android:color/white"
-        app:buttonRight_drawableTintColor="@android:color/white"
-        app:eventColor="@android:color/white"
-        app:expandIconColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:primaryColor="?attr/colorPrimary"
-        app:selectedItem_background="@drawable/circle_white_solid_background"
-        app:textColor="@android:color/white"
-        app:todayItem_background="@drawable/circle_white_stroke_background"
-        app:todayItem_textColor="@android:color/white" />
+        android:layout_height="match_parent"
+        app:defaultEventColor="@color/purple_500"
+        app:eventTextColor="@color/white"
+        app:timeColumnTextSize="12sp"
+        app:hourHeight="60dp"
+        app:timeColumnPadding="8dp"
+        app:timeColumnTextColor="@color/black"
+        app:timeColumnBackgroundColor="@color/white"
+        app:headerPadding="12dp"
+        app:columnGap="8dp"
+        app:numberOfVisibleDays="3"
+        app:headerBackgroundColor="@color/white"
+        app:dayBackgroundColor="@color/white"
+        app:todayBackgroundColor="@color/teal_200" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addClassButton"
