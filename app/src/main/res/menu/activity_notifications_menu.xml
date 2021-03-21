@@ -3,6 +3,6 @@
 
     <item
         android:id="@+id/action_dismiss_notif"
-        android:title="@string/dismiss_notif" />
+        android:title="@string/dismiss_notification" />
 
 </menu>

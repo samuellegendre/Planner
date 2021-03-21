@@ -7,7 +7,7 @@
     <string name="hour">Heure</string>
     <string name="add_task">Ajouter une tâche</string>
     <string name="add_list">Ajouter une liste</string>
-    <string name="dismiss_notif">Marquer tout comme lu</string>
+    <string name="dismiss_notification">Marquer tout comme lu</string>
     <string name="sort">Trier</string>
     <string name="sort_due_date">Par date d\'échance</string>
     <string name="sort_alphabetical">Par ordre alphabétique</string>
@@ -33,6 +33,7 @@
     <string name="add">Ajouter</string>
     <string name="addClass">Ajouter un cours</string>
     <string name="search">Rechercher</string>
+    <string name="month">Mois</string>
 
     <string-array name="teaching_methods">
         <item>Présentiel</item>
