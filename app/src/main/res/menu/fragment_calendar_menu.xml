@@ -8,6 +8,12 @@
         android:title="@string/search"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/today"
+        android:icon="@drawable/ic_today"
+        android:title="@string/today"
+        app:showAsAction="ifRoom" />
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/viewByDay"
