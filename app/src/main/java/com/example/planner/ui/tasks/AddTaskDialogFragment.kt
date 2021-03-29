@@ -9,8 +9,8 @@ import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
-import com.example.planner.ui.calendar.DatePickerFragment
-import com.example.planner.ui.calendar.TimePickerFragment
+import com.example.planner.utils.DatePickerFragment
+import com.example.planner.utils.TimePickerFragment
 
 class AddTaskDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

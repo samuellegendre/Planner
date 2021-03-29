@@ -62,7 +62,7 @@ class CalendarFragment : Fragment(),
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
-
+        // TODO
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
