@@ -4,15 +4,13 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.utils.DatePickerFragment
 import com.example.planner.utils.TimePickerFragment
 
-class AddClassDialogFragment : DialogFragment() {
+class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener {
 
     private lateinit var listener: AddClassDialogListener
 
@@ -36,8 +34,10 @@ class AddClassDialogFragment : DialogFragment() {
             val view = inflater.inflate(R.layout.dialog_add_class, null)
             val builder = AlertDialog.Builder(it)
 
+            val className: EditText = view.findViewById(R.id.className)
             val dateButton: Button = view.findViewById(R.id.dateButton)
             val timeButton: Button = view.findViewById(R.id.timeButton)
+            val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
 
             val datePickerFragment = DatePickerFragment()
@@ -50,6 +50,7 @@ class AddClassDialogFragment : DialogFragment() {
                 timePickerFragment.show(childFragmentManager, "timePicker")
             }
 
+            // Spinner
             ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.teaching_methods,
@@ -71,5 +72,9 @@ class AddClassDialogFragment : DialogFragment() {
                 }
             builder.create()
         } ?: throw IllegalStateException()
+    }
+
+    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        TODO("Not yet implemented")
     }
 }

@@ -2,6 +2,7 @@ package com.example.planner.utils
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.TimePicker
@@ -22,4 +23,7 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         // TODO
     }
 
+    override fun onCancel(dialog: DialogInterface) {
+        dialog.dismiss()
+    }
 }

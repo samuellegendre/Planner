@@ -26,7 +26,6 @@ class CalendarFragment : Fragment(),
 
         val view: View = inflater.inflate(R.layout.fragment_calendar, container, false)
         val addClassButton: FloatingActionButton = view.findViewById(R.id.addClassButton)
-        // <WeekViewEntity.Event>
         val adapter = PagingAdapter()
         val weekView: WeekView = view.findViewById(R.id.weekView)
 
