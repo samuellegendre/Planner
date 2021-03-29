@@ -7,11 +7,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.alamkanak.weekview.WeekView
-import com.alamkanak.weekview.WeekViewEntity
 import com.example.planner.R
 import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 
 class CalendarFragment : Fragment(),
     AddClassDialogFragment.AddClassDialogListener {
@@ -19,9 +17,9 @@ class CalendarFragment : Fragment(),
     private val viewModel by viewModels<CalendarViewModel>()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -37,10 +35,8 @@ class CalendarFragment : Fragment(),
             adapter.submitList(events)
         }
 
-
         addClassButton.setOnClickListener {
             val dialog = AddClassDialogFragment()
-            dialog.onAttach(requireContext())
             dialog.show(childFragmentManager, "addClass")
         }
 
@@ -66,7 +62,7 @@ class CalendarFragment : Fragment(),
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
-        Snackbar.make(requireView(), "Test", Snackbar.LENGTH_SHORT)
+
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

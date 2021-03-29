@@ -7,7 +7,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
@@ -25,9 +24,9 @@ class AddClassDialogFragment : DialogFragment() {
         super.onAttach(context)
 
         try {
-            listener = context as AddClassDialogListener
+            listener = parentFragment as AddClassDialogListener
         } catch (e: ClassCastException) {
-            //throw ClassCastException((context.toString() + " must implement NoticeDialogListener"))
+            throw ClassCastException(("$context must implement NoticeDialogListener"))
         }
     }
 
@@ -66,24 +65,24 @@ class AddClassDialogFragment : DialogFragment() {
             }
 
             ArrayAdapter.createFromResource(
-                    requireContext(),
-                    R.array.teaching_methods,
-                    android.R.layout.simple_spinner_item
+                requireContext(),
+                R.array.teaching_methods,
+                android.R.layout.simple_spinner_item
             ).also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinner.adapter = adapter
             }
 
             builder.setView(view)
-                    .setTitle(R.string.addClass)
-                    .setPositiveButton(R.string.add,
-                            DialogInterface.OnClickListener { dialog, id ->
-                                listener.onDialogPositiveClick(this)
-                            })
-                    .setNegativeButton(R.string.cancel,
-                            DialogInterface.OnClickListener { dialog, id ->
-                                listener.onDialogNegativeClick(this)
-                            })
+                .setTitle(R.string.addClass)
+                .setPositiveButton(R.string.add,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        listener.onDialogPositiveClick(this)
+                    })
+                .setNegativeButton(R.string.cancel,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        listener.onDialogNegativeClick(this)
+                    })
             builder.create()
         } ?: throw IllegalStateException()
 
