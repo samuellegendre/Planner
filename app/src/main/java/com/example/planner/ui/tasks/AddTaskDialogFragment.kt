@@ -9,8 +9,6 @@ import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
-import com.example.planner.utils.DatePickerFragment
-import com.example.planner.utils.TimePickerFragment
 
 class AddTaskDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -19,16 +17,16 @@ class AddTaskDialogFragment : DialogFragment() {
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_add_task, null)
 
-            val dateButton: Button = view.findViewById(R.id.dateButton)
-            val timeButton: Button = view.findViewById(R.id.timeButton)
+            val dateButton: Button = view.findViewById(R.id.startDateButton)
+            val timeButton: Button = view.findViewById(R.id.startTimeButton)
             val spinner: Spinner = view.findViewById(R.id.tags)
 
             dateButton.setOnClickListener {
-                DatePickerFragment().show(childFragmentManager, "datePicker")
+                // DatePickerFragment().show(childFragmentManager, "datePicker")
             }
 
             timeButton.setOnClickListener {
-                TimePickerFragment().show(childFragmentManager, "timePicker")
+                // TimePickerFragment().show(childFragmentManager, "timePicker")
             }
 
             ArrayAdapter.createFromResource(

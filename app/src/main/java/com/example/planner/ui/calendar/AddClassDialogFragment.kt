@@ -5,25 +5,32 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResultListener
 import com.example.planner.R
 import com.example.planner.utils.DatePickerFragment
 import com.example.planner.utils.TimePickerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddClassDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
+class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener, TimePickerFragment.TimePickerListener {
 
     private lateinit var listener: AddClassDialogListener
-    private lateinit var dateButton: Button
-    private lateinit var timeButton: Button
-    private var calendar = Calendar.getInstance()
+    private lateinit var startDateButton: Button
+    private lateinit var startTimeButton: Button
+    private lateinit var endDateButton: Button
+    private lateinit var endTimeButton: Button
+    private var startCalendar = Calendar.getInstance()
+    private var endCalendar = Calendar.getInstance()
+    private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     interface AddClassDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, calendar: Calendar)
+        fun onDialogPositiveClick(dialog: DialogFragment, startCalendar: Calendar, endCalendar: Calendar)
         fun onDialogNegativeClick(dialog: DialogFragment)
     }
 
@@ -43,19 +50,36 @@ class AddClassDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListe
             val builder = AlertDialog.Builder(it)
 
             val className: EditText = view.findViewById(R.id.className)
-            dateButton = view.findViewById(R.id.dateButton)
-            timeButton = view.findViewById(R.id.timeButton)
+            startDateButton = view.findViewById(R.id.startDateButton)
+            startTimeButton = view.findViewById(R.id.startTimeButton)
+            endDateButton = view.findViewById(R.id.endDateButton)
+            endTimeButton = view.findViewById(R.id.endTimeButton)
             val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
 
-            val datePickerFragment = DatePickerFragment()
-            dateButton.setOnClickListener {
-                datePickerFragment.show(childFragmentManager, "datePicker")
+            startDateButton.text = dateFormat.format(startCalendar.time)
+            startTimeButton.text = timeFormat.format(startCalendar.time)
+            endDateButton.text = dateFormat.format(endCalendar.time)
+            endTimeButton.text = timeFormat.format(endCalendar.time)
+
+            startDateButton.setOnClickListener {
+                val datePickerFragment = DatePickerFragment(startDateButton, startCalendar)
+                datePickerFragment.show(childFragmentManager, "startDatePicker")
             }
 
-            val timePickerFragment = TimePickerFragment()
-            timeButton.setOnClickListener {
-                timePickerFragment.show(childFragmentManager, "timePicker")
+            startTimeButton.setOnClickListener {
+                val timePickerFragment = TimePickerFragment(startTimeButton, startCalendar)
+                timePickerFragment.show(childFragmentManager, "startTimePicker")
+            }
+
+            endDateButton.setOnClickListener {
+                val datePickerFragment = DatePickerFragment(endDateButton, endCalendar)
+                datePickerFragment.show(childFragmentManager, "endDatePicker")
+            }
+
+            endTimeButton.setOnClickListener {
+                val timePickerFragment = TimePickerFragment(endTimeButton, endCalendar)
+                timePickerFragment.show(childFragmentManager, "endTimePicker")
             }
 
             // Spinner
@@ -73,7 +97,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListe
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->
-                    listener.onDialogPositiveClick(this, calendar)
+                    listener.onDialogPositiveClick(this, startCalendar, endCalendar)
                 }
                 .setNegativeButton(
                     R.string.cancel
@@ -84,16 +108,27 @@ class AddClassDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListe
         } ?: throw IllegalStateException()
     }
 
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    override fun onDateSet(
+        view: DatePicker?,
+        year: Int,
+        month: Int,
+        dayOfMonth: Int,
+        button: Button,
+        calendar: Calendar
+    ) {
         calendar.set(year, month, dayOfMonth)
-        dateButton.text = dateFormat.format(calendar.time)
+        button.text = dateFormat.format(calendar.time)
     }
 
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    override fun onTimeSet(
+        view: TimePicker?,
+        hourOfDay: Int,
+        minute: Int,
+        button: Button,
+        calendar: Calendar
+    ) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
-        timeButton.text = timeFormat.format(calendar.time)
+        button.text = timeFormat.format(calendar.time)
     }
 }

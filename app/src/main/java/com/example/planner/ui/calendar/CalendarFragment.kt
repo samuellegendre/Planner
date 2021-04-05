@@ -63,9 +63,10 @@ class CalendarFragment : Fragment(),
         }
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, calendar: Calendar) {
+    override fun onDialogPositiveClick(dialog: DialogFragment, startCalendar: Calendar, endCalendar: Calendar) {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        Log.w("test", dateFormat.format(calendar.time))
+        Log.w("start", dateFormat.format(startCalendar.time))
+        Log.w("end", dateFormat.format(endCalendar.time))
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

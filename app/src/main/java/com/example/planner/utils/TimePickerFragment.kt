@@ -2,14 +2,31 @@ package com.example.planner.utils
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.widget.Button
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerFragment(private val button: Button, private val calendar: Calendar) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+
+    private lateinit var listener: TimePickerListener
+
+    interface TimePickerListener {
+        fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int, button: Button, calendar: Calendar)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = parentFragment as TimePickerListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(("$context must implement OnDateSetListener"))
+        }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val calendar = Calendar.getInstance()
@@ -18,7 +35,7 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
 
         return TimePickerDialog(
             activity,
-            parentFragment as TimePickerDialog.OnTimeSetListener,
+            this,
             hour,
             minute,
             DateFormat.is24HourFormat(activity)
@@ -26,7 +43,7 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        // TODO
+        listener.onTimeSet(view, hourOfDay, minute, button, calendar)
     }
 
     override fun onCancel(dialog: DialogInterface) {
