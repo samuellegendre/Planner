@@ -17,6 +17,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
     TimePickerFragment.TimePickerListener {
 
     private lateinit var listener: AddClassDialogListener
+    private lateinit var dialog: AlertDialog
     private lateinit var startDateButton: Button
     private lateinit var startTimeButton: Button
     private lateinit var endDateButton: Button
@@ -25,6 +26,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
     private var endCalendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private var validated = true
 
     interface AddClassDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, event: Event)
@@ -104,7 +106,8 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                 ) { _, _ ->
                     listener.onDialogNegativeClick(this)
                 }
-            builder.create()
+            dialog = builder.create()
+            dialog
         } ?: throw IllegalStateException()
     }
 
@@ -145,9 +148,13 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
         if (endCalendar < startCalendar) {
             startDateButton.setTextColor(Color.RED)
             startTimeButton.setTextColor(Color.RED)
+            validated = false
         } else {
             startDateButton.setTextColor(Color.BLACK)
             startTimeButton.setTextColor(Color.BLACK)
+            validated = true
         }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
     }
 }
