@@ -1,6 +1,6 @@
 package com.example.planner.ui.calendar
 
-import android.graphics.Color
+import androidx.core.content.ContextCompat
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
 import java.util.*
@@ -11,7 +11,7 @@ data class Event(
     var subtitle: String,
     var startTime: Calendar,
     var endTime: Calendar,
-    var color: String
+    var color: Int
 )
 
 class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
@@ -19,7 +19,7 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
 
     override fun onCreateEntity(item: Event): WeekViewEntity {
         val style = WeekViewEntity.Style.Builder()
-            .setBackgroundColor(Color.parseColor(item.color))
+            .setBackgroundColor(ContextCompat.getColor(context, item.color))
             .build()
 
         return WeekViewEntity.Event.Builder(item)

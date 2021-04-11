@@ -1,16 +1,47 @@
 package com.example.planner.ui.calendar
 
 import android.content.Context
-import android.graphics.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.graphics.BlendModeColorFilterCompat
-import androidx.core.graphics.BlendModeCompat
+import androidx.core.content.ContextCompat
 import com.example.planner.R
 import kotlinx.android.synthetic.main.spinner_item.view.*
 
+data class TeachingMethod(val color: Int, val title: Int)
+
+object TeachingMethods {
+
+    private val colors = intArrayOf(
+        R.color.yellow,
+        R.color.blue,
+        R.color.purple
+    )
+
+    private val titles = arrayOf(
+        R.string.on_campus,
+        R.string.online,
+        R.string.hybrid
+    )
+
+    var list: ArrayList<TeachingMethod>? = null
+        get() {
+            if (field != null) return field
+
+            field = ArrayList()
+            for (i in colors.indices) {
+
+                val color = colors[i]
+                val title = titles[i]
+
+                val teachingMethod = TeachingMethod(color, title)
+                field!!.add(teachingMethod)
+            }
+
+            return field
+        }
+}
 
 class TeachingMethodArrayAdapter(context: Context, teachingMethodList: List<TeachingMethod>) :
     ArrayAdapter<TeachingMethod>(context, 0, teachingMethodList) {
@@ -26,10 +57,16 @@ class TeachingMethodArrayAdapter(context: Context, teachingMethodList: List<Teac
     private fun initView(position: Int, convertView: View?, parent: ViewGroup): View {
 
         val teachingMethod = getItem(position)
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.spinner_item, parent, false)
+        val view = convertView ?: LayoutInflater.from(context)
+            .inflate(R.layout.spinner_item, parent, false)
 
-        view.teachingMethodColor.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(Color.parseColor(teachingMethod!!.color), BlendModeCompat.SRC_ATOP)
-        view.teachingMethodTitle.text = teachingMethod.title
+        view.teachingMethodColor.setColorFilter(
+            ContextCompat.getColor(
+                context,
+                teachingMethod!!.color
+            )
+        )
+        view.teachingMethodTitle.setText(teachingMethod.title)
 
         return view
     }
