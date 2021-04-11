@@ -22,6 +22,7 @@
 
         <Button
             android:id="@+id/startDateButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_margin"
@@ -29,17 +30,20 @@
             android:layout_marginRight="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:text="@string/date" />
+            android:gravity="start|center_vertical"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/startTimeButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_top_bottom_margins"
             android:layout_marginEnd="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:text="@string/hour" />
+            android:gravity="end|center_vertical"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -50,6 +54,7 @@
 
         <Button
             android:id="@+id/endDateButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_margin"
@@ -57,17 +62,20 @@
             android:layout_marginRight="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:text="@string/date" />
+            android:gravity="start|center_vertical"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/endTimeButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_top_bottom_margins"
             android:layout_marginEnd="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:text="@string/hour" />
+            android:gravity="end|center_vertical"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 

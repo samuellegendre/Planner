@@ -3,6 +3,7 @@ package com.example.planner.ui.calendar
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.*
 import androidx.fragment.app.DialogFragment
@@ -90,7 +91,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                             0,
                             if (className.text.toString()
                                     .isBlank()
-                            ) "Sans nom" else className.text.toString(),
+                            ) "Sans titre" else className.text.toString(),
                             classLocation.text.toString(),
                             startCalendar,
                             endCalendar,
@@ -117,6 +118,13 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
     ) {
         calendar.set(year, month, dayOfMonth)
         button.text = dateFormat.format(calendar.time)
+
+        if (button == startDateButton && endCalendar < startCalendar) {
+            endCalendar.set(year, month, dayOfMonth)
+            endDateButton.text = dateFormat.format(calendar.time)
+        }
+
+        calendarValidation()
     }
 
     override fun onTimeSet(
@@ -129,5 +137,17 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         button.text = timeFormat.format(calendar.time)
+
+        calendarValidation()
+    }
+
+    private fun calendarValidation() {
+        if (endCalendar < startCalendar) {
+            startDateButton.setTextColor(Color.RED)
+            startTimeButton.setTextColor(Color.RED)
+        } else {
+            startDateButton.setTextColor(Color.BLACK)
+            startTimeButton.setTextColor(Color.BLACK)
+        }
     }
 }
