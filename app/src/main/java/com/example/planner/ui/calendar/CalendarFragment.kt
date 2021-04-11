@@ -60,6 +60,7 @@ class CalendarFragment : Fragment(),
             dialog.show(childFragmentManager, "addClass")
         }
 
+        weekView.scrollToDateTime(Calendar.getInstance())
         return view
     }
 
