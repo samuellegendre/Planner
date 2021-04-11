@@ -1,41 +1,50 @@
 package com.example.planner.ui.calendar
 
+import android.graphics.Color
 import android.graphics.RectF
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
 import java.util.*
 
-data class MyEvent(
-    val id: Long,
-    val title: String,
-    val startTime: Calendar,
-    val endTime: Calendar
+data class Event(
+    var id: Long,
+    var title: String,
+    var subtitle: String,
+    var startTime: Calendar,
+    var endTime: Calendar,
+    var color: String
 )
 
-class PagingAdapter : WeekView.SimpleAdapter<MyEvent>() {
+class CalendarSimpleAdapter : WeekView.SimpleAdapter<Event>() {
 
-    override fun onCreateEntity(item: MyEvent): WeekViewEntity {
+    override fun onCreateEntity(item: Event): WeekViewEntity {
+        val style = WeekViewEntity.Style.Builder()
+            .setBackgroundColor(Color.parseColor(item.color))
+            .build()
+
         return WeekViewEntity.Event.Builder(item)
             .setId(item.id)
             .setTitle(item.title)
+            .setSubtitle(item.subtitle)
             .setStartTime(item.startTime)
             .setEndTime(item.endTime)
+            .setStyle(style)
             .build()
     }
 
-    override fun onEventClick(data: MyEvent) {
+    override fun onEventClick(data: Event) {
         // TODO
     }
 
-    override fun onEventClick(data: MyEvent, bounds: RectF) {
+    override fun onEventClick(data: Event, bounds: RectF) {
         // TODO
     }
 
-    override fun onEventLongClick(data: MyEvent) {
+    override fun onEventLongClick(data: Event) {
         // TODO
     }
 
-    override fun onEventLongClick(data: MyEvent, bounds: RectF) {
+    override fun onEventLongClick(data: Event, bounds: RectF) {
         // TODO
     }
 

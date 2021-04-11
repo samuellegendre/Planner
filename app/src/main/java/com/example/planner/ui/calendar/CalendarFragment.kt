@@ -2,7 +2,6 @@ package com.example.planner.ui.calendar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -11,8 +10,6 @@ import com.alamkanak.weekview.WeekView
 import com.example.planner.R
 import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.util.*
 
 class CalendarFragment : Fragment(),
     AddClassDialogFragment.AddClassDialogListener {
@@ -23,18 +20,19 @@ class CalendarFragment : Fragment(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
         val view: View = inflater.inflate(R.layout.fragment_calendar, container, false)
         val addClassButton: FloatingActionButton = view.findViewById(R.id.addClassButton)
-        val adapter = PagingAdapter()
+
         val weekView: WeekView = view.findViewById(R.id.weekView)
+        val adapter = CalendarSimpleAdapter()
 
         weekView.adapter = adapter
         viewModel.events.observe(viewLifecycleOwner) { events ->
-            adapter.submitList(events)
+            adapter.submitList(events.entities)
         }
 
         addClassButton.setOnClickListener {
@@ -63,10 +61,9 @@ class CalendarFragment : Fragment(),
         }
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, startCalendar: Calendar, endCalendar: Calendar) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        Log.w("start", dateFormat.format(startCalendar.time))
-        Log.w("end", dateFormat.format(endCalendar.time))
+    override fun onDialogPositiveClick(dialog: DialogFragment, event: Event) {
+        event.id = viewModel.getSize()
+        viewModel.addEvent(event)
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

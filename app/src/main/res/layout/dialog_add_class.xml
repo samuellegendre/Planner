@@ -22,24 +22,24 @@
 
         <Button
             android:id="@+id/startDateButton"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_margin"
             android:layout_marginTop="@dimen/dialog_top_bottom_margins"
             android:layout_marginRight="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
-            android:text="Date" />
+            android:layout_weight="1"
+            android:text="@string/date" />
 
         <Button
             android:id="@+id/startTimeButton"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-            android:layout_marginRight="@dimen/activity_margin"
+            android:layout_marginEnd="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
-            android:text="Heure" />
+            android:layout_weight="1"
+            android:text="@string/hour" />
 
     </LinearLayout>
 
@@ -50,28 +50,26 @@
 
         <Button
             android:id="@+id/endDateButton"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_margin"
             android:layout_marginTop="@dimen/dialog_top_bottom_margins"
             android:layout_marginRight="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
-            android:text="Date" />
+            android:layout_weight="1"
+            android:text="@string/date" />
 
         <Button
             android:id="@+id/endTimeButton"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-            android:layout_marginRight="@dimen/activity_margin"
+            android:layout_marginEnd="@dimen/activity_margin"
             android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
-            android:text="Heure" />
+            android:layout_weight="1"
+            android:text="@string/hour" />
 
     </LinearLayout>
-
-
 
     <EditText
         android:id="@+id/classLocation"
@@ -84,7 +82,7 @@
         android:hint="@string/location"
         android:inputType="textAutoCorrect" />
 
-    <Spinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/classMethod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

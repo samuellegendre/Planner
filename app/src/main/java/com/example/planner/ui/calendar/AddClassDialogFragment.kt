@@ -1,23 +1,19 @@
 package com.example.planner.ui.calendar
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.TimePickerDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResultListener
 import com.example.planner.R
 import com.example.planner.utils.DatePickerFragment
 import com.example.planner.utils.TimePickerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener, TimePickerFragment.TimePickerListener {
+class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener,
+    TimePickerFragment.TimePickerListener {
 
     private lateinit var listener: AddClassDialogListener
     private lateinit var startDateButton: Button
@@ -30,7 +26,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     interface AddClassDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, startCalendar: Calendar, endCalendar: Calendar)
+        fun onDialogPositiveClick(dialog: DialogFragment, event: Event)
         fun onDialogNegativeClick(dialog: DialogFragment)
     }
 
@@ -62,6 +58,8 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
             endDateButton.text = dateFormat.format(endCalendar.time)
             endTimeButton.text = timeFormat.format(endCalendar.time)
 
+            spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
+
             startDateButton.setOnClickListener {
                 val datePickerFragment = DatePickerFragment(startDateButton, startCalendar)
                 datePickerFragment.show(childFragmentManager, "startDatePicker")
@@ -82,22 +80,23 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                 timePickerFragment.show(childFragmentManager, "endTimePicker")
             }
 
-            // Spinner
-            ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.teaching_methods,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-            }
-
             builder.setView(view)
                 .setTitle(R.string.addClass)
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->
-                    listener.onDialogPositiveClick(this, startCalendar, endCalendar)
+                    listener.onDialogPositiveClick(
+                        this, Event(
+                            0,
+                            if (className.text.toString()
+                                    .isBlank()
+                            ) "Sans nom" else className.text.toString(),
+                            classLocation.text.toString(),
+                            startCalendar,
+                            endCalendar,
+                            (spinner.selectedItem as TeachingMethod).color
+                        )
+                    )
                 }
                 .setNegativeButton(
                     R.string.cancel
