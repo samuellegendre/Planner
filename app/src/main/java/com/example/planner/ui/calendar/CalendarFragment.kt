@@ -10,6 +10,7 @@ import com.alamkanak.weekview.WeekView
 import com.example.planner.R
 import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,6 +71,10 @@ class CalendarFragment : Fragment(),
         return when (item.itemId) {
             R.id.search -> {
                 startActivity(Intent(requireContext(), SearchableActivity::class.java))
+                true
+            }
+            R.id.today -> {
+                weekView.scrollToDateTime(Calendar.getInstance())
                 true
             }
             R.id.viewByDay, R.id.viewBy3Day, R.id.viewByWeek -> {
