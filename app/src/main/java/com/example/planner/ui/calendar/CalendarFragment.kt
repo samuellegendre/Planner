@@ -12,7 +12,8 @@ import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CalendarFragment : Fragment(),
-    AddClassDialogFragment.AddClassDialogListener {
+    AddClassDialogFragment.AddClassDialogListener,
+    DeleteClassDialogFragment.DeleteClassDialogListener {
 
     private val viewModel by viewModels<CalendarViewModel>()
 
@@ -28,7 +29,7 @@ class CalendarFragment : Fragment(),
         val addClassButton: FloatingActionButton = view.findViewById(R.id.addClassButton)
 
         val weekView: WeekView = view.findViewById(R.id.weekView)
-        val adapter = CalendarSimpleAdapter()
+        val adapter = CalendarSimpleAdapter(this)
 
         weekView.adapter = adapter
         viewModel.events.observe(viewLifecycleOwner) { events ->
@@ -61,12 +62,17 @@ class CalendarFragment : Fragment(),
         }
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, event: Event) {
+    override fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
         event.id = viewModel.getSize()
         viewModel.addEvent(event)
+    }
+
+    override fun onDeleteClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
+        viewModel.removeEvent(event)
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
         dialog.dismiss()
     }
+
 }

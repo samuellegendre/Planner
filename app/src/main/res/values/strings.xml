@@ -35,6 +35,8 @@
     <string name="search">Rechercher</string>
     <string name="month">Mois</string>
     <string name="description">Description</string>
+    <string name="delete_class">Voulez-vous supprimer ce cours ?</string>
+    <string name="delete">Supprimer</string>
 
     <string-array name="tags">
         <item>Cours 1</item>

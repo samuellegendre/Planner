@@ -24,4 +24,10 @@ class CalendarViewModel : ViewModel() {
         return if (_events.value?.entities.isNullOrEmpty()) 0 else _events.value?.entities.orEmpty()
             .last().id + 1
     }
+
+    fun removeEvent(event: Event) {
+        val existingEntities = _events.value?.entities.orEmpty().toMutableList()
+        existingEntities.remove(event)
+        _events.value = GenericEvent(existingEntities.toList())
+    }
 }

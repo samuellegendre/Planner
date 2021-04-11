@@ -1,7 +1,6 @@
 package com.example.planner.ui.calendar
 
 import android.graphics.Color
-import android.graphics.RectF
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
 import java.util.*
@@ -15,7 +14,8 @@ data class Event(
     var color: String
 )
 
-class CalendarSimpleAdapter : WeekView.SimpleAdapter<Event>() {
+class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
+    WeekView.SimpleAdapter<Event>() {
 
     override fun onCreateEntity(item: Event): WeekViewEntity {
         val style = WeekViewEntity.Style.Builder()
@@ -33,18 +33,11 @@ class CalendarSimpleAdapter : WeekView.SimpleAdapter<Event>() {
     }
 
     override fun onEventClick(data: Event) {
-        // TODO
-    }
-
-    override fun onEventClick(data: Event, bounds: RectF) {
-        // TODO
+        val dialog = DeleteClassDialogFragment(data)
+        dialog.show(calendarFragment.childFragmentManager, "test")
     }
 
     override fun onEventLongClick(data: Event) {
-        // TODO
-    }
-
-    override fun onEventLongClick(data: Event, bounds: RectF) {
         // TODO
     }
 

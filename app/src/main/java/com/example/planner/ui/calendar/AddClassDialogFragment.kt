@@ -29,7 +29,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
     private var validated = true
 
     interface AddClassDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, event: Event)
+        fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event)
         fun onDialogNegativeClick(dialog: DialogFragment)
     }
 
@@ -88,7 +88,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->
-                    listener.onDialogPositiveClick(
+                    listener.onAddClassDialogPositiveClick(
                         this, Event(
                             0,
                             if (className.text.toString()
@@ -145,14 +145,14 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
     }
 
     private fun calendarValidation() {
-        if (endCalendar < startCalendar) {
+        validated = if (endCalendar < startCalendar) {
             startDateButton.setTextColor(Color.RED)
             startTimeButton.setTextColor(Color.RED)
-            validated = false
+            false
         } else {
             startDateButton.setTextColor(Color.BLACK)
             startTimeButton.setTextColor(Color.BLACK)
-            validated = true
+            true
         }
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
