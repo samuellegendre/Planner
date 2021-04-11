@@ -10,12 +10,15 @@ import com.alamkanak.weekview.WeekView
 import com.example.planner.R
 import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CalendarFragment : Fragment(),
     AddClassDialogFragment.AddClassDialogListener,
     DeleteClassDialogFragment.DeleteClassDialogListener {
 
     private val viewModel by viewModels<CalendarViewModel>()
+    private var timeFormat = SimpleDateFormat("HH h mm", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +35,21 @@ class CalendarFragment : Fragment(),
         val adapter = CalendarSimpleAdapter(this)
 
         weekView.adapter = adapter
+
+        weekView.setTimeFormatter {
+            "$it h 00"
+        }
+
+        weekView.setDateFormatter {
+            SimpleDateFormat(
+                "EEE",
+                Locale.getDefault()
+            ).format(it.time) + "\n" + SimpleDateFormat(
+                "MM-dd",
+                Locale.getDefault()
+            ).format(it.time)
+        }
+
         viewModel.events.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events.entities)
         }
