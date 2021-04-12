@@ -26,7 +26,7 @@ class CalendarViewModel : ViewModel() {
         _events.value = GenericEvent(existingEntities + eventsList)
     }
 
-    fun getSize(): Long {
+    fun getLastId(): Long {
         return if (_events.value?.entities.isNullOrEmpty()) 0 else _events.value?.entities.orEmpty()
             .last().id + 1
     }

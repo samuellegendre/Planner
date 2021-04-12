@@ -88,7 +88,7 @@ class CalendarFragment : Fragment(),
     }
 
     override fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
-        event.id = viewModel.getSize()
+        event.id = viewModel.getLastId()
         viewModel.addEvent(event)
         viewModel.saveEvents(requireContext())
     }
