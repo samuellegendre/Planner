@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
 
 data class GenericEvent(
     val entities: List<Event> = emptyList()
@@ -45,8 +46,10 @@ class CalendarViewModel : ViewModel() {
     }
 
     fun fetchEvents(context: Context) {
-        val fileContents = context.openFileInput(fileName).bufferedReader().readText()
-        val data = format.decodeFromString<List<Event>>(fileContents)
-        _events.value = GenericEvent(data)
+        if (File(context.filesDir, fileName).exists()) {
+            val fileContents = context.openFileInput(fileName).bufferedReader().readText()
+            val data = format.decodeFromString<List<Event>>(fileContents)
+            _events.value = GenericEvent(data)
+        }
     }
 }

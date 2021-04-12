@@ -75,7 +75,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, A
     }
 
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment) {
-        TODO("Not yet implemented")
+        // TODO
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
@@ -83,7 +83,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, A
     }
 
     override fun onAddListDialogPositiveClick(dialog: DialogFragment) {
-        TODO("Not yet implemented")
+        // TODO
     }
 
 }
