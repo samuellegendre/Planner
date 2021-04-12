@@ -5,18 +5,21 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.PopupMenu
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.planner.NotificationsActivity
 import com.example.planner.R
 import com.example.planner.SearchableActivity
+import com.example.planner.ui.calendar.AddClassDialogFragment
+import com.example.planner.ui.calendar.Event
 
-class TasksFragment : Fragment() {
+class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, AddListDialogFragment.AddListDialogListener {
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
@@ -69,6 +72,18 @@ class TasksFragment : Fragment() {
             }
             else -> false
         }
+    }
+
+    override fun onAddTaskDialogPositiveClick(dialog: DialogFragment) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        dialog.dismiss()
+    }
+
+    override fun onAddListDialogPositiveClick(dialog: DialogFragment) {
+        TODO("Not yet implemented")
     }
 
 }
