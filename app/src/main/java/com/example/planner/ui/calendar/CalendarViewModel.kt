@@ -17,7 +17,7 @@ class CalendarViewModel : ViewModel() {
     private val _events = MutableLiveData<GenericEvent>()
     val events: LiveData<GenericEvent> = _events
     private val format = Json { prettyPrint = true }
-    private val fileName = "data"
+    private val fileName = "calendar_data"
 
     fun addEvent(event: Event) {
         var eventsList: List<Event> = emptyList()

@@ -1,25 +1,36 @@
 package com.example.planner.ui.tasks
 
+import android.content.Context
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planner.R
+import com.example.planner.utils.CalendarSerializer
 import kotlinx.android.synthetic.main.task_item.view.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+@Serializable
 data class Task(
     var id: Long,
     var title: String,
     var description: String,
+    @Serializable(with = CalendarSerializer::class)
     var date: Calendar,
     var isChecked: Boolean = false
 )
 
-class TaskAdapter(private val tasks: MutableList<Task>) :
+class TaskAdapter(private var tasks: MutableList<Task>) :
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+    private val format = Json { prettyPrint = true }
+    private val fileName = "task_data"
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -64,5 +75,20 @@ class TaskAdapter(private val tasks: MutableList<Task>) :
         android.os.Handler(Looper.getMainLooper()).postDelayed({
             notifyDataSetChanged()
         }, 0)
+    }
+
+    fun saveTasks(context: Context) {
+        val fileContents = format.encodeToString(tasks)
+        context.openFileOutput(fileName, Context.MODE_PRIVATE).use {
+            it.write(fileContents.toByteArray())
+        }
+    }
+
+    fun fetchTasks(context: Context) {
+        if (File(context.filesDir, fileName).exists()) {
+            val fileContents = context.openFileInput(fileName).bufferedReader().readText()
+            val data = format.decodeFromString<MutableList<Task>>(fileContents)
+            tasks = data
+        }
     }
 }

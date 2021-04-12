@@ -24,6 +24,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     ): View {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.taskRecyclerView)
         taskAdapter = TaskAdapter(mutableListOf())
@@ -31,6 +32,8 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
 
         recyclerView.adapter = taskAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        taskAdapter.fetchTasks(requireContext())
 
         addTaskButton.setOnClickListener {
             val dialog = AddTaskDialogFragment()
@@ -65,6 +68,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
         task.id = taskAdapter.getLastId()
         taskAdapter.addTask(task)
+        taskAdapter.saveTasks(requireContext())
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
