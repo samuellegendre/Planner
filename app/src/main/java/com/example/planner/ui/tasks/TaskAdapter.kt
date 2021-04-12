@@ -51,6 +51,7 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
             taskCheckBox.setOnCheckedChangeListener { _, _ ->
                 currentTask.isChecked = !currentTask.isChecked
                 deleteTask()
+                saveTasks(context)
             }
         }
     }
