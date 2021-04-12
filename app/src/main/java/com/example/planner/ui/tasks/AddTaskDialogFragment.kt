@@ -4,7 +4,10 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.ui.dialogs.DatePickerFragment
@@ -41,9 +44,12 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
             val view = inflater.inflate(R.layout.dialog_add_task, null)
 
             val taskTitle: EditText = view.findViewById(R.id.taskName)
+            val taskDescription: EditText = view.findViewById(R.id.taskDescription)
             val dateButton: Button = view.findViewById(R.id.dateButton)
             val timeButton: Button = view.findViewById(R.id.timeButton)
-            val spinner: Spinner = view.findViewById(R.id.tags)
+
+            dateButton.text = dateFormat.format(calendar.time)
+            timeButton.text = timeFormat.format(calendar.time)
 
             dateButton.setOnClickListener {
                 DatePickerFragment(dateButton, calendar).show(childFragmentManager, "datePicker")
@@ -53,21 +59,22 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                 TimePickerFragment(timeButton, calendar).show(childFragmentManager, "timePicker")
             }
 
-            ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.tags,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-            }
-
             builder.setView(view)
                 .setTitle(R.string.add_task)
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->
-                    listener.onAddTaskDialogPositiveClick(this, Task(0, taskTitle.text.toString()))
+                    listener.onAddTaskDialogPositiveClick(
+                        this,
+                        Task(
+                            0,
+                            if (taskTitle.text.toString()
+                                    .isBlank()
+                            ) "Sans titre" else taskTitle.text.toString(),
+                            taskDescription.text.toString(),
+                            calendar
+                        )
+                    )
                 }
                 .setNegativeButton(
                     R.string.cancel

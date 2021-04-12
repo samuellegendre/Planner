@@ -41,10 +41,4 @@
     <string name="online">À distance</string>
     <string name="hybrid">Hybride</string>
     <string name="all_day">Toute la journée</string>
-
-    <string-array name="tags">
-        <item>Cours 1</item>
-        <item>Cours 2</item>
-        <item>Cours 3</item>
-    </string-array>
 </resources>
