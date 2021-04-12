@@ -12,14 +12,15 @@ import com.example.planner.ui.dialogs.TimePickerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener, TimePickerFragment.TimePickerListener {
+class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener,
+    TimePickerFragment.TimePickerListener {
     private lateinit var listener: AddTaskDialogListener
     private var calendar: Calendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     interface AddTaskDialogListener {
-        fun onAddTaskDialogPositiveClick(dialog: DialogFragment)
+        fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task)
         fun onDialogNegativeClick(dialog: DialogFragment)
     }
 
@@ -39,6 +40,7 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_add_task, null)
 
+            val taskTitle: EditText = view.findViewById(R.id.taskName)
             val dateButton: Button = view.findViewById(R.id.dateButton)
             val timeButton: Button = view.findViewById(R.id.timeButton)
             val spinner: Spinner = view.findViewById(R.id.tags)
@@ -65,7 +67,7 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->
-                    listener.onAddTaskDialogPositiveClick(this)
+                    listener.onAddTaskDialogPositiveClick(this, Task(0, taskTitle.text.toString()))
                 }
                 .setNegativeButton(
                     R.string.cancel

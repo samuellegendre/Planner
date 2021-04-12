@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.planner.NotificationsActivity
 import com.example.planner.R
 import com.example.planner.SearchableActivity
@@ -12,6 +14,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     AddListDialogFragment.AddListDialogListener {
+
+    private lateinit var taskAdapter: TaskAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,7 +25,12 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
+        val recyclerView: RecyclerView = view.findViewById(R.id.taskRecyclerView)
+        taskAdapter = TaskAdapter(mutableListOf())
         val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
+
+        recyclerView.adapter = taskAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         addTaskButton.setOnClickListener {
             val dialog = AddTaskDialogFragment()
@@ -53,8 +62,9 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         }
     }
 
-    override fun onAddTaskDialogPositiveClick(dialog: DialogFragment) {
-        // TODO
+    override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
+        task.id = taskAdapter.getLastId()
+        taskAdapter.addTask(task)
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
