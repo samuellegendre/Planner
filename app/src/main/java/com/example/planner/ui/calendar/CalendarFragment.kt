@@ -19,7 +19,6 @@ class CalendarFragment : Fragment(),
     DeleteClassDialogFragment.DeleteClassDialogListener {
 
     private val viewModel by viewModels<CalendarViewModel>()
-    private var timeFormat = SimpleDateFormat("HH h mm", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +80,11 @@ class CalendarFragment : Fragment(),
             }
             R.id.viewByDay, R.id.viewBy3Day, R.id.viewByWeek -> {
                 item.isChecked = !item.isChecked
+                when (item.itemId) {
+                    R.id.viewByDay -> weekView.numberOfVisibleDays = 1
+                    R.id.viewBy3Day -> weekView.numberOfVisibleDays = 3
+                    R.id.viewByWeek -> weekView.numberOfVisibleDays = 7
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
