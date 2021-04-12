@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
-import com.example.planner.utils.DatePickerFragment
-import com.example.planner.utils.TimePickerFragment
+import com.example.planner.ui.dialogs.DatePickerFragment
+import com.example.planner.ui.dialogs.TimePickerFragment
 import com.google.android.material.switchmaterial.SwitchMaterial
 import java.text.SimpleDateFormat
 import java.util.*

@@ -1,4 +1,4 @@
-package com.example.planner.utils
+package com.example.planner.ui.dialogs
 
 import android.app.Dialog
 import android.app.TimePickerDialog
