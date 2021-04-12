@@ -40,6 +40,7 @@
     <string name="on_campus">En présence</string>
     <string name="online">À distance</string>
     <string name="hybrid">Hybride</string>
+    <string name="all_day">Toute la journée</string>
 
     <string-array name="tags">
         <item>Cours 1</item>

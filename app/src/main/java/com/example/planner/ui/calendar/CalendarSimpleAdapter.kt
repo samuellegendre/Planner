@@ -11,7 +11,8 @@ data class Event(
     var subtitle: String,
     var startTime: Calendar,
     var endTime: Calendar,
-    var color: Int
+    var color: Int,
+    var isAllDay: Boolean
 )
 
 class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
@@ -29,6 +30,7 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
             .setStartTime(item.startTime)
             .setEndTime(item.endTime)
             .setStyle(style)
+            .setAllDay(item.isAllDay)
             .build()
     }
 

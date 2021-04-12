@@ -4,20 +4,72 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/className"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginStart="@dimen/activity_margin"
         android:layout_marginTop="@dimen/activity_margin"
-        android:layout_marginRight="@dimen/activity_margin"
-        android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
-        android:hint="@string/name"
-        android:inputType="textAutoCorrect" />
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="@dimen/dialog_top_bottom_margins">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+            android:src="@drawable/ic_title" />
+
+        <EditText
+            android:id="@+id/className"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+            android:hint="@string/name"
+            android:inputType="textAutoCorrect" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/dialog_top_bottom_margins"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="@dimen/dialog_top_bottom_margins">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+            android:src="@drawable/ic_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dialog_top_bottom_margins"
+            android:layout_marginRight="@dimen/dialog_top_bottom_margins"
+            android:gravity="center_vertical"
+            android:text="@string/all_day"
+            android:textSize="16sp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/allDaySwitch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+            android:checked="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/dialog_top_bottom_margins"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
         android:orientation="horizontal">
 
         <Button
@@ -25,31 +77,29 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-            android:layout_marginRight="@dimen/activity_margin"
-            android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
+            android:layout_marginStart="32sp"
+            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:textColor="@color/black" />
+            android:gravity="start|center_vertical" />
 
         <Button
             android:id="@+id/startTimeButton"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-            android:layout_marginEnd="@dimen/activity_margin"
-            android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
+            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:gravity="end|center_vertical"
-            android:textColor="@color/black" />
+            android:gravity="end|center_vertical" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/dialog_top_bottom_margins"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
         android:orientation="horizontal">
 
         <Button
@@ -57,46 +107,68 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-            android:layout_marginRight="@dimen/activity_margin"
-            android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
+            android:layout_marginStart="32sp"
+            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:gravity="start|center_vertical"
-            android:textColor="@color/black" />
+            android:gravity="start|center_vertical" />
 
         <Button
             android:id="@+id/endTimeButton"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-            android:layout_marginEnd="@dimen/activity_margin"
-            android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
+            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
             android:layout_weight="1"
-            android:gravity="end|center_vertical"
-            android:textColor="@color/black" />
+            android:gravity="end|center_vertical" />
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/classLocation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginStart="@dimen/activity_margin"
         android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-        android:layout_marginRight="@dimen/activity_margin"
-        android:layout_marginBottom="@dimen/dialog_top_bottom_margins"
-        android:hint="@string/location"
-        android:inputType="textAutoCorrect" />
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="@dimen/dialog_top_bottom_margins">
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/classMethod"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+            android:src="@drawable/ic_location" />
+
+        <EditText
+            android:id="@+id/classLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+            android:hint="@string/location"
+            android:inputType="textAutoCorrect" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginStart="@dimen/activity_margin"
         android:layout_marginTop="@dimen/dialog_top_bottom_margins"
-        android:layout_marginRight="@dimen/activity_margin"
-        android:layout_marginBottom="@dimen/activity_margin" />
+        android:layout_marginEnd="@dimen/activity_margin">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+            android:src="@drawable/id_description" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/classMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_top_bottom_margins" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

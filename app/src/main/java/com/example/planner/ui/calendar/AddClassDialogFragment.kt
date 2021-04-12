@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.utils.DatePickerFragment
 import com.example.planner.utils.TimePickerFragment
+import com.google.android.material.switchmaterial.SwitchMaterial
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,12 +50,36 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
             val builder = AlertDialog.Builder(it)
 
             val className: EditText = view.findViewById(R.id.className)
+            val allDaySwitch: SwitchMaterial = view.findViewById(R.id.allDaySwitch)
             startDateButton = view.findViewById(R.id.startDateButton)
             startTimeButton = view.findViewById(R.id.startTimeButton)
             endDateButton = view.findViewById(R.id.endDateButton)
             endTimeButton = view.findViewById(R.id.endTimeButton)
             val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
+
+            allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    startTimeButton.isEnabled = false
+                    endTimeButton.isEnabled = false
+                } else {
+                    startTimeButton.isEnabled = true
+                    endTimeButton.isEnabled = true
+                }
+            }
+
+            when (startCalendar.get(Calendar.MINUTE)) {
+                0 -> startCalendar.set(Calendar.MINUTE, 0)
+                in 1..15 -> startCalendar.set(Calendar.MINUTE, 15)
+                in 16..30 -> startCalendar.set(Calendar.MINUTE, 30)
+                in 31..45 -> startCalendar.set(Calendar.MINUTE, 45)
+                in 46..59 -> {
+                    startCalendar.set(Calendar.MINUTE, 0)
+                    startCalendar.set(Calendar.HOUR, startCalendar.get(Calendar.HOUR) + 1)
+                }
+            }
+            endCalendar.time = startCalendar.time
+            endCalendar.set(Calendar.HOUR, startCalendar.get(Calendar.HOUR) + 1)
 
             startDateButton.text = dateFormat.format(startCalendar.time)
             startTimeButton.text = timeFormat.format(startCalendar.time)
@@ -88,6 +113,9 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->
+                    if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
+                        endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
+                    }
                     listener.onAddClassDialogPositiveClick(
                         this, Event(
                             0,
@@ -97,7 +125,8 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                             classLocation.text.toString(),
                             startCalendar,
                             endCalendar,
-                            (spinner.selectedItem as TeachingMethod).color
+                            (spinner.selectedItem as TeachingMethod).color,
+                            allDaySwitch.isChecked
                         )
                     )
                 }

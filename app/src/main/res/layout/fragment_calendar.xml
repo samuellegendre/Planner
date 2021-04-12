@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         app:adaptiveEventTextSize="true"
         app:allDayEventTextSize="13sp"
+        app:arrangeAllDayEventsVertically="true"
         app:columnGap="6dp"
         app:eventCornerRadius="4dp"
         app:eventMarginVertical="2dp"
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:gravity="bottom|right"
+        android:gravity="bottom|end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add" />
