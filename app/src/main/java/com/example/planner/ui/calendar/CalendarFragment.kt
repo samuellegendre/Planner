@@ -35,6 +35,8 @@ class CalendarFragment : Fragment(),
         val weekView: WeekView = view.findViewById(R.id.weekView)
         val adapter = CalendarSimpleAdapter(this)
 
+        viewModel.fetchEvents(requireContext())
+
         weekView.adapter = adapter
 
         weekView.setTimeFormatter {
@@ -88,10 +90,12 @@ class CalendarFragment : Fragment(),
     override fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
         event.id = viewModel.getSize()
         viewModel.addEvent(event)
+        viewModel.saveEvents(requireContext())
     }
 
     override fun onDeleteClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
         viewModel.removeEvent(event)
+        viewModel.saveEvents(requireContext())
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

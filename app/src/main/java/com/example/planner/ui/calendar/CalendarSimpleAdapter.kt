@@ -3,13 +3,18 @@ package com.example.planner.ui.calendar
 import androidx.core.content.ContextCompat
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
+import com.example.planner.utils.CalendarSerializer
+import kotlinx.serialization.Serializable
 import java.util.*
 
+@Serializable
 data class Event(
     var id: Long,
     var title: String,
     var subtitle: String,
+    @Serializable(with = CalendarSerializer::class)
     var startTime: Calendar,
+    @Serializable(with = CalendarSerializer::class)
     var endTime: Calendar,
     var color: Int,
     var isAllDay: Boolean
