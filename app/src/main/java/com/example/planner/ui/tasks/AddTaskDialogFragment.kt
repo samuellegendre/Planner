@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.ui.dialogs.DatePickerFragment
@@ -45,8 +46,20 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
 
             val taskTitle: EditText = view.findViewById(R.id.taskName)
             val taskDescription: EditText = view.findViewById(R.id.taskDescription)
+            val dateSwitch: SwitchCompat = view.findViewById(R.id.addDateSwitch)
             val dateButton: Button = view.findViewById(R.id.dateButton)
+            val timeSwitch: SwitchCompat = view.findViewById(R.id.addTimeSwitch)
             val timeButton: Button = view.findViewById(R.id.timeButton)
+
+            dateSwitch.setOnCheckedChangeListener { _, isChecked ->
+                dateButton.isEnabled = isChecked
+                timeSwitch.isEnabled = isChecked
+                if (!isChecked) timeSwitch.isChecked = isChecked
+            }
+
+            timeSwitch.setOnCheckedChangeListener { _, isChecked ->
+                timeButton.isEnabled = isChecked
+            }
 
             dateButton.text = dateFormat.format(calendar.time)
             timeButton.text = timeFormat.format(calendar.time)
@@ -72,7 +85,9 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                                     .isBlank()
                             ) "Sans titre" else taskTitle.text.toString(),
                             taskDescription.text.toString(),
-                            calendar
+                            calendar,
+                            dateSwitch.isChecked,
+                            timeSwitch.isChecked
                         )
                     )
                 }

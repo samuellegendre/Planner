@@ -24,6 +24,8 @@ data class Task(
     var description: String,
     @Serializable(with = CalendarSerializer::class)
     var dateTime: Calendar,
+    var hasDate: Boolean,
+    var hasTime: Boolean,
     var isChecked: Boolean = false
 )
 
@@ -42,11 +44,22 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val currentTask = tasks[position]
-        val simpleDateFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
+        val simpleDateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
+        val simpleDateTimeFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
         holder.itemView.apply {
             taskTitle.text = currentTask.title
-            taskDescription.text = currentTask.description
-            taskTimeChip.text = simpleDateFormat.format(currentTask.dateTime.time)
+            if (currentTask.description.isBlank()) {
+                taskDescription.visibility = View.GONE
+            } else {
+                taskDescription.text = currentTask.description
+                taskDescription.visibility = View.VISIBLE
+            }
+            if (currentTask.hasDate) {
+                taskTimeChip.visibility = View.VISIBLE
+                if (currentTask.hasTime) taskTimeChip.text =
+                    simpleDateTimeFormat.format(currentTask.dateTime.time) else taskTimeChip.text =
+                    simpleDateFormat.format(currentTask.dateTime.time)
+            } else taskTimeChip.visibility = View.GONE
             taskCheckBox.isChecked = currentTask.isChecked
             taskCheckBox.setOnCheckedChangeListener { _, _ ->
                 currentTask.isChecked = !currentTask.isChecked

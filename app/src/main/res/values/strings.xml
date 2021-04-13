@@ -41,4 +41,6 @@
     <string name="online">À distance</string>
     <string name="asynchronous">Asynchrone</string>
     <string name="all_day">Toute la journée</string>
+    <string name="add_date">Ajouter une date</string>
+    <string name="add_time">Ajouter une heure</string>
 </resources>
