@@ -39,6 +39,6 @@
     <string name="delete">Supprimer</string>
     <string name="on_campus">En présence</string>
     <string name="online">À distance</string>
-    <string name="hybrid">Hybride</string>
+    <string name="asynchronous">Asynchrone</string>
     <string name="all_day">Toute la journée</string>
 </resources>

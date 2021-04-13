@@ -23,7 +23,7 @@ data class Task(
     var title: String,
     var description: String,
     @Serializable(with = CalendarSerializer::class)
-    var date: Calendar,
+    var dateTime: Calendar,
     var isChecked: Boolean = false
 )
 
@@ -46,7 +46,7 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
         holder.itemView.apply {
             taskTitle.text = currentTask.title
             taskDescription.text = currentTask.description
-            taskTimeChip.text = simpleDateFormat.format(currentTask.date.time)
+            taskTimeChip.text = simpleDateFormat.format(currentTask.dateTime.time)
             taskCheckBox.isChecked = currentTask.isChecked
             taskCheckBox.setOnCheckedChangeListener { _, _ ->
                 currentTask.isChecked = !currentTask.isChecked

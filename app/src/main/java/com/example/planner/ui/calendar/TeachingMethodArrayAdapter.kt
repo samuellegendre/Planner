@@ -14,15 +14,15 @@ data class TeachingMethod(val color: Int, val title: Int)
 object TeachingMethods {
 
     private val colors = intArrayOf(
-        R.color.yellow,
+        R.color.green,
         R.color.blue,
-        R.color.purple
+        R.color.yellow
     )
 
     private val titles = arrayOf(
         R.string.on_campus,
         R.string.online,
-        R.string.hybrid
+        R.string.asynchronous
     )
 
     var list: ArrayList<TeachingMethod>? = null
