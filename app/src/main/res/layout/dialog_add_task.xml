@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dialog_top_bottom_margins"
-            android:hint="@string/name" />
+            android:hint="@string/name"
+            android:inputType="textAutoCorrect|textCapSentences" />
 
     </LinearLayout>
 
@@ -112,7 +113,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dialog_top_bottom_margins"
-            android:hint="@string/description" />
+            android:hint="@string/description"
+            android:inputType="textAutoComplete|textCapSentences" />
 
     </LinearLayout>
 
