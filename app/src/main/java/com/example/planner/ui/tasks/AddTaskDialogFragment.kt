@@ -80,7 +80,6 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                     listener.onAddTaskDialogPositiveClick(
                         this,
                         Task(
-                            0,
                             if (taskTitle.text.toString()
                                     .isBlank()
                             ) "Sans titre" else taskTitle.text.toString(),

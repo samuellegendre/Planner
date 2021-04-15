@@ -27,6 +27,10 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
 
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.taskRecyclerView)
+
+        recyclerView.setHasFixedSize(true)
+        recyclerView.setItemViewCacheSize(50)
+
         taskAdapter = TaskAdapter(mutableListOf())
         val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
 
@@ -59,6 +63,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             }
             R.id.hideTasks -> {
                 item.isChecked = !item.isChecked
+                if (item.isChecked) taskAdapter.showTasks() else taskAdapter.hideTasks()
                 true
             }
             else -> false
@@ -66,7 +71,6 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     }
 
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
-        task.id = taskAdapter.getLastId()
         taskAdapter.addTask(task)
         taskAdapter.saveTasks(requireContext())
     }

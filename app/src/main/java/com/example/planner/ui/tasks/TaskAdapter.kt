@@ -1,7 +1,7 @@
 package com.example.planner.ui.tasks
 
 import android.content.Context
-import android.os.Looper
+import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +17,9 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @Serializable
 data class Task(
-    var id: Long,
     var title: String,
     var description: String,
     @Serializable(with = CalendarSerializer::class)
@@ -33,6 +33,9 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val format = Json { prettyPrint = true }
     private val fileName = "task_data"
+    private val simpleDateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
+    private val simpleDateTimeFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
+    private var showDoneTasks = false
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -44,10 +47,17 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val currentTask = tasks[position]
-        val simpleDateFormat = SimpleDateFormat("dd MMM", Locale.getDefault())
-        val simpleDateTimeFormat = SimpleDateFormat("dd MMM HH:mm", Locale.getDefault())
         holder.itemView.apply {
+            if (!showDoneTasks && currentTask.isChecked) {
+                taskCard.visibility = View.GONE
+                taskCard.layoutParams.height = 0
+            } else {
+                taskCard.visibility = View.VISIBLE
+                taskCard.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            }
             taskTitle.text = currentTask.title
+            if (currentTask.isChecked) taskTitle.paintFlags =
+                taskTitle.paintFlags or STRIKE_THRU_TEXT_FLAG
             if (currentTask.description.isBlank()) {
                 taskDescription.visibility = View.GONE
             } else {
@@ -62,8 +72,7 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
             } else taskTimeChip.visibility = View.GONE
             taskCheckBox.isChecked = currentTask.isChecked
             taskCheckBox.setOnCheckedChangeListener { _, _ ->
-                currentTask.isChecked = !currentTask.isChecked
-                deleteTask()
+                taskDone(currentTask, holder)
                 saveTasks(context)
             }
         }
@@ -73,22 +82,49 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
         return tasks.size
     }
 
-    fun getLastId(): Long {
-        return if (tasks.isNullOrEmpty()) 0 else tasks.last().id + 1
-    }
-
     fun addTask(task: Task) {
-        tasks.add(task)
-        notifyItemInserted(tasks.size - 1)
+        tasks.add(0, task)
+        notifyItemInserted(0)
     }
 
-    private fun deleteTask() {
-        tasks.removeAll { task ->
-            task.isChecked
+    private fun taskDone(task: Task, holder: TaskViewHolder) {
+        val taskIndex = tasks.indexOf(task)
+        var firstIndex = tasks.indexOfFirst { t -> t.isChecked } - 1
+        val title = holder.itemView.taskTitle
+        val card = holder.itemView.taskCard
+
+        if (firstIndex == -2) firstIndex = tasks.lastIndex
+        task.isChecked = !task.isChecked
+
+        if (task.isChecked) {
+            title.paintFlags = title.paintFlags or STRIKE_THRU_TEXT_FLAG
+            tasks.remove(task)
+            tasks.add(firstIndex, task)
+            if (!showDoneTasks) {
+                card.visibility = View.GONE
+                card.layoutParams.height = 0
+            }
+            notifyItemMoved(taskIndex, firstIndex)
+        } else {
+            title.paintFlags = title.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()
+            tasks.remove(task)
+            tasks.add(0, task)
+            notifyItemMoved(taskIndex, 0)
         }
-        android.os.Handler(Looper.getMainLooper()).postDelayed({
-            notifyDataSetChanged()
-        }, 0)
+    }
+
+    private fun deleteTask(task: Task) {
+        val taskIndex = tasks.indexOf(task)
+        tasks.remove(task)
+        notifyItemRemoved(taskIndex)
+    }
+
+    fun fetchTasks(context: Context) {
+        if (File(context.filesDir, fileName).exists()) {
+            val fileContents = context.openFileInput(fileName).bufferedReader().readText()
+            val data = format.decodeFromString<MutableList<Task>>(fileContents)
+            tasks = data
+        }
     }
 
     fun saveTasks(context: Context) {
@@ -98,11 +134,15 @@ class TaskAdapter(private var tasks: MutableList<Task>) :
         }
     }
 
-    fun fetchTasks(context: Context) {
-        if (File(context.filesDir, fileName).exists()) {
-            val fileContents = context.openFileInput(fileName).bufferedReader().readText()
-            val data = format.decodeFromString<MutableList<Task>>(fileContents)
-            tasks = data
-        }
+    fun hideTasks() {
+        showDoneTasks = false
+        val test = tasks.count { it.isChecked }
+        notifyItemRangeChanged(tasks.indexOfFirst { it.isChecked }, test)
+    }
+
+    fun showTasks() {
+        showDoneTasks = true
+        val test = tasks.count { it.isChecked }
+        notifyItemRangeChanged(tasks.indexOfFirst { it.isChecked }, test)
     }
 }

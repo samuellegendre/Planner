@@ -17,7 +17,6 @@
     <group android:checkableBehavior="all">
         <item
             android:id="@+id/hideTasks"
-            android:checked="false"
             android:title="@string/see_done_tasks" />
     </group>
 
