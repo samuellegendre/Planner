@@ -18,7 +18,7 @@ class CalendarSerializer : KSerializer<Calendar> {
         val calendar = Calendar.getInstance()
         val string = decoder.decodeString()
 
-        calendar.time = simpleDateFormat.parse(string)
+        calendar.time = simpleDateFormat.parse(string)!!
 
         return calendar
     }

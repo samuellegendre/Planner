@@ -1,21 +1,50 @@
 package com.example.planner.ui.tasks
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.view.*
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planner.NotificationsActivity
 import com.example.planner.R
 import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.drag.ItemTouchCallback
+import com.mikepenz.fastadapter.drag.SimpleDragCallback
+import com.mikepenz.fastadapter.listeners.ClickEventHook
+import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
+import com.mikepenz.fastadapter.swipe_drag.SimpleSwipeDragCallback
+import java.util.*
 
-class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
-    AddListDialogFragment.AddListDialogListener {
+class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, ItemTouchCallback,
+    SimpleSwipeCallback.ItemSwipeCallback {
 
-    private lateinit var taskAdapter: TaskAdapter
+    private lateinit var fastItemAdapter: FastItemAdapter<TaskItem>
+    private lateinit var tasks: Tasks
+
+    private lateinit var touchCallback: SimpleDragCallback
+    private lateinit var touchHelper: ItemTouchHelper
+
+    private val deleteHandler = Handler {
+        val item = it.obj as TaskItem
+
+        item.swipedAction = null
+        val position = fastItemAdapter.getAdapterPosition(item)
+        if (position != RecyclerView.NO_POSITION) {
+            tasks.removeItem(position)
+        }
+        true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,18 +55,62 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         setHasOptionsMenu(true)
 
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
+
+        fastItemAdapter = FastItemAdapter()
+        tasks = Tasks(requireContext(), fastItemAdapter)
+        fastItemAdapter.addEventHook(object : ClickEventHook<TaskItem>() {
+            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+                return if (viewHolder is TaskItem.ViewHolder) {
+                    viewHolder.checkBox
+                } else {
+                    null
+                }
+            }
+
+            override fun onClick(
+                v: View,
+                position: Int,
+                fastAdapter: FastAdapter<TaskItem>,
+                item: TaskItem
+            ) {
+                tasks.updateItem(position, !item.isChecked!!)
+                if (item.isChecked!!) {
+                    tasks.moveItem(position, tasks.items.lastIndex)
+                } else {
+                    tasks.moveItem(position, 0)
+                }
+            }
+
+        })
+
         val recyclerView: RecyclerView = view.findViewById(R.id.taskRecyclerView)
 
-        recyclerView.setHasFixedSize(true)
-        recyclerView.setItemViewCacheSize(50)
-
-        taskAdapter = TaskAdapter(mutableListOf())
-        val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
-
-        recyclerView.adapter = taskAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.adapter = fastItemAdapter
 
-        taskAdapter.fetchTasks(requireContext())
+        fastItemAdapter.add(tasks.fetch())
+
+        val leaveBehindDrawableLeft =
+            ResourcesCompat.getDrawable(requireContext().resources, R.drawable.id_description, null)
+
+        touchCallback = SimpleSwipeDragCallback(
+            this,
+            this,
+            leaveBehindDrawableLeft,
+            ItemTouchHelper.LEFT,
+            Color.RED
+        )
+            .withNotifyAllDrops(true)
+            .withSensitivity(10f)
+            .withSurfaceThreshold(0.8f)
+
+        touchHelper = ItemTouchHelper(touchCallback)
+        touchHelper.attachToRecyclerView(recyclerView)
+
+        fastItemAdapter.withSavedInstanceState(savedInstanceState)
+
+        val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
 
         addTaskButton.setOnClickListener {
             val dialog = AddTaskDialogFragment()
@@ -59,11 +132,11 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             }
             R.id.notifications -> {
                 startActivity(Intent(requireContext(), NotificationsActivity::class.java))
+                tasks.save()
                 true
             }
             R.id.hideTasks -> {
                 item.isChecked = !item.isChecked
-                if (item.isChecked) taskAdapter.showTasks() else taskAdapter.hideTasks()
                 true
             }
             else -> false
@@ -71,16 +144,38 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     }
 
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
-        taskAdapter.addTask(task)
-        taskAdapter.saveTasks(requireContext())
+        tasks.addTask(task)
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
         dialog.dismiss()
     }
 
-    override fun onAddListDialogPositiveClick(dialog: DialogFragment) {
-        // TODO
+    override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
+        tasks.moveItem(oldPosition, newPosition)
+        return true
+    }
+
+    override fun itemSwiped(position: Int, direction: Int) {
+        val item = fastItemAdapter.getItem(position) ?: return
+        item.swipedDirection = direction
+
+        val message = Random().nextInt()
+        deleteHandler.sendMessageDelayed(
+            Message.obtain().apply { what = message; obj = item },
+            3000
+        )
+
+        item.swipedAction = Runnable {
+            deleteHandler.removeMessages(message)
+
+            item.swipedDirection = 0
+            val position = fastItemAdapter.getAdapterPosition(item)
+            if (position != RecyclerView.NO_POSITION) {
+                fastItemAdapter.notifyItemChanged(position)
+            }
+        }
+        fastItemAdapter.notifyItemChanged(position)
     }
 
 }
