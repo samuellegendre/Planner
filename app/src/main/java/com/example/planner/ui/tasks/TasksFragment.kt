@@ -43,7 +43,9 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         item.swipedAction = null
         val position = fastItemAdapter.getAdapterPosition(item)
         if (position != RecyclerView.NO_POSITION) {
-            tasks.removeTask(tasks.itemToTask(item))
+            val list = mutableListOf<Task>()
+            list.add(tasks.itemToTask(item))
+            tasks.removeTasks(list)
         }
         true
     }
@@ -150,6 +152,12 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                 item.isChecked = !item.isChecked
                 true
             }
+            R.id.deleteCheckedTasks -> {
+                val checkedTasks = mutableListOf<Task>()
+                tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
+                tasks.removeTasks(checkedTasks)
+                true
+            }
             else -> false
         }
     }
@@ -164,7 +172,9 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     }
 
     override fun onModifyTaskDialogNegativeClick(dialog: DialogFragment, task: Task) {
-        tasks.removeTask(task)
+        val list = mutableListOf<Task>()
+        list.add(task)
+        tasks.removeTasks(list)
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {

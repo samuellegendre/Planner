@@ -27,7 +27,7 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
     private val fileName = "task_data"
     private val format = Json { prettyPrint = true }
 
-    private var tasks = mutableListOf<Task>()
+    var tasks = mutableListOf<Task>()
     var items = mutableListOf<TaskItem>()
 
     private fun taskToItem(task: Task): TaskItem {
@@ -78,11 +78,13 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
         save()
     }
 
-    fun removeTask(task: Task) {
-        val position = tasks.indexOf(task)
-        tasks.removeAt(position)
-        items.removeAt(position)
-        fastItemAdapter.itemFilter.remove(position)
+    fun removeTasks(list: List<Task>) {
+        list.forEach {
+            val position = tasks.indexOf(it)
+            tasks.removeAt(position)
+            items.removeAt(position)
+            fastItemAdapter.itemFilter.remove(position)
+        }
         save()
     }
 
