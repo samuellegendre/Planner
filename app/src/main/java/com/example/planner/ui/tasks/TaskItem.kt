@@ -9,15 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.planner.R
 import com.google.android.material.chip.Chip
 import com.mikepenz.fastadapter.drag.IDraggable
-import com.mikepenz.fastadapter.drag.IExtendedDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
-import com.mikepenz.fastadapter.swipe.IDrawerSwipeableViewHolder
 import com.mikepenz.fastadapter.swipe.ISwipeable
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
 
+    var id: Long? = null
     var title: String? = null
     var description: String? = null
     var dateTime: Calendar? = null
@@ -40,9 +39,9 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
         super.bindView(holder, payloads)
 
         holder.title.text = title
-
         holder.description.text = description
         if (hasDate!!) {
+            holder.dateTime.visibility = View.VISIBLE
             if (hasTime!!) {
                 holder.dateTime.text =
                     SimpleDateFormat("dd MMM HH:mm", Locale.getDefault()).format(dateTime?.time!!)
@@ -50,9 +49,10 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
                 holder.dateTime.text =
                     SimpleDateFormat("dd MMM", Locale.getDefault()).format(dateTime?.time!!)
             }
+        } else {
+            holder.dateTime.visibility = View.GONE
         }
         holder.checkBox.isChecked = isChecked!!
-
         holder.swipeContent.visibility = if (swipedDirection != 0) View.VISIBLE else View.GONE
         holder.itemContent.visibility = if (swipedDirection != 0) View.GONE else View.VISIBLE
 
@@ -101,7 +101,7 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
                 swipedActionRunnable?.run()
             }
             checkBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked){
+                if (isChecked) {
                     title.paintFlags = title.paintFlags or STRIKE_THRU_TEXT_FLAG
                 } else {
                     title.paintFlags = title.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()

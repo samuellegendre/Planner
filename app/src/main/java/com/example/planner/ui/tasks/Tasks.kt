@@ -9,11 +9,11 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.text.FieldPosition
 import java.util.*
 
 @Serializable
 data class Task(
+    var id: Long,
     var title: String,
     var description: String,
     @Serializable(with = CalendarSerializer::class)
@@ -31,19 +31,20 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
     var items = mutableListOf<TaskItem>()
 
     private fun taskToItem(task: Task): TaskItem {
-        val taskItem = TaskItem()
-
-        taskItem.title = task.title
-        taskItem.description = task.description
-        taskItem.dateTime = task.calendar
-        taskItem.hasDate = task.hasDate
-        taskItem.hasTime = task.hasTime
-        taskItem.isChecked = task.isChecked
-        return taskItem
+        val item = TaskItem()
+        item.id = task.id
+        item.title = task.title
+        item.description = task.description
+        item.dateTime = task.calendar
+        item.hasDate = task.hasDate
+        item.hasTime = task.hasTime
+        item.isChecked = task.isChecked
+        return item
     }
 
-    private fun itemToTask(item: TaskItem): Task {
+    fun itemToTask(item: TaskItem): Task {
         return Task(
+            item.id!!,
             item.title.toString(),
             item.description.toString(),
             item.dateTime!!,
@@ -54,30 +55,39 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
     }
 
     fun addTask(task: Task) {
+        val item = taskToItem(task)
         tasks.add(0, task)
-        items.add(0, taskToItem(task))
-        fastItemAdapter.set(items)
+        items.add(0, item)
+        fastItemAdapter.add(0, item)
         save()
     }
 
-    fun updateItem(position: Int, isChecked: Boolean) {
-        val item = items[position]
-        val task = tasks[position]
-        item.isChecked = isChecked
-        task.isChecked = isChecked
+    fun updateTask(task: Task) {
+        val item = taskToItem(task)
+        val position = tasks.indexOf(tasks.first { it.id == task.id })
+        val taskItem = fastItemAdapter.getAdapterItem(position)
+        tasks[position] = task
+        items[position] = item
+        taskItem.title = item.title
+        taskItem.description = item.description
+        taskItem.dateTime = item.dateTime
+        taskItem.hasDate = item.hasDate
+        taskItem.hasTime = item.hasTime
+        taskItem.isChecked = item.isChecked
+        fastItemAdapter.notifyItemChanged(position)
         save()
     }
 
-    fun removeItem(position: Int) {
-        items.removeAt(position)
+    fun removeTask(task: Task) {
+        val position = tasks.indexOf(task)
         tasks.removeAt(position)
+        items.removeAt(position)
         fastItemAdapter.itemFilter.remove(position)
         save()
     }
 
-    fun moveItem(oldPosition: Int, newPosition: Int) {
+    fun moveTask(oldPosition: Int, newPosition: Int) {
         DragDropUtil.onMove(fastItemAdapter.itemAdapter, oldPosition, newPosition)
-
         items = fastItemAdapter.adapterItems.toMutableList()
         tasks.clear()
         items.forEach {
@@ -86,12 +96,11 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
         save()
     }
 
-    fun save() {
-        tasks.clear()
-        items.forEach {
-            tasks.add(itemToTask(it))
-        }
+    fun getLastId(): Long {
+        return if (tasks.isEmpty()) 0 else tasks.maxOf { it.id }
+    }
 
+    fun save() {
         val fileContents = format.encodeToString(tasks)
         context.openFileOutput(fileName, Context.MODE_PRIVATE).use {
             it.write(fileContents.toByteArray())
@@ -104,12 +113,10 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
             val data = format.decodeFromString<MutableList<Task>>(fileContents)
             tasks = data
         }
-
         items.clear()
         tasks.forEach {
             items.add(taskToItem(it))
         }
-
         return items
     }
 }

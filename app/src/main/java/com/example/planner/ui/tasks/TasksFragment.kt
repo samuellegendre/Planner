@@ -18,6 +18,7 @@ import com.example.planner.R
 import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
@@ -26,7 +27,8 @@ import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
 import com.mikepenz.fastadapter.swipe_drag.SimpleSwipeDragCallback
 import java.util.*
 
-class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, ItemTouchCallback,
+class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
+    ModifyTaskDialogFragment.ModifyTaskDialogListener, ItemTouchCallback,
     SimpleSwipeCallback.ItemSwipeCallback {
 
     private lateinit var fastItemAdapter: FastItemAdapter<TaskItem>
@@ -41,7 +43,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, I
         item.swipedAction = null
         val position = fastItemAdapter.getAdapterPosition(item)
         if (position != RecyclerView.NO_POSITION) {
-            tasks.removeItem(position)
+            tasks.removeTask(tasks.itemToTask(item))
         }
         true
     }
@@ -57,7 +59,14 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, I
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
 
         fastItemAdapter = FastItemAdapter()
-        tasks = Tasks(requireContext(), fastItemAdapter)
+
+        fastItemAdapter.onClickListener =
+            { _: View?, _: IAdapter<TaskItem>, item: TaskItem, _: Int ->
+                val dialog = ModifyTaskDialogFragment(tasks.itemToTask(item))
+                dialog.show(childFragmentManager, "modifyTask")
+                false
+            }
+
         fastItemAdapter.addEventHook(object : ClickEventHook<TaskItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return if (viewHolder is TaskItem.ViewHolder) {
@@ -73,16 +82,18 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, I
                 fastAdapter: FastAdapter<TaskItem>,
                 item: TaskItem
             ) {
-                tasks.updateItem(position, !item.isChecked!!)
+                item.isChecked = !item.isChecked!!
+                tasks.updateTask(tasks.itemToTask(item))
                 if (item.isChecked!!) {
-                    tasks.moveItem(position, tasks.items.lastIndex)
+                    tasks.moveTask(position, tasks.items.lastIndex)
                 } else {
-                    tasks.moveItem(position, 0)
+                    tasks.moveTask(position, 0)
                 }
             }
 
         })
 
+        tasks = Tasks(requireContext(), fastItemAdapter)
         val recyclerView: RecyclerView = view.findViewById(R.id.taskRecyclerView)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -144,15 +155,20 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, I
     }
 
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
+        task.id = tasks.getLastId() + 1
         tasks.addTask(task)
     }
 
-    override fun onDialogNegativeClick(dialog: DialogFragment) {
-        dialog.dismiss()
+    override fun onModifyTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
+        tasks.updateTask(task)
+    }
+
+    override fun onModifyTaskDialogNegativeClick(dialog: DialogFragment, task: Task) {
+        tasks.removeTask(task)
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
-        tasks.moveItem(oldPosition, newPosition)
+        tasks.moveTask(oldPosition, newPosition)
         return true
     }
 
@@ -177,5 +193,4 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener, I
         }
         fastItemAdapter.notifyItemChanged(position)
     }
-
 }

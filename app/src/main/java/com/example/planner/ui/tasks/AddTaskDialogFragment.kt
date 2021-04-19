@@ -25,7 +25,6 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
 
     interface AddTaskDialogListener {
         fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task)
-        fun onDialogNegativeClick(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context) {
@@ -80,6 +79,7 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                     listener.onAddTaskDialogPositiveClick(
                         this,
                         Task(
+                            0,
                             if (taskTitle.text.toString()
                                     .isBlank()
                             ) "Sans titre" else taskTitle.text.toString(),
@@ -93,7 +93,7 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                 .setNegativeButton(
                     R.string.cancel
                 ) { _, _ ->
-                    listener.onDialogNegativeClick(this)
+                    this.dismiss()
                 }
             builder.create()
         } ?: throw IllegalStateException()

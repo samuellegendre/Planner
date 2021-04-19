@@ -4,7 +4,10 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.TimePicker
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
@@ -13,7 +16,8 @@ import com.example.planner.ui.dialogs.TimePickerFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(), DatePickerFragment.DatePickerListener,
+class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(),
+    DatePickerFragment.DatePickerListener,
     TimePickerFragment.TimePickerListener {
     private lateinit var listener: ModifyTaskDialogListener
     private var calendar: Calendar = task.calendar
@@ -25,7 +29,7 @@ class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(), DateP
 
     interface ModifyTaskDialogListener {
         fun onModifyTaskDialogPositiveClick(dialog: DialogFragment, task: Task)
-        fun onModifyTaskDialogNegativeClick(dialog: DialogFragment)
+        fun onModifyTaskDialogNegativeClick(dialog: DialogFragment, task: Task)
     }
 
     override fun onAttach(context: Context) {
@@ -55,13 +59,15 @@ class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(), DateP
             taskDescription.setText(task.description)
             dateSwitch.isChecked = task.hasDate
             timeSwitch.isChecked = task.hasTime
+            dateSwitchDisableButtons(dateSwitch.isChecked)
+            timeSwitchDisableButton(timeSwitch.isChecked)
 
             dateSwitch.setOnCheckedChangeListener { _, isChecked ->
-                disableButtons(isChecked)
+                dateSwitchDisableButtons(isChecked)
             }
 
             timeSwitch.setOnCheckedChangeListener { _, isChecked ->
-                timeButton.isEnabled = isChecked
+                timeSwitchDisableButton(isChecked)
             }
 
             dateButton.text = dateFormat.format(calendar.time)
@@ -78,25 +84,28 @@ class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(), DateP
             builder.setView(view)
                 .setTitle(R.string.add_task)
                 .setPositiveButton(
-                    R.string.add
+                    R.string.save
                 ) { _, _ ->
                     listener.onModifyTaskDialogPositiveClick(
                         this,
                         Task(
+                            task.id,
                             if (taskTitle.text.toString()
                                     .isBlank()
                             ) "Sans titre" else taskTitle.text.toString(),
                             taskDescription.text.toString(),
                             calendar,
                             dateSwitch.isChecked,
-                            timeSwitch.isChecked
+                            timeSwitch.isChecked,
+                            task.isChecked
                         )
                     )
                 }
+                .setNeutralButton(R.string.cancel) { _, _ -> this.dismiss() }
                 .setNegativeButton(
-                    R.string.cancel
+                    R.string.delete
                 ) { _, _ ->
-                    listener.onModifyTaskDialogNegativeClick(this)
+                    listener.onModifyTaskDialogNegativeClick(this, task)
                 }
             builder.create()
         } ?: throw IllegalStateException()
@@ -126,9 +135,13 @@ class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(), DateP
         button.text = timeFormat.format(calendar.time)
     }
 
-    private fun disableButtons(isChecked: Boolean) {
+    private fun dateSwitchDisableButtons(isChecked: Boolean) {
         dateButton.isEnabled = isChecked
         timeSwitch.isEnabled = isChecked
         if (!isChecked) timeSwitch.isChecked = isChecked
+    }
+
+    private fun timeSwitchDisableButton(isChecked: Boolean) {
+        timeButton.isEnabled = isChecked
     }
 }
