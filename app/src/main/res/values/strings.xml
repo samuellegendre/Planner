@@ -44,4 +44,5 @@
     <string name="add_date">Ajouter une date</string>
     <string name="add_time">Ajouter une heure</string>
     <string name="deleted">Supprimée</string>
+    <string name="save">Sauvegarder</string>
 </resources>

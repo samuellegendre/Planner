@@ -16,7 +16,7 @@ import java.util.*
 
 class CalendarFragment : Fragment(),
     AddClassDialogFragment.AddClassDialogListener,
-    DeleteClassDialogFragment.DeleteClassDialogListener {
+    ModifyClassDialogFragment.ModifyClassDialogListener {
 
     private val viewModel by viewModels<CalendarViewModel>()
 
@@ -97,13 +97,14 @@ class CalendarFragment : Fragment(),
         viewModel.saveEvents(requireContext())
     }
 
-    override fun onDeleteClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
-        viewModel.removeEvent(event)
+    override fun onModifyClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
+        viewModel.updateEvent(event)
         viewModel.saveEvents(requireContext())
     }
 
-    override fun onDialogNegativeClick(dialog: DialogFragment) {
-        dialog.dismiss()
+    override fun onModifyClassDialogNegativeClick(dialog: DialogFragment, event: Event) {
+        viewModel.removeEvent(event)
+        viewModel.saveEvents(requireContext())
     }
 
 }

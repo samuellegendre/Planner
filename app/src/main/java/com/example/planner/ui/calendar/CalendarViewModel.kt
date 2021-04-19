@@ -32,6 +32,24 @@ class CalendarViewModel : ViewModel() {
             .last().id + 1
     }
 
+    fun updateEvent(event: Event) {
+        val existingEntities = _events.value?.entities.orEmpty()
+
+        for (e in existingEntities) {
+            if (e.id == event.id) {
+                e.title = event.title
+                e.subtitle = event.subtitle
+                e.startTime = event.startTime
+                e.endTime = event.endTime
+                e.color = event.color
+                e.spinnerIndex = event.spinnerIndex
+                e.isAllDay = event.isAllDay
+            }
+        }
+
+        _events.value = GenericEvent(existingEntities)
+    }
+
     fun removeEvent(event: Event) {
         val existingEntities = _events.value?.entities.orEmpty().toMutableList()
         existingEntities.remove(event)

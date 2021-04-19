@@ -17,6 +17,7 @@ data class Event(
     @Serializable(with = CalendarSerializer::class)
     var endTime: Calendar,
     var color: Int,
+    var spinnerIndex: Int,
     var isAllDay: Boolean
 )
 
@@ -40,7 +41,7 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
     }
 
     override fun onEventClick(data: Event) {
-        val dialog = DeleteClassDialogFragment(data)
+        val dialog = ModifyClassDialogFragment(data)
         dialog.show(calendarFragment.childFragmentManager, "test")
     }
 

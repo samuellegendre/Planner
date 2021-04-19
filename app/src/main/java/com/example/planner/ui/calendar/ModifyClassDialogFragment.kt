@@ -15,30 +15,32 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener,
+class ModifyClassDialogFragment(private val event: Event) : DialogFragment(),
+    DatePickerFragment.DatePickerListener,
     TimePickerFragment.TimePickerListener {
 
-    private lateinit var listener: AddClassDialogListener
+    private lateinit var listener: ModifyClassDialogListener
     private lateinit var dialog: AlertDialog
     private lateinit var startDateButton: Button
     private lateinit var startTimeButton: Button
     private lateinit var endDateButton: Button
     private lateinit var endTimeButton: Button
-    private var startCalendar = Calendar.getInstance()
-    private var endCalendar = Calendar.getInstance()
+    private var startCalendar = event.startTime
+    private var endCalendar = event.endTime
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private var validated = true
     lateinit var defaultButtonColors: ColorStateList
 
-    interface AddClassDialogListener {
-        fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event)
+    interface ModifyClassDialogListener {
+        fun onModifyClassDialogPositiveClick(dialog: DialogFragment, event: Event)
+        fun onModifyClassDialogNegativeClick(dialog: DialogFragment, event: Event)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = parentFragment as AddClassDialogListener
+            listener = parentFragment as ModifyClassDialogListener
         } catch (e: ClassCastException) {
             throw ClassCastException(("$context must implement NoticeDialogListener"))
         }
@@ -59,35 +61,23 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
             val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
 
-            allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    startTimeButton.isEnabled = false
-                    endTimeButton.isEnabled = false
-                } else {
-                    startTimeButton.isEnabled = true
-                    endTimeButton.isEnabled = true
-                }
-            }
+            className.setText(event.title)
 
-            when (startCalendar.get(Calendar.MINUTE)) {
-                0 -> startCalendar.set(Calendar.MINUTE, 0)
-                in 1..15 -> startCalendar.set(Calendar.MINUTE, 15)
-                in 16..30 -> startCalendar.set(Calendar.MINUTE, 30)
-                in 31..45 -> startCalendar.set(Calendar.MINUTE, 45)
-                in 46..59 -> {
-                    startCalendar.set(Calendar.MINUTE, 0)
-                    startCalendar.set(Calendar.HOUR, startCalendar.get(Calendar.HOUR) + 1)
-                }
+            allDaySwitch.isChecked = event.isAllDay
+            disableButtons(allDaySwitch.isChecked)
+            allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
+                disableButtons(isChecked)
             }
-            endCalendar.time = startCalendar.time
-            endCalendar.set(Calendar.HOUR, startCalendar.get(Calendar.HOUR) + 1)
 
             startDateButton.text = dateFormat.format(startCalendar.time)
             startTimeButton.text = timeFormat.format(startCalendar.time)
             endDateButton.text = dateFormat.format(endCalendar.time)
             endTimeButton.text = timeFormat.format(endCalendar.time)
 
+            classLocation.setText(event.subtitle)
+
             spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
+            spinner.setSelection(event.spinnerIndex)
 
             startDateButton.setOnClickListener {
                 val datePickerFragment = DatePickerFragment(startDateButton, startCalendar)
@@ -112,12 +102,12 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
             builder.setView(view)
                 .setTitle(R.string.addClass)
                 .setPositiveButton(
-                    R.string.add
+                    R.string.save
                 ) { _, _ ->
                     if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
                         endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
                     }
-                    listener.onAddClassDialogPositiveClick(
+                    listener.onModifyClassDialogPositiveClick(
                         this, Event(
                             0,
                             if (className.text.toString()
@@ -132,10 +122,13 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                         )
                     )
                 }
-                .setNegativeButton(
-                    R.string.cancel
-                ) { _, _ ->
+                .setNeutralButton(R.string.cancel) { _, _ ->
                     dialog.dismiss()
+                }
+                .setNegativeButton(
+                    R.string.delete
+                ) { _, _ ->
+                    listener.onModifyClassDialogNegativeClick(this, event)
                 }
             dialog = builder.create()
             dialog
@@ -188,5 +181,15 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
         }
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
+    }
+
+    private fun disableButtons(isChecked: Boolean) {
+        if (isChecked) {
+            startTimeButton.isEnabled = false
+            endTimeButton.isEnabled = false
+        } else {
+            startTimeButton.isEnabled = true
+            endTimeButton.isEnabled = true
+        }
     }
 }
