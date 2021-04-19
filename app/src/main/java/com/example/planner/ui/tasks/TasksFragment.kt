@@ -103,7 +103,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         fastItemAdapter.add(tasks.fetchItems())
 
         val leaveBehindDrawableLeft =
-            ResourcesCompat.getDrawable(requireContext().resources, R.drawable.id_description, null)
+            ResourcesCompat.getDrawable(requireContext().resources, R.drawable.ic_delete, null)
 
         touchCallback = SimpleSwipeDragCallback(
             this,
