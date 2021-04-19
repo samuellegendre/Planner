@@ -100,7 +100,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = fastItemAdapter
 
-        fastItemAdapter.add(tasks.fetch())
+        fastItemAdapter.add(tasks.fetchItems())
 
         val leaveBehindDrawableLeft =
             ResourcesCompat.getDrawable(requireContext().resources, R.drawable.id_description, null)

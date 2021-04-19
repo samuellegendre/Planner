@@ -107,7 +107,7 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
         }
     }
 
-    fun fetch(): MutableList<TaskItem> {
+    fun fetchItems(): MutableList<TaskItem> {
         if (File(context.filesDir, fileName).exists()) {
             val fileContents = context.openFileInput(fileName).bufferedReader().readText()
             val data = format.decodeFromString<MutableList<Task>>(fileContents)
