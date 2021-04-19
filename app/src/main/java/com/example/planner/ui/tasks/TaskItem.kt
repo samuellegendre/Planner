@@ -39,7 +39,12 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
         super.bindView(holder, payloads)
 
         holder.title.text = title
-        holder.description.text = description
+        if (description.isNullOrBlank()) {
+            holder.description.visibility = View.GONE
+        } else {
+            holder.description.visibility = View.VISIBLE
+            holder.description.text = description
+        }
         if (hasDate!!) {
             holder.dateTime.visibility = View.VISIBLE
             if (hasTime!!) {
