@@ -103,6 +103,14 @@ class Tasks(
         save()
     }
 
+    fun sortTasks(taskComparator: Comparator<Task>, itemComparator: Comparator<TaskItem>) {
+        tasks.sortWith(taskComparator)
+        items.sortWith(itemComparator)
+        itemAdapter.adapterItems.sortWith(itemComparator)
+        fastAdapter.notifyDataSetChanged()
+        save()
+    }
+
     fun getLastId(): Long {
         return if (tasks.isEmpty()) 0 else tasks.maxOf { it.id }
     }

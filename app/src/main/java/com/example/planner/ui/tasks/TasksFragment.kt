@@ -39,6 +39,8 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     private lateinit var touchHelper: ItemTouchHelper
 
     private var hideTask = false
+    private var inAscendingAlphabeticalOrder = false
+    private var inAscendingDateOrder = false
 
     private val deleteHandler = Handler {
         val item = it.obj as TaskItem
@@ -167,6 +169,37 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                 if (hideTask) toggleHiddenTasks(!hideTask)
                 tasks.removeTasks(checkedTasks)
                 if (hideTask) toggleHiddenTasks(hideTask)
+                true
+            }
+            R.id.actionSortByDueDate -> {
+                inAscendingDateOrder = !inAscendingDateOrder
+                if (inAscendingDateOrder) {
+                    tasks.sortTasks(
+                        compareBy<Task> { it.isChecked }.thenBy { it.calendar },
+                        compareBy<TaskItem> { it.isChecked }.thenBy { it.dateTime })
+                } else {
+                    tasks.sortTasks(
+                        compareBy<Task> { it.isChecked }.reversed().thenBy { it.calendar }
+                            .reversed(),
+                        compareBy<TaskItem> { it.isChecked }.reversed().thenBy { it.dateTime }
+                            .reversed()
+                    )
+                }
+                true
+            }
+            R.id.actionSortByAlphabetical -> {
+                inAscendingAlphabeticalOrder = !inAscendingAlphabeticalOrder
+                if (inAscendingAlphabeticalOrder) {
+                    tasks.sortTasks(
+                        compareBy<Task> { it.isChecked }.thenBy { it.title },
+                        compareBy<TaskItem> { it.isChecked }.thenBy { it.title })
+                } else {
+                    tasks.sortTasks(
+                        compareBy<Task> { it.isChecked }.reversed().thenBy { it.title }.reversed(),
+                        compareBy<TaskItem> { it.isChecked }.reversed().thenBy { it.title }
+                            .reversed()
+                    )
+                }
                 true
             }
             else -> false
