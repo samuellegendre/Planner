@@ -82,7 +82,7 @@ class ModifyTaskDialogFragment(private val task: Task) : DialogFragment(),
             }
 
             builder.setView(view)
-                .setTitle(R.string.add_task)
+                .setTitle(R.string.modify_task)
                 .setPositiveButton(
                     R.string.save
                 ) { _, _ ->

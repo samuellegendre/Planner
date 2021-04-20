@@ -110,7 +110,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
             }
 
             builder.setView(view)
-                .setTitle(R.string.addClass)
+                .setTitle(R.string.add_class)
                 .setPositiveButton(
                     R.string.add
                 ) { _, _ ->

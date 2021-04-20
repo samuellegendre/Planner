@@ -114,7 +114,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dialog_top_bottom_margins"
             android:hint="@string/description"
-            android:inputType="textAutoComplete|textCapSentences" />
+            android:inputType="textAutoComplete|textCapSentences|textMultiLine"
+            android:lines="3"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 

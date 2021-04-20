@@ -100,7 +100,7 @@ class ModifyClassDialogFragment(private val event: Event) : DialogFragment(),
             }
 
             builder.setView(view)
-                .setTitle(R.string.addClass)
+                .setTitle(R.string.modify_class)
                 .setPositiveButton(
                     R.string.save
                 ) { _, _ ->
