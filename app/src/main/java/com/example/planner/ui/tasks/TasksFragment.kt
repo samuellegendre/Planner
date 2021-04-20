@@ -29,7 +29,8 @@ import java.util.*
 
 class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     ModifyTaskDialogFragment.ModifyTaskDialogListener, ItemTouchCallback,
-    SimpleSwipeCallback.ItemSwipeCallback, ConfirmDeletionDialogFragment.ConfirmDeletionDialogListener {
+    SimpleSwipeCallback.ItemSwipeCallback,
+    ConfirmDeletionDialogFragment.ConfirmDeletionDialogListener {
 
     private lateinit var fastAdapter: FastAdapter<TaskItem>
     private lateinit var itemAdapter: ItemAdapter<TaskItem>
@@ -171,14 +172,22 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                 inAscendingDateOrder = !inAscendingDateOrder
                 if (inAscendingDateOrder) {
                     tasks.sortTasks(
-                        compareBy<Task> { it.isChecked }.thenBy { it.calendar },
-                        compareBy<TaskItem> { it.isChecked }.thenBy { it.dateTime })
+                        compareBy<Task> { it.isChecked }
+                            .thenBy { it.calendar }
+                            .thenBy { it.title },
+                        compareBy<TaskItem> { it.isChecked }
+                            .thenBy { it.dateTime }
+                            .thenBy { it.title }
+                    )
                 } else {
                     tasks.sortTasks(
-                        compareBy<Task> { it.isChecked }.reversed().thenBy { it.calendar }
-                            .reversed(),
-                        compareBy<TaskItem> { it.isChecked }.reversed().thenBy { it.dateTime }
-                            .reversed()
+                        compareBy<Task> { it.isChecked }
+                            .thenBy { it.calendar }.reversed()
+                            .thenBy { it.title }.reversed(),
+                        compareBy<TaskItem> { it.isChecked }
+                            .thenBy { it.dateTime }.reversed()
+                            .thenBy { it.title }.reversed()
+
                     )
                 }
                 true
