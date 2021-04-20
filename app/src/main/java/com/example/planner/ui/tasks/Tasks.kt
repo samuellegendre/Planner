@@ -2,7 +2,8 @@ package com.example.planner.ui.tasks
 
 import android.content.Context
 import com.example.planner.utils.CalendarSerializer
-import com.mikepenz.fastadapter.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.utils.DragDropUtil
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -23,7 +24,11 @@ data class Task(
     var isChecked: Boolean = false
 )
 
-class Tasks(private val context: Context, private val fastItemAdapter: FastItemAdapter<TaskItem>) {
+class Tasks(
+    private val context: Context,
+    private val fastAdapter: FastAdapter<TaskItem>,
+    private val itemAdapter: ItemAdapter<TaskItem>
+) {
     private val fileName = "task_data"
     private val format = Json { prettyPrint = true }
 
@@ -58,14 +63,14 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
         val item = taskToItem(task)
         tasks.add(0, task)
         items.add(0, item)
-        fastItemAdapter.add(0, item)
+        itemAdapter.add(0, item)
         save()
     }
 
     fun updateTask(task: Task) {
         val item = taskToItem(task)
         val position = tasks.indexOf(tasks.first { it.id == task.id })
-        val taskItem = fastItemAdapter.getAdapterItem(position)
+        val taskItem = itemAdapter.getAdapterItem(position)
         tasks[position] = task
         items[position] = item
         taskItem.title = item.title
@@ -74,7 +79,7 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
         taskItem.hasDate = item.hasDate
         taskItem.hasTime = item.hasTime
         taskItem.isChecked = item.isChecked
-        fastItemAdapter.notifyItemChanged(position)
+        fastAdapter.notifyItemChanged(position)
         save()
     }
 
@@ -83,18 +88,18 @@ class Tasks(private val context: Context, private val fastItemAdapter: FastItemA
             val position = tasks.indexOf(it)
             tasks.removeAt(position)
             items.removeAt(position)
-            fastItemAdapter.itemFilter.remove(position)
+            itemAdapter.itemFilter.remove(position)
         }
         save()
     }
 
     fun moveTask(oldPosition: Int, newPosition: Int) {
-        DragDropUtil.onMove(fastItemAdapter.itemAdapter, oldPosition, newPosition)
-        items = fastItemAdapter.adapterItems.toMutableList()
-        tasks.clear()
-        items.forEach {
-            tasks.add(itemToTask(it))
-        }
+        val task = tasks[oldPosition]
+        DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
+        tasks.removeAt(oldPosition)
+        tasks.add(newPosition, task)
+        items.removeAt(oldPosition)
+        items.add(newPosition, taskToItem(task))
         save()
     }
 

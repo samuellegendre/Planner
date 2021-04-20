@@ -19,7 +19,7 @@ import com.example.planner.SearchableActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
-import com.mikepenz.fastadapter.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.listeners.ClickEventHook
@@ -31,17 +31,20 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     ModifyTaskDialogFragment.ModifyTaskDialogListener, ItemTouchCallback,
     SimpleSwipeCallback.ItemSwipeCallback {
 
-    private lateinit var fastItemAdapter: FastItemAdapter<TaskItem>
+    private lateinit var fastAdapter: FastAdapter<TaskItem>
+    private lateinit var itemAdapter: ItemAdapter<TaskItem>
     private lateinit var tasks: Tasks
 
     private lateinit var touchCallback: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
 
+    private var hideTask = false
+
     private val deleteHandler = Handler {
         val item = it.obj as TaskItem
 
         item.swipedAction = null
-        val position = fastItemAdapter.getAdapterPosition(item)
+        val position = itemAdapter.getAdapterPosition(item)
         if (position != RecyclerView.NO_POSITION) {
             val list = mutableListOf<Task>()
             list.add(tasks.itemToTask(item))
@@ -60,16 +63,17 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
 
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
 
-        fastItemAdapter = FastItemAdapter()
+        itemAdapter = ItemAdapter()
+        fastAdapter = FastAdapter.with(itemAdapter)
 
-        fastItemAdapter.onClickListener =
+        fastAdapter.onClickListener =
             { _: View?, _: IAdapter<TaskItem>, item: TaskItem, _: Int ->
                 val dialog = ModifyTaskDialogFragment(tasks.itemToTask(item))
                 dialog.show(childFragmentManager, "modifyTask")
                 false
             }
 
-        fastItemAdapter.addEventHook(object : ClickEventHook<TaskItem>() {
+        fastAdapter.addEventHook(object : ClickEventHook<TaskItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return if (viewHolder is TaskItem.ViewHolder) {
                     viewHolder.checkBox
@@ -86,23 +90,25 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             ) {
                 item.isChecked = !item.isChecked!!
                 tasks.updateTask(tasks.itemToTask(item))
+                if (hideTask) toggleHiddenTasks(!hideTask)
                 if (item.isChecked!!) {
                     tasks.moveTask(position, tasks.items.lastIndex)
                 } else {
                     tasks.moveTask(position, 0)
                 }
+                if (hideTask) toggleHiddenTasks(hideTask)
             }
 
         })
 
-        tasks = Tasks(requireContext(), fastItemAdapter)
+        tasks = Tasks(requireContext(), fastAdapter, itemAdapter)
         val recyclerView: RecyclerView = view.findViewById(R.id.taskRecyclerView)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.adapter = fastItemAdapter
+        recyclerView.adapter = fastAdapter
 
-        fastItemAdapter.add(tasks.fetchItems())
+        itemAdapter.add(tasks.fetchItems())
 
         val leaveBehindDrawableLeft =
             ResourcesCompat.getDrawable(requireContext().resources, R.drawable.ic_delete, null)
@@ -121,7 +127,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         touchHelper = ItemTouchHelper(touchCallback)
         touchHelper.attachToRecyclerView(recyclerView)
 
-        fastItemAdapter.withSavedInstanceState(savedInstanceState)
+        fastAdapter.withSavedInstanceState(savedInstanceState)
 
         val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
 
@@ -150,12 +156,17 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             }
             R.id.hideTasks -> {
                 item.isChecked = !item.isChecked
+                hideTask = item.isChecked
+                toggleHiddenTasks(hideTask)
                 true
             }
             R.id.deleteCheckedTasks -> {
                 val checkedTasks = mutableListOf<Task>()
                 tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
+
+                if (hideTask) toggleHiddenTasks(!hideTask)
                 tasks.removeTasks(checkedTasks)
+                if (hideTask) toggleHiddenTasks(hideTask)
                 true
             }
             else -> false
@@ -183,7 +194,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     }
 
     override fun itemSwiped(position: Int, direction: Int) {
-        val item = fastItemAdapter.getItem(position) ?: return
+        val item = fastAdapter.getItem(position) ?: return
         item.swipedDirection = direction
 
         val message = Random().nextInt()
@@ -196,11 +207,20 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             deleteHandler.removeMessages(message)
 
             item.swipedDirection = 0
-            val position = fastItemAdapter.getAdapterPosition(item)
+            val position = itemAdapter.getAdapterPosition(item)
             if (position != RecyclerView.NO_POSITION) {
-                fastItemAdapter.notifyItemChanged(position)
+                fastAdapter.notifyItemChanged(position)
             }
         }
-        fastItemAdapter.notifyItemChanged(position)
+        fastAdapter.notifyItemChanged(position)
+    }
+
+    private fun toggleHiddenTasks(isChecked: Boolean) {
+        if (isChecked) {
+            itemAdapter.setNewList(tasks.items.filter { it.isChecked == false })
+        } else {
+            itemAdapter.setNewList(tasks.items)
+        }
+        fastAdapter.notifyDataSetChanged()
     }
 }
