@@ -46,4 +46,5 @@
     <string name="deleted">Supprimée</string>
     <string name="save">Sauvegarder</string>
     <string name="delete_checked_task">Supprimer les tâches finies</string>
+    <string name="confirm_deletion">Supprimer les tâches finies ?</string>
 </resources>

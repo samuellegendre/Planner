@@ -29,7 +29,7 @@ import java.util.*
 
 class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     ModifyTaskDialogFragment.ModifyTaskDialogListener, ItemTouchCallback,
-    SimpleSwipeCallback.ItemSwipeCallback {
+    SimpleSwipeCallback.ItemSwipeCallback, ConfirmDeletionDialogFragment.ConfirmDeletionDialogListener {
 
     private lateinit var fastAdapter: FastAdapter<TaskItem>
     private lateinit var itemAdapter: ItemAdapter<TaskItem>
@@ -163,12 +163,8 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                 true
             }
             R.id.deleteCheckedTasks -> {
-                val checkedTasks = mutableListOf<Task>()
-                tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
-
-                if (hideTask) toggleHiddenTasks(!hideTask)
-                tasks.removeTasks(checkedTasks)
-                if (hideTask) toggleHiddenTasks(hideTask)
+                val dialog = ConfirmDeletionDialogFragment()
+                dialog.show(childFragmentManager, "confirmDeletion")
                 true
             }
             R.id.actionSortByDueDate -> {
@@ -255,5 +251,14 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             itemAdapter.setNewList(tasks.items)
         }
         fastAdapter.notifyDataSetChanged()
+    }
+
+    override fun confirmDeletionDialogPositiveClick(dialog: DialogFragment) {
+        val checkedTasks = mutableListOf<Task>()
+        tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
+
+        if (hideTask) toggleHiddenTasks(!hideTask)
+        tasks.removeTasks(checkedTasks)
+        if (hideTask) toggleHiddenTasks(hideTask)
     }
 }
