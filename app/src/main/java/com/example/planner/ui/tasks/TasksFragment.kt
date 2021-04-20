@@ -39,7 +39,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
     private lateinit var touchCallback: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
 
-    private var hideTask = false
+    private var showDoneTasks = true
     private var inAscendingAlphabeticalOrder = false
     private var inAscendingDateOrder = false
 
@@ -93,13 +93,13 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             ) {
                 item.isChecked = !item.isChecked!!
                 tasks.updateTask(tasks.itemToTask(item))
-                if (hideTask) toggleHiddenTasks(!hideTask)
+                if (!showDoneTasks) toggleShowDoneTasks(!showDoneTasks)
                 if (item.isChecked!!) {
                     tasks.moveTask(position, tasks.items.lastIndex)
                 } else {
                     tasks.moveTask(position, 0)
                 }
-                if (hideTask) toggleHiddenTasks(hideTask)
+                if (!showDoneTasks) toggleShowDoneTasks(showDoneTasks)
             }
 
         })
@@ -159,8 +159,8 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             }
             R.id.hideTasks -> {
                 item.isChecked = !item.isChecked
-                hideTask = item.isChecked
-                toggleHiddenTasks(hideTask)
+                showDoneTasks = item.isChecked
+                toggleShowDoneTasks(showDoneTasks)
                 true
             }
             R.id.deleteCheckedTasks -> {
@@ -181,11 +181,11 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                     )
                 } else {
                     tasks.sortTasks(
-                        compareBy<Task> { it.isChecked }
-                            .thenBy { it.calendar }.reversed()
+                        compareBy<Task> { it.isChecked }.reversed()
+                            .thenBy { it.calendar }
                             .thenBy { it.title }.reversed(),
-                        compareBy<TaskItem> { it.isChecked }
-                            .thenBy { it.dateTime }.reversed()
+                        compareBy<TaskItem> { it.isChecked }.reversed()
+                            .thenBy { it.dateTime }
                             .thenBy { it.title }.reversed()
 
                     )
@@ -253,11 +253,11 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         fastAdapter.notifyItemChanged(position)
     }
 
-    private fun toggleHiddenTasks(isChecked: Boolean) {
+    private fun toggleShowDoneTasks(isChecked: Boolean) {
         if (isChecked) {
-            itemAdapter.setNewList(tasks.items.filter { it.isChecked == false })
-        } else {
             itemAdapter.setNewList(tasks.items)
+        } else {
+            itemAdapter.setNewList(tasks.items.filter { it.isChecked == false })
         }
         fastAdapter.notifyDataSetChanged()
     }
@@ -266,8 +266,8 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         val checkedTasks = mutableListOf<Task>()
         tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
 
-        if (hideTask) toggleHiddenTasks(!hideTask)
+        if (!showDoneTasks) toggleShowDoneTasks(!showDoneTasks)
         tasks.removeTasks(checkedTasks)
-        if (hideTask) toggleHiddenTasks(hideTask)
+        if (!showDoneTasks) toggleShowDoneTasks(showDoneTasks)
     }
 }
