@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
@@ -19,6 +20,7 @@ import java.util.*
 class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener,
     TimePickerFragment.TimePickerListener {
     private lateinit var listener: AddTaskDialogListener
+    private lateinit var dialog: AlertDialog
     private var calendar: Calendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -49,6 +51,8 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
             val dateButton: Button = view.findViewById(R.id.dateButton)
             val timeSwitch: SwitchCompat = view.findViewById(R.id.addTimeSwitch)
             val timeButton: Button = view.findViewById(R.id.timeButton)
+
+            taskTitle.requestFocus()
 
             dateSwitch.setOnCheckedChangeListener { _, isChecked ->
                 dateButton.isEnabled = isChecked
@@ -95,7 +99,9 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
                 ) { _, _ ->
                     this.dismiss()
                 }
-            builder.create()
+            dialog = builder.create()
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            dialog
         } ?: throw IllegalStateException()
     }
 

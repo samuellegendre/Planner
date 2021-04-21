@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
@@ -58,6 +59,8 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
             endTimeButton = view.findViewById(R.id.endTimeButton)
             val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
+
+            className.requestFocus()
 
             allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
@@ -138,6 +141,7 @@ class AddClassDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLi
                     dialog.dismiss()
                 }
             dialog = builder.create()
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
             dialog
         } ?: throw IllegalStateException()
     }
