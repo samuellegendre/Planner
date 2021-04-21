@@ -157,7 +157,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                 tasks.save()
                 true
             }
-            R.id.hideTasks -> {
+            R.id.showDoneTasks -> {
                 item.isChecked = !item.isChecked
                 showDoneTasks = item.isChecked
                 toggleShowDoneTasks(showDoneTasks)
@@ -211,6 +211,15 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         }
     }
 
+    private fun toggleShowDoneTasks(isChecked: Boolean) {
+        if (isChecked) {
+            itemAdapter.setNewList(tasks.items)
+        } else {
+            itemAdapter.setNewList(tasks.items.filter { it.isChecked == false })
+        }
+        fastAdapter.notifyDataSetChanged()
+    }
+
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
         task.id = tasks.getLastId() + 1
         tasks.addTask(task)
@@ -224,6 +233,15 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         val list = mutableListOf<Task>()
         list.add(task)
         tasks.removeTasks(list)
+    }
+
+    override fun confirmDeletionDialogPositiveClick(dialog: DialogFragment) {
+        val checkedTasks = mutableListOf<Task>()
+        tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
+
+        if (!showDoneTasks) toggleShowDoneTasks(!showDoneTasks)
+        tasks.removeTasks(checkedTasks)
+        if (!showDoneTasks) toggleShowDoneTasks(showDoneTasks)
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
@@ -251,23 +269,5 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
             }
         }
         fastAdapter.notifyItemChanged(position)
-    }
-
-    private fun toggleShowDoneTasks(isChecked: Boolean) {
-        if (isChecked) {
-            itemAdapter.setNewList(tasks.items)
-        } else {
-            itemAdapter.setNewList(tasks.items.filter { it.isChecked == false })
-        }
-        fastAdapter.notifyDataSetChanged()
-    }
-
-    override fun confirmDeletionDialogPositiveClick(dialog: DialogFragment) {
-        val checkedTasks = mutableListOf<Task>()
-        tasks.tasks.forEach { if (it.isChecked) checkedTasks.add(it) }
-
-        if (!showDoneTasks) toggleShowDoneTasks(!showDoneTasks)
-        tasks.removeTasks(checkedTasks)
-        if (!showDoneTasks) toggleShowDoneTasks(showDoneTasks)
     }
 }
