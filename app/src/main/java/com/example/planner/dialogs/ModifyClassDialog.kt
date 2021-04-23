@@ -78,6 +78,9 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             endDateButton.text = dateFormat.format(endCalendar.time)
             endTimeButton.text = timeFormat.format(endCalendar.time)
 
+            defaultButtonColors = startDateButton.textColors
+
+
             classLocation.setText(event.subtitle)
 
             spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
@@ -113,7 +116,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
                     }
                     listener.onModifyClassDialogPositiveClick(
                         this, Event(
-                            0,
+                            event.id,
                             if (className.text.toString()
                                     .isBlank()
                             ) "Sans titre" else className.text.toString(),
@@ -175,7 +178,6 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
 
     private fun calendarValidation() {
         validated = if (endCalendar < startCalendar) {
-            defaultButtonColors = startDateButton.textColors
             startDateButton.setTextColor(Color.RED)
             startTimeButton.setTextColor(Color.RED)
             false

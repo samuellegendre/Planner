@@ -92,6 +92,8 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             endDateButton.text = dateFormat.format(endCalendar.time)
             endTimeButton.text = timeFormat.format(endCalendar.time)
 
+            defaultButtonColors = startDateButton.textColors
+
             spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
 
             startDateButton.setOnClickListener {
@@ -183,7 +185,6 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
     private fun calendarValidation() {
         validated = if (endCalendar < startCalendar) {
-            defaultButtonColors = startDateButton.textColors
             startDateButton.setTextColor(Color.RED)
             startTimeButton.setTextColor(Color.RED)
             false

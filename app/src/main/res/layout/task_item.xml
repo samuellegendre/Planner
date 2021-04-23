@@ -77,7 +77,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/taskTimeChip"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:clickable="false" />
 
         </LinearLayout>
 
