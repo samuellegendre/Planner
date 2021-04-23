@@ -1,6 +1,5 @@
-package com.example.planner.ui.tasks
+package com.example.planner.fragments
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +12,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planner.NotificationsActivity
 import com.example.planner.R
-import com.example.planner.SearchableActivity
+import com.example.planner.dialogs.AddTaskDialog
+import com.example.planner.dialogs.ConfirmDeletionDialog
+import com.example.planner.dialogs.ModifyTaskDialog
+import com.example.planner.models.TaskItem
+import com.example.planner.utils.Task
+import com.example.planner.utils.Tasks
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
@@ -27,10 +30,10 @@ import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
 import com.mikepenz.fastadapter.swipe_drag.SimpleSwipeDragCallback
 import java.util.*
 
-class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
-    ModifyTaskDialogFragment.ModifyTaskDialogListener, ItemTouchCallback,
+class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
+    ModifyTaskDialog.ModifyTaskDialogListener, ItemTouchCallback,
     SimpleSwipeCallback.ItemSwipeCallback,
-    ConfirmDeletionDialogFragment.ConfirmDeletionDialogListener {
+    ConfirmDeletionDialog.ConfirmDeletionDialogListener {
 
     private lateinit var fastAdapter: FastAdapter<TaskItem>
     private lateinit var itemAdapter: ItemAdapter<TaskItem>
@@ -71,7 +74,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
 
         fastAdapter.onClickListener =
             { _: View?, _: IAdapter<TaskItem>, item: TaskItem, _: Int ->
-                val dialog = ModifyTaskDialogFragment(tasks.itemToTask(item))
+                val dialog = ModifyTaskDialog(tasks.itemToTask(item))
                 dialog.show(childFragmentManager, "modifyTask")
                 false
             }
@@ -135,7 +138,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
         val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
 
         addTaskButton.setOnClickListener {
-            val dialog = AddTaskDialogFragment()
+            val dialog = AddTaskDialog()
             dialog.show(childFragmentManager, "addTask")
         }
 
@@ -148,15 +151,6 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.search -> {
-                startActivity(Intent(requireContext(), SearchableActivity::class.java))
-                true
-            }
-            R.id.notifications -> {
-                startActivity(Intent(requireContext(), NotificationsActivity::class.java))
-                tasks.save()
-                true
-            }
             R.id.showDoneTasks -> {
                 item.isChecked = !item.isChecked
                 showDoneTasks = item.isChecked
@@ -164,7 +158,7 @@ class TasksFragment : Fragment(), AddTaskDialogFragment.AddTaskDialogListener,
                 true
             }
             R.id.deleteCheckedTasks -> {
-                val dialog = ConfirmDeletionDialogFragment()
+                val dialog = ConfirmDeletionDialog()
                 dialog.show(childFragmentManager, "confirmDeletion")
                 true
             }

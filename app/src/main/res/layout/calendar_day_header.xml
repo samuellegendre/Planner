@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/calendarDayHeader"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="start"
-    android:padding="@dimen/activity_margin"
-    android:textSize="26sp"
-    android:text="Janvier 2021" />

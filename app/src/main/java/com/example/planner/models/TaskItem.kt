@@ -1,4 +1,4 @@
-package com.example.planner.ui.tasks
+package com.example.planner.models
 
 import android.graphics.Color
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG

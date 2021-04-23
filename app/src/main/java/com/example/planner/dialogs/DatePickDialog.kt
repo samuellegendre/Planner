@@ -1,4 +1,4 @@
-package com.example.planner.ui.dialogs
+package com.example.planner.dialogs
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -10,7 +10,7 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-class DatePickerFragment(private val button: Button, private val calendar: Calendar) :
+class DatePickDialog(private val button: Button, private val calendar: Calendar) :
     DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var listener: DatePickerListener

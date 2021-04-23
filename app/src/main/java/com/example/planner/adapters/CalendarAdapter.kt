@@ -1,8 +1,10 @@
-package com.example.planner.ui.calendar
+package com.example.planner.adapters
 
 import androidx.core.content.ContextCompat
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
+import com.example.planner.dialogs.ModifyClassDialog
+import com.example.planner.fragments.CalendarFragment
 import com.example.planner.utils.CalendarSerializer
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -41,24 +43,7 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
     }
 
     override fun onEventClick(data: Event) {
-        val dialog = ModifyClassDialogFragment(data)
+        val dialog = ModifyClassDialog(data)
         dialog.show(calendarFragment.childFragmentManager, "test")
     }
-
-    override fun onEventLongClick(data: Event) {
-        // TODO
-    }
-
-    override fun onEmptyViewClick(time: Calendar) {
-        // TODO
-    }
-
-    override fun onEmptyViewLongClick(time: Calendar) {
-        // TODO
-    }
-
-    override fun onRangeChanged(firstVisibleDate: Calendar, lastVisibleDate: Calendar) {
-        // TODO
-    }
-
 }

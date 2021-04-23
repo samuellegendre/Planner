@@ -1,4 +1,4 @@
-package com.example.planner.ui.calendar
+package com.example.planner.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,38 +10,38 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
-import com.example.planner.ui.dialogs.DatePickerFragment
-import com.example.planner.ui.dialogs.TimePickerFragment
+import com.example.planner.adapters.Event
+import com.example.planner.adapters.TeachingMethod
+import com.example.planner.adapters.TeachingMethodArrayAdapter
+import com.example.planner.adapters.TeachingMethods
 import com.google.android.material.switchmaterial.SwitchMaterial
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ModifyClassDialogFragment(private val event: Event) : DialogFragment(),
-    DatePickerFragment.DatePickerListener,
-    TimePickerFragment.TimePickerListener {
+class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
+    TimePickDialog.TimePickerListener {
 
-    private lateinit var listener: ModifyClassDialogListener
+    private lateinit var listener: AddClassDialogListener
     private lateinit var dialog: AlertDialog
     private lateinit var startDateButton: Button
     private lateinit var startTimeButton: Button
     private lateinit var endDateButton: Button
     private lateinit var endTimeButton: Button
-    private var startCalendar = event.startTime
-    private var endCalendar = event.endTime
+    private var startCalendar = Calendar.getInstance()
+    private var endCalendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private var validated = true
-    lateinit var defaultButtonColors: ColorStateList
+    private lateinit var defaultButtonColors: ColorStateList
 
-    interface ModifyClassDialogListener {
-        fun onModifyClassDialogPositiveClick(dialog: DialogFragment, event: Event)
-        fun onModifyClassDialogNegativeClick(dialog: DialogFragment, event: Event)
+    interface AddClassDialogListener {
+        fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = parentFragment as ModifyClassDialogListener
+            listener = parentFragment as AddClassDialogListener
         } catch (e: ClassCastException) {
             throw ClassCastException(("$context must implement NoticeDialogListener"))
         }
@@ -62,54 +62,67 @@ class ModifyClassDialogFragment(private val event: Event) : DialogFragment(),
             val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
 
-            className.setText(event.title)
             className.requestFocus()
 
-            allDaySwitch.isChecked = event.isAllDay
-            disableButtons(allDaySwitch.isChecked)
             allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
-                disableButtons(isChecked)
+                if (isChecked) {
+                    startTimeButton.isEnabled = false
+                    endTimeButton.isEnabled = false
+                } else {
+                    startTimeButton.isEnabled = true
+                    endTimeButton.isEnabled = true
+                }
             }
+
+            when (startCalendar.get(Calendar.MINUTE)) {
+                0 -> startCalendar.set(Calendar.MINUTE, 0)
+                in 1..15 -> startCalendar.set(Calendar.MINUTE, 15)
+                in 16..30 -> startCalendar.set(Calendar.MINUTE, 30)
+                in 31..45 -> startCalendar.set(Calendar.MINUTE, 45)
+                in 46..59 -> {
+                    startCalendar.set(Calendar.MINUTE, 0)
+                    startCalendar.set(Calendar.HOUR, startCalendar.get(Calendar.HOUR) + 1)
+                }
+            }
+            endCalendar.time = startCalendar.time
+            endCalendar.set(Calendar.HOUR, startCalendar.get(Calendar.HOUR) + 1)
 
             startDateButton.text = dateFormat.format(startCalendar.time)
             startTimeButton.text = timeFormat.format(startCalendar.time)
             endDateButton.text = dateFormat.format(endCalendar.time)
             endTimeButton.text = timeFormat.format(endCalendar.time)
 
-            classLocation.setText(event.subtitle)
-
             spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
-            spinner.setSelection(event.spinnerIndex)
 
             startDateButton.setOnClickListener {
-                val datePickerFragment = DatePickerFragment(startDateButton, startCalendar)
+                val datePickerFragment = DatePickDialog(startDateButton, startCalendar)
                 datePickerFragment.show(childFragmentManager, "startDatePicker")
             }
 
             startTimeButton.setOnClickListener {
-                val timePickerFragment = TimePickerFragment(startTimeButton, startCalendar)
+                val timePickerFragment = TimePickDialog(startTimeButton, startCalendar)
                 timePickerFragment.show(childFragmentManager, "startTimePicker")
             }
 
             endDateButton.setOnClickListener {
-                val datePickerFragment = DatePickerFragment(endDateButton, endCalendar)
+                val datePickerFragment = DatePickDialog(endDateButton, endCalendar)
                 datePickerFragment.show(childFragmentManager, "endDatePicker")
             }
 
             endTimeButton.setOnClickListener {
-                val timePickerFragment = TimePickerFragment(endTimeButton, endCalendar)
+                val timePickerFragment = TimePickDialog(endTimeButton, endCalendar)
                 timePickerFragment.show(childFragmentManager, "endTimePicker")
             }
 
             builder.setView(view)
-                .setTitle(R.string.modify_class)
+                .setTitle(R.string.add_class)
                 .setPositiveButton(
-                    R.string.save
+                    R.string.add
                 ) { _, _ ->
                     if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
                         endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
                     }
-                    listener.onModifyClassDialogPositiveClick(
+                    listener.onAddClassDialogPositiveClick(
                         this, Event(
                             0,
                             if (className.text.toString()
@@ -124,13 +137,10 @@ class ModifyClassDialogFragment(private val event: Event) : DialogFragment(),
                         )
                     )
                 }
-                .setNeutralButton(R.string.cancel) { _, _ ->
-                    dialog.dismiss()
-                }
                 .setNegativeButton(
-                    R.string.delete
+                    R.string.cancel
                 ) { _, _ ->
-                    listener.onModifyClassDialogNegativeClick(this, event)
+                    dialog.dismiss()
                 }
             dialog = builder.create()
             dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
@@ -184,15 +194,5 @@ class ModifyClassDialogFragment(private val event: Event) : DialogFragment(),
         }
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
-    }
-
-    private fun disableButtons(isChecked: Boolean) {
-        if (isChecked) {
-            startTimeButton.isEnabled = false
-            endTimeButton.isEnabled = false
-        } else {
-            startTimeButton.isEnabled = true
-            endTimeButton.isEnabled = true
-        }
     }
 }

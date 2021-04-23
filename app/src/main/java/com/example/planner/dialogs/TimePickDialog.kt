@@ -1,4 +1,4 @@
-package com.example.planner.ui.dialogs
+package com.example.planner.dialogs
 
 import android.app.Dialog
 import android.app.TimePickerDialog
@@ -11,12 +11,19 @@ import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-class TimePickerFragment(private val button: Button, private val calendar: Calendar) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickDialog(private val button: Button, private val calendar: Calendar) : DialogFragment(),
+    TimePickerDialog.OnTimeSetListener {
 
     private lateinit var listener: TimePickerListener
 
     interface TimePickerListener {
-        fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int, button: Button, calendar: Calendar)
+        fun onTimeSet(
+            view: TimePicker?,
+            hourOfDay: Int,
+            minute: Int,
+            button: Button,
+            calendar: Calendar
+        )
     }
 
     override fun onAttach(context: Context) {

@@ -1,6 +1,5 @@
-package com.example.planner.ui.calendar
+package com.example.planner.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -8,15 +7,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.alamkanak.weekview.WeekView
 import com.example.planner.R
-import com.example.planner.SearchableActivity
+import com.example.planner.adapters.CalendarSimpleAdapter
+import com.example.planner.adapters.Event
+import com.example.planner.dialogs.AddClassDialog
+import com.example.planner.dialogs.ModifyClassDialog
+import com.example.planner.models.CalendarViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment : Fragment(),
-    AddClassDialogFragment.AddClassDialogListener,
-    ModifyClassDialogFragment.ModifyClassDialogListener {
+    AddClassDialog.AddClassDialogListener,
+    ModifyClassDialog.ModifyClassDialogListener {
 
     private val viewModel by viewModels<CalendarViewModel>()
 
@@ -57,7 +60,7 @@ class CalendarFragment : Fragment(),
         }
 
         addClassButton.setOnClickListener {
-            val dialog = AddClassDialogFragment()
+            val dialog = AddClassDialog()
             dialog.show(childFragmentManager, "addClass")
         }
 
@@ -70,10 +73,6 @@ class CalendarFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.search -> {
-                startActivity(Intent(requireContext(), SearchableActivity::class.java))
-                true
-            }
             R.id.today -> {
                 weekView.scrollToDateTime(Calendar.getInstance())
                 true

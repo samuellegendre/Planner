@@ -1,7 +1,7 @@
-package com.example.planner.ui.tasks
+package com.example.planner.utils
 
 import android.content.Context
-import com.example.planner.utils.CalendarSerializer
+import com.example.planner.models.TaskItem
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.utils.DragDropUtil
@@ -64,7 +64,7 @@ class Tasks(
         tasks.add(0, task)
         items.add(0, item)
         itemAdapter.add(0, item)
-        save()
+        saveTasks()
     }
 
     fun updateTask(task: Task) {
@@ -80,7 +80,7 @@ class Tasks(
         taskItem.hasTime = item.hasTime
         taskItem.isChecked = item.isChecked
         fastAdapter.notifyItemChanged(position)
-        save()
+        saveTasks()
     }
 
     fun removeTasks(list: List<Task>) {
@@ -90,7 +90,7 @@ class Tasks(
             items.removeAt(position)
             itemAdapter.itemFilter.remove(position)
         }
-        save()
+        saveTasks()
     }
 
     fun moveTask(oldPosition: Int, newPosition: Int) {
@@ -100,7 +100,7 @@ class Tasks(
         tasks.add(newPosition, task)
         items.removeAt(oldPosition)
         items.add(newPosition, taskToItem(task))
-        save()
+        saveTasks()
     }
 
     fun sortTasks(taskComparator: Comparator<Task>, itemComparator: Comparator<TaskItem>) {
@@ -108,14 +108,14 @@ class Tasks(
         items.sortWith(itemComparator)
         itemAdapter.adapterItems.sortWith(itemComparator)
         fastAdapter.notifyDataSetChanged()
-        save()
+        saveTasks()
     }
 
     fun getLastId(): Long {
         return if (tasks.isEmpty()) 0 else tasks.maxOf { it.id }
     }
 
-    fun save() {
+    private fun saveTasks() {
         val fileContents = format.encodeToString(tasks)
         context.openFileOutput(fileName, Context.MODE_PRIVATE).use {
             it.write(fileContents.toByteArray())

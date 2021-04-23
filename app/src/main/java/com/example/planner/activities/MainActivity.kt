@@ -1,4 +1,4 @@
-package com.example.planner
+package com.example.planner.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.planner.R
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -32,16 +33,11 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_calendar,
-                R.id.nav_monthly_calendar,
                 R.id.nav_tasks,
-                R.id.nav_study,
-                R.id.nav_settings
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        navView.menu.findItem(R.id.nav_study).isVisible = false
-        navView.menu.findItem(R.id.nav_settings).isVisible = false
     }
 
     override fun onSupportNavigateUp(): Boolean {

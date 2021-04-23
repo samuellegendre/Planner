@@ -1,4 +1,4 @@
-package com.example.planner.ui.calendar
+package com.example.planner.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

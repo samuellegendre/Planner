@@ -7,31 +7,13 @@
 
     <fragment
         android:id="@+id/nav_calendar"
-        android:name="com.example.planner.ui.calendar.CalendarFragment"
+        android:name="com.example.planner.fragments.CalendarFragment"
         android:label="@string/calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
-        android:id="@+id/nav_monthly_calendar"
-        android:name="com.example.planner.ui.monthlyCalendar.MonthlyCalendarFragment"
-        android:label="@string/month"
-        tools:layout="@layout/fragment_monthly_calendar" />
-
-    <fragment
         android:id="@+id/nav_tasks"
-        android:name="com.example.planner.ui.tasks.TasksFragment"
+        android:name="com.example.planner.fragments.TasksFragment"
         android:label="@string/tasks"
         tools:layout="@layout/fragment_tasks" />
-
-    <fragment
-        android:id="@+id/nav_study"
-        android:name="com.example.planner.ui.study.StudyFragment"
-        android:label="@string/study_mode"
-        tools:layout="@layout/fragment_study" />
-
-    <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.example.planner.ui.settings.SettingsFragment"
-        android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
 </navigation>

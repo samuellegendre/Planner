@@ -1,4 +1,4 @@
-package com.example.planner.ui.tasks
+package com.example.planner.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 
-class ConfirmDeletionDialogFragment : DialogFragment() {
+class ConfirmDeletionDialog : DialogFragment() {
     private lateinit var listener: ConfirmDeletionDialogListener
 
     interface ConfirmDeletionDialogListener {

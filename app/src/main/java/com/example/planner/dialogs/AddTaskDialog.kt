@@ -1,4 +1,4 @@
-package com.example.planner.ui.tasks
+package com.example.planner.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -12,13 +12,12 @@ import android.widget.TimePicker
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
-import com.example.planner.ui.dialogs.DatePickerFragment
-import com.example.planner.ui.dialogs.TimePickerFragment
+import com.example.planner.utils.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerListener,
-    TimePickerFragment.TimePickerListener {
+class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
+    TimePickDialog.TimePickerListener {
     private lateinit var listener: AddTaskDialogListener
     private lateinit var dialog: AlertDialog
     private var calendar: Calendar = Calendar.getInstance()
@@ -68,11 +67,11 @@ class AddTaskDialogFragment : DialogFragment(), DatePickerFragment.DatePickerLis
             timeButton.text = timeFormat.format(calendar.time)
 
             dateButton.setOnClickListener {
-                DatePickerFragment(dateButton, calendar).show(childFragmentManager, "datePicker")
+                DatePickDialog(dateButton, calendar).show(childFragmentManager, "datePicker")
             }
 
             timeButton.setOnClickListener {
-                TimePickerFragment(timeButton, calendar).show(childFragmentManager, "timePicker")
+                TimePickDialog(timeButton, calendar).show(childFragmentManager, "timePicker")
             }
 
             builder.setView(view)

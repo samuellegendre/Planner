@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search"
-        android:title="@string/search"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/today"
         android:icon="@drawable/ic_today"
         android:title="@string/today"
@@ -26,7 +20,4 @@
             android:id="@+id/viewByWeek"
             android:title="@string/week" />
     </group>
-
-    <item android:title="@string/see_PDF" />
-
 </menu>

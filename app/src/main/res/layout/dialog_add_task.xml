@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+            android:contentDescription="@string/title"
             android:src="@drawable/ic_title" />
 
         <EditText
@@ -22,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dialog_top_bottom_margins"
-            android:hint="@string/name"
+            android:autofillHints="@string/title"
+            android:hint="@string/title"
             android:inputType="textAutoCorrect|textCapSentences" />
 
     </LinearLayout>
@@ -37,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+            android:contentDescription="@string/add_date"
             android:src="@drawable/ic_time" />
 
         <TextView
@@ -106,13 +109,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
-            android:src="@drawable/id_description" />
+            android:contentDescription="@string/description"
+            android:src="@drawable/ic_description" />
 
         <EditText
             android:id="@+id/taskDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+            android:autofillHints="text"
             android:hint="@string/description"
             android:inputType="textAutoComplete|textCapSentences|textMultiLine"
             android:lines="3"
