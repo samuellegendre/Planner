@@ -19,10 +19,10 @@
         app:eventPaddingHorizontal="4dp"
         app:eventPaddingVertical="5dp"
         app:eventTextSize="13sp"
-        app:headerBackgroundColor="@color/purple_500"
+        app:headerBackgroundColor="@color/primaryColor"
         app:headerBottomShadowRadius="4dp"
         app:headerPadding="8dp"
-        app:headerTextColor="@color/white"
+        app:headerTextColor="@color/primaryTextColor"
         app:hourHeight="60dp"
         app:nowLineDotRadius="5dp"
         app:nowLineStrokeWidth="2dp"
@@ -36,7 +36,7 @@
         app:singleDayHorizontalPadding="8dp"
         app:timeColumnPadding="16dp"
         app:timeColumnSeparatorStrokeWidth="1dp"
-        app:timeColumnTextColor="@color/black"
+        app:timeColumnTextColor="@color/primaryTextColor"
         app:timeColumnTextSize="12sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
