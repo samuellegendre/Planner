@@ -70,7 +70,7 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val spinner: Spinner = view.findViewById(R.id.classMethod)
 
             toolbar.setNavigationOnClickListener {
-                imm.hideSoftInputFromWindow(view.windowToken, 0);
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dialog.dismiss()
             }
             toolbar.setTitle(R.string.add_class)
@@ -93,7 +93,7 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                         allDaySwitch.isChecked
                     )
                 )
-                imm.hideSoftInputFromWindow(view.windowToken, 0);
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dismiss()
                 true
             }
