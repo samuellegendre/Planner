@@ -6,8 +6,10 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.adapters.Event
@@ -17,6 +19,7 @@ import com.example.planner.adapters.TeachingMethods
 import com.google.android.material.switchmaterial.SwitchMaterial
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
     TimePickDialog.TimePickerListener {
@@ -33,6 +36,7 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private var validated = true
     private lateinit var defaultButtonColors: ColorStateList
+    private lateinit var toolbar: Toolbar
 
     interface AddClassDialogListener {
         fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event)
@@ -50,9 +54,12 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.dialog_add_class, null)
-            val builder = AlertDialog.Builder(it)
+            val view = inflater.inflate(R.layout.dialog_class, null)
+            val builder = AlertDialog.Builder(it, R.style.Theme_Planner_FullScreenDialog)
 
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            toolbar = view.findViewById(R.id.toolbar)
             val className: EditText = view.findViewById(R.id.className)
             val allDaySwitch: SwitchMaterial = view.findViewById(R.id.allDaySwitch)
             startDateButton = view.findViewById(R.id.startDateButton)
@@ -61,6 +68,35 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             endTimeButton = view.findViewById(R.id.endTimeButton)
             val classLocation: EditText = view.findViewById(R.id.classLocation)
             val spinner: Spinner = view.findViewById(R.id.classMethod)
+
+            toolbar.setNavigationOnClickListener {
+                imm.hideSoftInputFromWindow(view.windowToken, 0);
+                dialog.dismiss()
+            }
+            toolbar.setTitle(R.string.add_class)
+            toolbar.inflateMenu(R.menu.dialog_add_menu)
+            toolbar.setOnMenuItemClickListener {
+                if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
+                    endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
+                }
+                listener.onAddClassDialogPositiveClick(
+                    this, Event(
+                        0,
+                        if (className.text.toString()
+                                .isBlank()
+                        ) "Sans titre" else className.text.toString(),
+                        classLocation.text.toString(),
+                        startCalendar,
+                        endCalendar,
+                        (spinner.selectedItem as TeachingMethod).color,
+                        spinner.selectedItemPosition,
+                        allDaySwitch.isChecked
+                    )
+                )
+                imm.hideSoftInputFromWindow(view.windowToken, 0);
+                dismiss()
+                true
+            }
 
             className.requestFocus()
 
@@ -117,37 +153,18 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             }
 
             builder.setView(view)
-                .setTitle(R.string.add_class)
-                .setPositiveButton(
-                    R.string.add
-                ) { _, _ ->
-                    if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
-                        endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
-                    }
-                    listener.onAddClassDialogPositiveClick(
-                        this, Event(
-                            0,
-                            if (className.text.toString()
-                                    .isBlank()
-                            ) "Sans titre" else className.text.toString(),
-                            classLocation.text.toString(),
-                            startCalendar,
-                            endCalendar,
-                            (spinner.selectedItem as TeachingMethod).color,
-                            spinner.selectedItemPosition,
-                            allDaySwitch.isChecked
-                        )
-                    )
-                }
-                .setNegativeButton(
-                    R.string.cancel
-                ) { _, _ ->
-                    dialog.dismiss()
-                }
             dialog = builder.create()
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val width = ViewGroup.LayoutParams.MATCH_PARENT
+        val height = ViewGroup.LayoutParams.MATCH_PARENT
+        dialog.window!!.setLayout(width, height)
+        dialog.window!!.setWindowAnimations(R.style.Theme_Planner_FullScreenDialog_Animations)
     }
 
     override fun onDateSet(

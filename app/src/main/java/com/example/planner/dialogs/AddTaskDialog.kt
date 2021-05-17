@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.utils.Task
@@ -23,6 +25,7 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
     private var calendar: Calendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private lateinit var toolbar: Toolbar
 
     interface AddTaskDialogListener {
         fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task)
@@ -40,16 +43,44 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.Theme_Planner_FullScreenDialog)
             val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.dialog_add_task, null)
+            val view = inflater.inflate(R.layout.dialog_task, null)
 
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            toolbar = view.findViewById(R.id.toolbar)
             val taskTitle: EditText = view.findViewById(R.id.taskName)
             val taskDescription: EditText = view.findViewById(R.id.taskDescription)
             val dateSwitch: SwitchCompat = view.findViewById(R.id.addDateSwitch)
             val dateButton: Button = view.findViewById(R.id.dateButton)
             val timeSwitch: SwitchCompat = view.findViewById(R.id.addTimeSwitch)
             val timeButton: Button = view.findViewById(R.id.timeButton)
+
+            toolbar.setNavigationOnClickListener {
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                dialog.dismiss()
+            }
+            toolbar.setTitle(R.string.add_task)
+            toolbar.inflateMenu(R.menu.dialog_add_menu)
+            toolbar.setOnMenuItemClickListener {
+                listener.onAddTaskDialogPositiveClick(
+                    this,
+                    Task(
+                        0,
+                        if (taskTitle.text.toString()
+                                .isBlank()
+                        ) "Sans titre" else taskTitle.text.toString(),
+                        taskDescription.text.toString(),
+                        calendar,
+                        dateSwitch.isChecked,
+                        timeSwitch.isChecked
+                    )
+                )
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                dismiss()
+                true
+            }
 
             taskTitle.requestFocus()
 
@@ -75,33 +106,18 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             }
 
             builder.setView(view)
-                .setTitle(R.string.add_task)
-                .setPositiveButton(
-                    R.string.add
-                ) { _, _ ->
-                    listener.onAddTaskDialogPositiveClick(
-                        this,
-                        Task(
-                            0,
-                            if (taskTitle.text.toString()
-                                    .isBlank()
-                            ) "Sans titre" else taskTitle.text.toString(),
-                            taskDescription.text.toString(),
-                            calendar,
-                            dateSwitch.isChecked,
-                            timeSwitch.isChecked
-                        )
-                    )
-                }
-                .setNegativeButton(
-                    R.string.cancel
-                ) { _, _ ->
-                    this.dismiss()
-                }
             dialog = builder.create()
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val width = ViewGroup.LayoutParams.MATCH_PARENT
+        val height = ViewGroup.LayoutParams.MATCH_PARENT
+        dialog.window!!.setLayout(width, height)
+        dialog.window!!.setWindowAnimations(R.style.Theme_Planner_FullScreenDialog_Animations)
     }
 
     override fun onDateSet(

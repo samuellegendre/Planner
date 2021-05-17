@@ -22,4 +22,18 @@
     <style name="Theme.Planner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Planner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Planner.FullScreenDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/primaryTextColor</item>
+    </style>
+
+    <style name="Theme.Planner.FullScreenDialog.Animations">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter_animation</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit_animation</item>
+    </style>
 </resources>

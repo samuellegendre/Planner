@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.utils.Task
@@ -27,6 +29,7 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
     private lateinit var timeSwitch: SwitchCompat
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private lateinit var toolbar: Toolbar
 
     interface ModifyTaskDialogListener {
         fun onModifyTaskDialogPositiveClick(dialog: DialogFragment, task: Task)
@@ -45,16 +48,60 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.Theme_Planner_FullScreenDialog)
             val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.dialog_add_task, null)
+            val view = inflater.inflate(R.layout.dialog_task, null)
 
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+            toolbar = view.findViewById(R.id.toolbar)
             val taskTitle: EditText = view.findViewById(R.id.taskName)
             val taskDescription: EditText = view.findViewById(R.id.taskDescription)
             val dateSwitch: SwitchCompat = view.findViewById(R.id.addDateSwitch)
             dateButton = view.findViewById(R.id.dateButton)
             timeSwitch = view.findViewById(R.id.addTimeSwitch)
             timeButton = view.findViewById(R.id.timeButton)
+
+            toolbar.setNavigationOnClickListener {
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                dialog.dismiss()
+            }
+            toolbar.setTitle(R.string.modify_task)
+            toolbar.inflateMenu(R.menu.dialog_modify_menu)
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.save -> {
+                        listener.onModifyTaskDialogPositiveClick(
+                            this,
+                            Task(
+                                task.id,
+                                if (taskTitle.text.toString()
+                                        .isBlank()
+                                ) "Sans titre" else taskTitle.text.toString(),
+                                taskDescription.text.toString(),
+                                calendar,
+                                dateSwitch.isChecked,
+                                timeSwitch.isChecked,
+                                task.isChecked
+                            )
+                        )
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
+                        dismiss()
+                        true
+                    }
+                    R.id.delete -> {
+                        listener.onModifyTaskDialogNegativeClick(this, task)
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
+                        dismiss()
+                        true
+                    }
+                    else -> {
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
+                        dismiss()
+                        true
+                    }
+                }
+            }
 
             taskTitle.setText(task.title)
             taskTitle.requestFocus()
@@ -84,35 +131,18 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             }
 
             builder.setView(view)
-                .setTitle(R.string.modify_task)
-                .setPositiveButton(
-                    R.string.save
-                ) { _, _ ->
-                    listener.onModifyTaskDialogPositiveClick(
-                        this,
-                        Task(
-                            task.id,
-                            if (taskTitle.text.toString()
-                                    .isBlank()
-                            ) "Sans titre" else taskTitle.text.toString(),
-                            taskDescription.text.toString(),
-                            calendar,
-                            dateSwitch.isChecked,
-                            timeSwitch.isChecked,
-                            task.isChecked
-                        )
-                    )
-                }
-                .setNeutralButton(R.string.cancel) { _, _ -> this.dismiss() }
-                .setNegativeButton(
-                    R.string.delete
-                ) { _, _ ->
-                    listener.onModifyTaskDialogNegativeClick(this, task)
-                }
             dialog = builder.create()
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val width = ViewGroup.LayoutParams.MATCH_PARENT
+        val height = ViewGroup.LayoutParams.MATCH_PARENT
+        dialog.window!!.setLayout(width, height)
+        dialog.window!!.setWindowAnimations(R.style.Theme_Planner_FullScreenDialog_Animations)
     }
 
     override fun onDateSet(
