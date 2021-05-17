@@ -35,6 +35,8 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
     SimpleSwipeCallback.ItemSwipeCallback,
     ConfirmDeletionDialog.ConfirmDeletionDialogListener {
 
+    private lateinit var addTaskButton: FloatingActionButton
+
     private lateinit var fastAdapter: FastAdapter<TaskItem>
     private lateinit var itemAdapter: ItemAdapter<TaskItem>
     private lateinit var tasks: Tasks
@@ -135,7 +137,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
 
         fastAdapter.withSavedInstanceState(savedInstanceState)
 
-        val addTaskButton: FloatingActionButton = view.findViewById(R.id.addTaskButton)
+        addTaskButton = view.findViewById(R.id.addTaskButton)
 
         addTaskButton.setOnClickListener {
             val dialog = AddTaskDialog()
@@ -147,6 +149,11 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_tasks_menu, menu)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        addTaskButton.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -203,6 +210,11 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
             }
             else -> false
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        addTaskButton.hide()
     }
 
     private fun toggleShowDoneTasks(isChecked: Boolean) {

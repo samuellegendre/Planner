@@ -22,6 +22,7 @@ class CalendarFragment : Fragment(),
     ModifyClassDialog.ModifyClassDialogListener {
 
     private val viewModel by viewModels<CalendarViewModel>()
+    private lateinit var addClassButton: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,7 @@ class CalendarFragment : Fragment(),
         setHasOptionsMenu(true)
 
         val view: View = inflater.inflate(R.layout.fragment_calendar, container, false)
-        val addClassButton: FloatingActionButton = view.findViewById(R.id.addClassButton)
+        addClassButton = view.findViewById(R.id.addClassButton)
 
         val weekView: WeekView = view.findViewById(R.id.weekView)
         val adapter = CalendarSimpleAdapter(this)
@@ -71,6 +72,11 @@ class CalendarFragment : Fragment(),
         inflater.inflate(R.menu.fragment_calendar_menu, menu)
     }
 
+    override fun onResume() {
+        super.onResume()
+        addClassButton.show()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.today -> {
@@ -88,6 +94,11 @@ class CalendarFragment : Fragment(),
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        addClassButton.hide()
     }
 
     override fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event) {

@@ -22,6 +22,7 @@
         android:layout_margin="@dimen/activity_margin"
         android:contentDescription="@string/add"
         android:gravity="bottom|end"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add" />
