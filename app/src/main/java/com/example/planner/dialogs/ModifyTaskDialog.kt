@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
@@ -52,8 +51,6 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_task, null)
 
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
             toolbar = view.findViewById(R.id.toolbar)
             val taskTitle: EditText = view.findViewById(R.id.taskName)
             val taskDescription: EditText = view.findViewById(R.id.taskDescription)
@@ -63,7 +60,6 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             timeButton = view.findViewById(R.id.timeButton)
 
             toolbar.setNavigationOnClickListener {
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dialog.dismiss()
             }
             toolbar.setTitle(R.string.modify_task)
@@ -85,18 +81,15 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
                                 task.isChecked
                             )
                         )
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         dismiss()
                         true
                     }
                     R.id.delete -> {
                         listener.onModifyTaskDialogNegativeClick(this, task)
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         dismiss()
                         true
                     }
                     else -> {
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         dismiss()
                         true
                     }
@@ -104,7 +97,6 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             }
 
             taskTitle.setText(task.title)
-            taskTitle.requestFocus()
             taskDescription.setText(task.description)
             dateSwitch.isChecked = task.hasDate
             timeSwitch.isChecked = task.hasTime
@@ -132,7 +124,6 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
 
             builder.setView(view)
             dialog = builder.create()
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
     }

@@ -7,7 +7,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
@@ -58,8 +57,6 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             val view = inflater.inflate(R.layout.dialog_class, null)
             val builder = AlertDialog.Builder(it, R.style.Theme_Planner_FullScreenDialog)
 
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
             toolbar = view.findViewById(R.id.toolbar)
             val className: EditText = view.findViewById(R.id.className)
             val allDaySwitch: SwitchMaterial = view.findViewById(R.id.allDaySwitch)
@@ -71,7 +68,6 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             val spinner: Spinner = view.findViewById(R.id.classMethod)
 
             toolbar.setNavigationOnClickListener {
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dialog.dismiss()
             }
             toolbar.setTitle(R.string.modify_class)
@@ -96,18 +92,15 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
                                 allDaySwitch.isChecked
                             )
                         )
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         dismiss()
                         true
                     }
                     R.id.delete -> {
                         listener.onModifyClassDialogNegativeClick(this, event)
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         dismiss()
                         true
                     }
                     else -> {
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         dismiss()
                         true
                     }
@@ -115,8 +108,6 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             }
 
             className.setText(event.title)
-            className.requestFocus()
-
             allDaySwitch.isChecked = event.isAllDay
             disableButtons(allDaySwitch.isChecked)
             allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -158,7 +149,6 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
 
             builder.setView(view)
             dialog = builder.create()
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
     }
