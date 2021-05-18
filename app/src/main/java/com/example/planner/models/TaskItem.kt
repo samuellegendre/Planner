@@ -49,10 +49,10 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
             holder.dateTime.visibility = View.VISIBLE
             if (hasTime!!) {
                 holder.dateTime.text =
-                    SimpleDateFormat("dd MMM HH:mm", Locale.getDefault()).format(dateTime?.time!!)
+                    SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault()).format(dateTime?.time!!)
             } else {
                 holder.dateTime.text =
-                    SimpleDateFormat("dd MMM", Locale.getDefault()).format(dateTime?.time!!)
+                    SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(dateTime?.time!!)
             }
         } else {
             holder.dateTime.visibility = View.GONE
@@ -92,7 +92,7 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var title: TextView = view.findViewById(R.id.taskTitle)
         var description: TextView = view.findViewById(R.id.taskDescription)
-        var dateTime: Chip = view.findViewById(R.id.taskTimeChip)
+        var dateTime: TextView = view.findViewById(R.id.taskTime)
         var checkBox: CheckBox = view.findViewById(R.id.taskCheckBox)
         var swipeContent: View = view.findViewById(R.id.swipeContent)
         var itemContent: View = view.findViewById(R.id.itemContent)
