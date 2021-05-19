@@ -13,10 +13,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.adapters.Event
-import com.example.planner.adapters.TeachingMethod
-import com.example.planner.adapters.TeachingMethodArrayAdapter
-import com.example.planner.adapters.TeachingMethods
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,10 +24,10 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
     private lateinit var listener: AddClassDialogListener
     private lateinit var dialog: AlertDialog
-    private lateinit var startDateButton: Button
-    private lateinit var startTimeButton: Button
-    private lateinit var endDateButton: Button
-    private lateinit var endTimeButton: Button
+    private lateinit var startDateButton: TextView
+    private lateinit var startTimeButton: TextView
+    private lateinit var endDateButton: TextView
+    private lateinit var endTimeButton: TextView
     private var startCalendar = Calendar.getInstance()
     private var endCalendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -60,14 +58,15 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             toolbar = view.findViewById(R.id.toolbar)
-            val className: EditText = view.findViewById(R.id.className)
+            val className: TextInputLayout = view.findViewById(R.id.className)
             val allDaySwitch: SwitchMaterial = view.findViewById(R.id.allDaySwitch)
             startDateButton = view.findViewById(R.id.startDateButton)
             startTimeButton = view.findViewById(R.id.startTimeButton)
             endDateButton = view.findViewById(R.id.endDateButton)
             endTimeButton = view.findViewById(R.id.endTimeButton)
-            val classLocation: EditText = view.findViewById(R.id.classLocation)
-            val spinner: Spinner = view.findViewById(R.id.classMethod)
+            val classLocation: TextInputLayout = view.findViewById(R.id.classLocation)
+            val spinner: TextInputLayout = view.findViewById(R.id.classMethod)
+            val autoCompleteTextView = spinner.editText as? AutoCompleteTextView
 
             toolbar.setNavigationOnClickListener {
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -82,14 +81,13 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                 listener.onAddClassDialogPositiveClick(
                     this, Event(
                         0,
-                        if (className.text.toString()
+                        if (className.editText?.text.toString()
                                 .isBlank()
-                        ) "Sans titre" else className.text.toString(),
-                        classLocation.text.toString(),
+                        ) "Sans titre" else className.editText?.text.toString(),
+                        classLocation.editText?.text.toString(),
                         startCalendar,
                         endCalendar,
-                        (spinner.selectedItem as TeachingMethod).color,
-                        spinner.selectedItemPosition,
+                        convertStringToColor(autoCompleteTextView?.text.toString()),
                         allDaySwitch.isChecked
                     )
                 )
@@ -130,7 +128,14 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
             defaultButtonColors = startDateButton.textColors
 
-            spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
+            autoCompleteTextView?.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.spinner_item,
+                    resources.getStringArray(R.array.colors)
+                )
+            )
+            autoCompleteTextView?.setText("Rouge", false)
 
             startDateButton.setOnClickListener {
                 val datePickerFragment = DatePickDialog(startDateButton, startCalendar)
@@ -172,7 +177,7 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         year: Int,
         month: Int,
         dayOfMonth: Int,
-        button: Button,
+        button: TextView,
         calendar: Calendar
     ) {
         calendar.set(year, month, dayOfMonth)
@@ -190,7 +195,7 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         view: TimePicker?,
         hourOfDay: Int,
         minute: Int,
-        button: Button,
+        button: TextView,
         calendar: Calendar
     ) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -212,5 +217,18 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         }
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
+    }
+
+    private fun convertStringToColor(color: String): Int {
+        when (color) {
+            "Rouge" -> return resources.getColor(R.color.red)
+            "Orange" -> return resources.getColor(R.color.orange)
+            "Jaune" -> return resources.getColor(R.color.yellow)
+            "Vert" -> return resources.getColor(R.color.green)
+            "Bleu" -> return resources.getColor(R.color.blue)
+            "Violet" -> return resources.getColor(R.color.purple)
+            "Gris" -> return resources.getColor(R.color.gray)
+        }
+        return resources.getColor(R.color.gray)
     }
 }

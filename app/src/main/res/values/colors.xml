@@ -13,7 +13,11 @@
     <color name="white">#ffffff</color>
     <color name="error">#B00020</color>
 
-    <color name="yellow">#ECC249</color>
-    <color name="blue">#30A8E5</color>
-    <color name="green">#48b482</color>
+    <color name="red">#D50000</color>
+    <color name="orange">#F4511E</color>
+    <color name="yellow">#F6BF26</color>
+    <color name="blue">#039BE5</color>
+    <color name="green">#0B8043</color>
+    <color name="purple">#8E24AA</color>
+    <color name="gray">#616161</color>
 </resources>

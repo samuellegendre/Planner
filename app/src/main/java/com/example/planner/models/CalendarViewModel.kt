@@ -43,7 +43,6 @@ class CalendarViewModel : ViewModel() {
                 e.startTime = event.startTime
                 e.endTime = event.endTime
                 e.color = event.color
-                e.spinnerIndex = event.spinnerIndex
                 e.isAllDay = event.isAllDay
             }
         }

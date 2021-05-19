@@ -5,12 +5,12 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-class DatePickDialog(private val button: Button, private val calendar: Calendar) :
+class DatePickDialog(private val button: TextView, private val calendar: Calendar) :
     DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var listener: DatePickerListener
@@ -21,7 +21,7 @@ class DatePickDialog(private val button: Button, private val calendar: Calendar)
             year: Int,
             month: Int,
             dayOfMonth: Int,
-            button: Button,
+            button: TextView,
             calendar: Calendar
         )
     }

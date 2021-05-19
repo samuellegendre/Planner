@@ -5,15 +5,15 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.DatePicker
-import android.widget.EditText
+import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.utils.Task
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,8 +23,8 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
     private lateinit var listener: ModifyTaskDialogListener
     private lateinit var dialog: AlertDialog
     private var calendar: Calendar = task.calendar
-    private lateinit var dateButton: Button
-    private lateinit var timeButton: Button
+    private lateinit var dateButton: TextView
+    private lateinit var timeButton: TextView
     private lateinit var timeSwitch: SwitchCompat
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -52,8 +52,8 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             val view = inflater.inflate(R.layout.dialog_task, null)
 
             toolbar = view.findViewById(R.id.toolbar)
-            val taskTitle: EditText = view.findViewById(R.id.taskName)
-            val taskDescription: EditText = view.findViewById(R.id.taskDescription)
+            val taskTitle: TextInputLayout = view.findViewById(R.id.taskName)
+            val taskDescription: TextInputLayout = view.findViewById(R.id.taskDescription)
             val dateSwitch: SwitchCompat = view.findViewById(R.id.addDateSwitch)
             dateButton = view.findViewById(R.id.dateButton)
             timeSwitch = view.findViewById(R.id.addTimeSwitch)
@@ -71,10 +71,10 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
                             this,
                             Task(
                                 task.id,
-                                if (taskTitle.text.toString()
+                                if (taskTitle.editText?.text.toString()
                                         .isBlank()
-                                ) "Sans titre" else taskTitle.text.toString(),
-                                taskDescription.text.toString(),
+                                ) "Sans titre" else taskTitle.editText?.text.toString(),
+                                taskDescription.editText?.text.toString(),
                                 calendar,
                                 dateSwitch.isChecked,
                                 timeSwitch.isChecked,
@@ -96,8 +96,8 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
                 }
             }
 
-            taskTitle.setText(task.title)
-            taskDescription.setText(task.description)
+            taskTitle.editText?.setText(task.title)
+            taskDescription.editText?.setText(task.description)
             dateSwitch.isChecked = task.hasDate
             timeSwitch.isChecked = task.hasTime
             dateSwitchDisableButtons(dateSwitch.isChecked)
@@ -141,7 +141,7 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
         year: Int,
         month: Int,
         dayOfMonth: Int,
-        button: Button,
+        button: TextView,
         calendar: Calendar
     ) {
         calendar.set(year, month, dayOfMonth)
@@ -152,7 +152,7 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
         view: TimePicker?,
         hourOfDay: Int,
         minute: Int,
-        button: Button,
+        button: TextView,
         calendar: Calendar
     ) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)

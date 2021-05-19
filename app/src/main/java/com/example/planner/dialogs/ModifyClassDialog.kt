@@ -12,10 +12,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.example.planner.R
 import com.example.planner.adapters.Event
-import com.example.planner.adapters.TeachingMethod
-import com.example.planner.adapters.TeachingMethodArrayAdapter
-import com.example.planner.adapters.TeachingMethods
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,10 +23,10 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
 
     private lateinit var listener: ModifyClassDialogListener
     private lateinit var dialog: AlertDialog
-    private lateinit var startDateButton: Button
-    private lateinit var startTimeButton: Button
-    private lateinit var endDateButton: Button
-    private lateinit var endTimeButton: Button
+    private lateinit var startDateButton: TextView
+    private lateinit var startTimeButton: TextView
+    private lateinit var endDateButton: TextView
+    private lateinit var endTimeButton: TextView
     private var startCalendar = event.startTime
     private var endCalendar = event.endTime
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -58,14 +56,15 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             val builder = AlertDialog.Builder(it, R.style.Theme_Planner_FullScreenDialog)
 
             toolbar = view.findViewById(R.id.toolbar)
-            val className: EditText = view.findViewById(R.id.className)
+            val className: TextInputLayout = view.findViewById(R.id.className)
             val allDaySwitch: SwitchMaterial = view.findViewById(R.id.allDaySwitch)
             startDateButton = view.findViewById(R.id.startDateButton)
             startTimeButton = view.findViewById(R.id.startTimeButton)
             endDateButton = view.findViewById(R.id.endDateButton)
             endTimeButton = view.findViewById(R.id.endTimeButton)
-            val classLocation: EditText = view.findViewById(R.id.classLocation)
-            val spinner: Spinner = view.findViewById(R.id.classMethod)
+            val classLocation: TextInputLayout = view.findViewById(R.id.classLocation)
+            val spinner: TextInputLayout = view.findViewById(R.id.classMethod)
+            val autoCompleteTextView = spinner.editText as? AutoCompleteTextView
 
             toolbar.setNavigationOnClickListener {
                 dialog.dismiss()
@@ -81,14 +80,13 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
                         listener.onModifyClassDialogPositiveClick(
                             this, Event(
                                 event.id,
-                                if (className.text.toString()
+                                if (className.editText?.text.toString()
                                         .isBlank()
-                                ) "Sans titre" else className.text.toString(),
-                                classLocation.text.toString(),
+                                ) "Sans titre" else className.editText?.text.toString(),
+                                classLocation.editText?.text.toString(),
                                 startCalendar,
                                 endCalendar,
-                                (spinner.selectedItem as TeachingMethod).color,
-                                spinner.selectedItemPosition,
+                                convertStringtoColor(autoCompleteTextView?.text.toString()),
                                 allDaySwitch.isChecked
                             )
                         )
@@ -107,7 +105,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
                 }
             }
 
-            className.setText(event.title)
+            className.editText?.setText(event.title)
             allDaySwitch.isChecked = event.isAllDay
             disableButtons(allDaySwitch.isChecked)
             allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -122,10 +120,16 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             defaultButtonColors = startDateButton.textColors
 
 
-            classLocation.setText(event.subtitle)
+            classLocation.editText?.setText(event.subtitle)
 
-            spinner.adapter = TeachingMethodArrayAdapter(requireContext(), TeachingMethods.list!!)
-            spinner.setSelection(event.spinnerIndex)
+            autoCompleteTextView?.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.spinner_item,
+                    resources.getStringArray(R.array.colors)
+                )
+            )
+            autoCompleteTextView?.setText(convertColorToString(event.color), false)
 
             startDateButton.setOnClickListener {
                 val datePickerFragment = DatePickDialog(startDateButton, startCalendar)
@@ -166,7 +170,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
         year: Int,
         month: Int,
         dayOfMonth: Int,
-        button: Button,
+        button: TextView,
         calendar: Calendar
     ) {
         calendar.set(year, month, dayOfMonth)
@@ -184,7 +188,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
         view: TimePicker?,
         hourOfDay: Int,
         minute: Int,
-        button: Button,
+        button: TextView,
         calendar: Calendar
     ) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -216,5 +220,31 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             startTimeButton.isEnabled = true
             endTimeButton.isEnabled = true
         }
+    }
+
+    private fun convertStringtoColor(color: String): Int {
+        when (color) {
+            "Rouge" -> return resources.getColor(R.color.red)
+            "Orange" -> return resources.getColor(R.color.orange)
+            "Jaune" -> return resources.getColor(R.color.yellow)
+            "Vert" -> return resources.getColor(R.color.green)
+            "Bleu" -> return resources.getColor(R.color.blue)
+            "Violet" -> return resources.getColor(R.color.purple)
+            "Gris" -> return resources.getColor(R.color.gray)
+        }
+        return resources.getColor(R.color.gray)
+    }
+
+    private fun convertColorToString(color: Int): String {
+        when (color) {
+            resources.getColor(R.color.red) -> return "Rouge"
+            resources.getColor(R.color.orange) -> return "Orange"
+            resources.getColor(R.color.yellow) -> return "Jaune"
+            resources.getColor(R.color.green) -> return "Vert"
+            resources.getColor(R.color.blue) -> return "Bleu"
+            resources.getColor(R.color.purple) -> return "Violet"
+            resources.getColor(R.color.gray) -> return "Gris"
+        }
+        return "Rouge"
     }
 }

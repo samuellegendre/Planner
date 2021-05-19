@@ -30,5 +30,15 @@
     <string name="delete_checked_task">Supprimer les tâches finies</string>
     <string name="confirm_deletion">Supprimer les tâches finies ?</string>
     <string name="modify_class">Modifier le cours</string>
-    <string name="teaching_methods">Méthodes d\'enseignement</string>
+    <string name="color">Couleur</string>
+
+    <string-array name="colors">
+        <item>Rouge</item>
+        <item>Orange</item>
+        <item>Jaune</item>
+        <item>Vert</item>
+        <item>Bleu</item>
+        <item>Violet</item>
+        <item>Gris</item>
+    </string-array>
 </resources>

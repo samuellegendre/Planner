@@ -1,6 +1,5 @@
 package com.example.planner.adapters
 
-import androidx.core.content.ContextCompat
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
 import com.example.planner.dialogs.ModifyClassDialog
@@ -19,7 +18,6 @@ data class Event(
     @Serializable(with = CalendarSerializer::class)
     var endTime: Calendar,
     var color: Int,
-    var spinnerIndex: Int,
     var isAllDay: Boolean
 )
 
@@ -28,7 +26,7 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
 
     override fun onCreateEntity(item: Event): WeekViewEntity {
         val style = WeekViewEntity.Style.Builder()
-            .setBackgroundColor(ContextCompat.getColor(context, item.color))
+            .setBackgroundColor(item.color)
             .build()
 
         return WeekViewEntity.Event.Builder(item)

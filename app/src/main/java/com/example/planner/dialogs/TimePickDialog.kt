@@ -6,12 +6,13 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.widget.Button
+import android.widget.TextView
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
-class TimePickDialog(private val button: Button, private val calendar: Calendar) : DialogFragment(),
+class TimePickDialog(private val button: TextView, private val calendar: Calendar) :
+    DialogFragment(),
     TimePickerDialog.OnTimeSetListener {
 
     private lateinit var listener: TimePickerListener
@@ -21,7 +22,7 @@ class TimePickDialog(private val button: Button, private val calendar: Calendar)
             view: TimePicker?,
             hourOfDay: Int,
             minute: Int,
-            button: Button,
+            button: TextView,
             calendar: Calendar
         )
     }
