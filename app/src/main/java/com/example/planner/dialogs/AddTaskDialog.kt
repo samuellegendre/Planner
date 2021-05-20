@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.TimePicker
@@ -47,8 +46,6 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_task, null)
 
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
             toolbar = view.findViewById(R.id.toolbar)
             val taskTitle: TextInputLayout = view.findViewById(R.id.taskName)
             val taskDescription: TextInputLayout = view.findViewById(R.id.taskDescription)
@@ -58,7 +55,6 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val timeButton: TextView = view.findViewById(R.id.timeButton)
 
             toolbar.setNavigationOnClickListener {
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dialog.dismiss()
             }
             toolbar.setTitle(R.string.add_task)
@@ -77,12 +73,9 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                         timeSwitch.isChecked
                     )
                 )
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dismiss()
                 true
             }
-
-            taskTitle.requestFocus()
 
             dateSwitch.setOnCheckedChangeListener { _, isChecked ->
                 dateButton.isEnabled = isChecked
@@ -107,7 +100,6 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
             builder.setView(view)
             dialog = builder.create()
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
     }

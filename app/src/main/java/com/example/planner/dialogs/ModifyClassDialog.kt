@@ -65,6 +65,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             val classLocation: TextInputLayout = view.findViewById(R.id.classLocation)
             val spinner: TextInputLayout = view.findViewById(R.id.classMethod)
             val autoCompleteTextView = spinner.editText as? AutoCompleteTextView
+            val palette: ImageView = view.findViewById(R.id.paletteIcon)
 
             toolbar.setNavigationOnClickListener {
                 dialog.dismiss()
@@ -130,6 +131,14 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
                 )
             )
             autoCompleteTextView?.setText(convertColorToString(event.color), false)
+            palette.setColorFilter(event.color)
+            autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
+                palette.setColorFilter(
+                    convertStringtoColor(
+                        parent.adapter.getItem(position).toString()
+                    )
+                )
+            }
 
             startDateButton.setOnClickListener {
                 val datePickerFragment = DatePickDialog(startDateButton, startCalendar)

@@ -31,103 +31,155 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/taskName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:autofillHints="@string/title"
-                android:hint="@string/title">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="@string/title"
+                    android:src="@drawable/ic_title" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/taskName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textAutoCorrect|textCapSentences" />
+                    android:layout_marginBottom="8dp"
+                    android:autofillHints="@string/title"
+                    android:hint="@string/title">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textAutoCorrect|textCapSentences" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/add_date"
-                    android:textAppearance="?attr/textAppearanceBody1" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/addDateSwitch"
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="@dimen/dialog_top_bottom_margins" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="@string/add_time"
+                    android:src="@drawable/ic_time" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/add_date"
+                            android:textAppearance="?attr/textAppearanceBody1" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/addDateSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/dialog_top_bottom_margins" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/dateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:clickable="true"
+                        android:enabled="false"
+                        android:focusable="true"
+                        android:gravity="start|center_vertical"
+                        android:textAppearance="?attr/textAppearanceBody1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+                            android:layout_weight="1"
+                            android:text="@string/add_time"
+                            android:textAppearance="?attr/textAppearanceBody1" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/addTimeSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+                            android:enabled="false" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/timeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:clickable="true"
+                        android:enabled="false"
+                        android:focusable="true"
+                        android:gravity="start|center_vertical"
+                        android:textAppearance="?attr/textAppearanceBody1" />
+
+                </LinearLayout>
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/dateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="start|center_vertical"
-                android:textAppearance="?attr/textAppearanceBody1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
-                    android:layout_weight="1"
-                    android:text="@string/add_time"
-                    android:textAppearance="?attr/textAppearanceBody1" />
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/addTimeSwitch"
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="@dimen/dialog_top_bottom_margins"
-                    android:enabled="false" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/ic_description" />
 
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/timeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:clickable="true"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="start|center_vertical"
-                android:textAppearance="?attr/textAppearanceBody1" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/taskDescription"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:autofillHints="text"
-                android:hint="@string/description"
-                android:lines="3"
-                android:scrollbars="vertical">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/taskDescription"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textAutoComplete|textCapSentences|textMultiLine" />
+                    android:layout_marginVertical="8dp"
+                    android:autofillHints="text"
+                    android:hint="@string/description"
+                    android:lines="3"
+                    android:scrollbars="vertical">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textAutoComplete|textCapSentences|textMultiLine" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

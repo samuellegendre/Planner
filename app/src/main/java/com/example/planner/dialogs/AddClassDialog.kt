@@ -7,7 +7,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
@@ -55,8 +54,6 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val view = inflater.inflate(R.layout.dialog_class, null)
             val builder = AlertDialog.Builder(it, R.style.Theme_Planner_FullScreenDialog)
 
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
             toolbar = view.findViewById(R.id.toolbar)
             val className: TextInputLayout = view.findViewById(R.id.className)
             val allDaySwitch: SwitchMaterial = view.findViewById(R.id.allDaySwitch)
@@ -67,9 +64,9 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val classLocation: TextInputLayout = view.findViewById(R.id.classLocation)
             val spinner: TextInputLayout = view.findViewById(R.id.classMethod)
             val autoCompleteTextView = spinner.editText as? AutoCompleteTextView
+            val palette: ImageView = view.findViewById(R.id.paletteIcon)
 
             toolbar.setNavigationOnClickListener {
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dialog.dismiss()
             }
             toolbar.setTitle(R.string.add_class)
@@ -91,12 +88,9 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                         allDaySwitch.isChecked
                     )
                 )
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
                 dismiss()
                 true
             }
-
-            className.requestFocus()
 
             allDaySwitch.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
@@ -136,6 +130,14 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                 )
             )
             autoCompleteTextView?.setText("Rouge", false)
+            palette.setColorFilter(convertStringToColor("Rouge"))
+            autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
+                palette.setColorFilter(
+                    convertStringToColor(
+                        parent.adapter.getItem(position).toString()
+                    )
+                )
+            }
 
             startDateButton.setOnClickListener {
                 val datePickerFragment = DatePickDialog(startDateButton, startCalendar)
@@ -159,7 +161,6 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
             builder.setView(view)
             dialog = builder.create()
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             dialog
         } ?: throw IllegalStateException()
     }
@@ -231,4 +232,8 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         }
         return resources.getColor(R.color.gray)
     }
+}
+
+private fun AutoCompleteTextView?.onItemSelectedListener(value: () -> Unit) {
+    Toast.makeText(this?.context, "Test", Toast.LENGTH_SHORT).show()
 }
