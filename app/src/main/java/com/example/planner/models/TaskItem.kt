@@ -4,10 +4,10 @@ import android.graphics.Color
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.planner.R
-import com.google.android.material.chip.Chip
 import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.swipe.ISwipeable
@@ -22,6 +22,7 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
     var dateTime: Calendar? = null
     var hasDate: Boolean? = null
     var hasTime: Boolean? = null
+    var color: Int? = null
     var isChecked: Boolean? = null
 
     var swipedDirection: Int = 0
@@ -49,7 +50,10 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
             holder.dateTime.visibility = View.VISIBLE
             if (hasTime!!) {
                 holder.dateTime.text =
-                    SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault()).format(dateTime?.time!!)
+                    SimpleDateFormat(
+                        "dd MMM yyyy HH:mm",
+                        Locale.getDefault()
+                    ).format(dateTime?.time!!)
             } else {
                 holder.dateTime.text =
                     SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(dateTime?.time!!)
@@ -57,6 +61,7 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
         } else {
             holder.dateTime.visibility = View.GONE
         }
+        holder.color.setColorFilter(color!!)
         holder.checkBox.isChecked = isChecked!!
         holder.swipeContent.visibility = if (swipedDirection != 0) View.VISIBLE else View.GONE
         holder.itemContent.visibility = if (swipedDirection != 0) View.GONE else View.VISIBLE
@@ -79,6 +84,7 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
         holder.title.text = null
         holder.description.text = null
         holder.dateTime.text = null
+        holder.color.colorFilter = null
         holder.checkBox.isChecked = false
         holder.swipedAction.text = null
         holder.swipedText.text = null
@@ -93,6 +99,7 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
         var title: TextView = view.findViewById(R.id.taskTitle)
         var description: TextView = view.findViewById(R.id.taskDescription)
         var dateTime: TextView = view.findViewById(R.id.taskTime)
+        var color: ImageView = view.findViewById(R.id.color)
         var checkBox: CheckBox = view.findViewById(R.id.taskCheckBox)
         var swipeContent: View = view.findViewById(R.id.swipeContent)
         var itemContent: View = view.findViewById(R.id.itemContent)

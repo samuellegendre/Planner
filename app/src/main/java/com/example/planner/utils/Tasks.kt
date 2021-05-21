@@ -21,6 +21,7 @@ data class Task(
     var calendar: Calendar,
     var hasDate: Boolean,
     var hasTime: Boolean,
+    var color: Int,
     var isChecked: Boolean = false
 )
 
@@ -43,6 +44,7 @@ class Tasks(
         item.dateTime = task.calendar
         item.hasDate = task.hasDate
         item.hasTime = task.hasTime
+        item.color = task.color
         item.isChecked = task.isChecked
         return item
     }
@@ -55,6 +57,7 @@ class Tasks(
             item.dateTime!!,
             item.hasDate!!,
             item.hasTime!!,
+            item.color!!,
             item.isChecked!!
         )
     }
@@ -78,6 +81,7 @@ class Tasks(
         taskItem.dateTime = item.dateTime
         taskItem.hasDate = item.hasDate
         taskItem.hasTime = item.hasTime
+        taskItem.color = item.color
         taskItem.isChecked = item.isChecked
         fastAdapter.notifyItemChanged(position)
         saveTasks()

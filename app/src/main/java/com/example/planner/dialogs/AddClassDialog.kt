@@ -62,9 +62,9 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             endDateButton = view.findViewById(R.id.endDateButton)
             endTimeButton = view.findViewById(R.id.endTimeButton)
             val classLocation: TextInputLayout = view.findViewById(R.id.classLocation)
-            val spinner: TextInputLayout = view.findViewById(R.id.classMethod)
-            val autoCompleteTextView = spinner.editText as? AutoCompleteTextView
-            val palette: ImageView = view.findViewById(R.id.paletteIcon)
+            val textInputLayout: TextInputLayout = view.findViewById(R.id.color)
+            val autoCompleteTextView = textInputLayout.editText as? AutoCompleteTextView
+            val palette: ImageView = view.findViewById(R.id.palette)
 
             toolbar.setNavigationOnClickListener {
                 dialog.dismiss()

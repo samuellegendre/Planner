@@ -5,9 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.TimePicker
+import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
@@ -53,6 +51,9 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             val dateButton: TextView = view.findViewById(R.id.dateButton)
             val timeSwitch: SwitchCompat = view.findViewById(R.id.addTimeSwitch)
             val timeButton: TextView = view.findViewById(R.id.timeButton)
+            val textInputLayout: TextInputLayout = view.findViewById(R.id.color)
+            val autoCompleteTextView = textInputLayout.editText as? AutoCompleteTextView
+            val palette: ImageView = view.findViewById(R.id.palette)
 
             toolbar.setNavigationOnClickListener {
                 dialog.dismiss()
@@ -70,7 +71,8 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                         taskDescription.editText?.text.toString(),
                         calendar,
                         dateSwitch.isChecked,
-                        timeSwitch.isChecked
+                        timeSwitch.isChecked,
+                        convertStringToColor(autoCompleteTextView?.text.toString())
                     )
                 )
                 dismiss()
@@ -96,6 +98,23 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
             timeButton.setOnClickListener {
                 TimePickDialog(timeButton, calendar).show(childFragmentManager, "timePicker")
+            }
+
+            autoCompleteTextView?.setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.spinner_item,
+                    resources.getStringArray(R.array.colors)
+                )
+            )
+            autoCompleteTextView?.setText("Rouge", false)
+            palette.setColorFilter(convertStringToColor("Rouge"))
+            autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
+                palette.setColorFilter(
+                    convertStringToColor(
+                        parent.adapter.getItem(position).toString()
+                    )
+                )
             }
 
             builder.setView(view)
@@ -134,5 +153,18 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         button.text = timeFormat.format(calendar.time)
+    }
+
+    private fun convertStringToColor(color: String): Int {
+        when (color) {
+            "Rouge" -> return resources.getColor(R.color.red)
+            "Orange" -> return resources.getColor(R.color.orange)
+            "Jaune" -> return resources.getColor(R.color.yellow)
+            "Vert" -> return resources.getColor(R.color.green)
+            "Bleu" -> return resources.getColor(R.color.blue)
+            "Violet" -> return resources.getColor(R.color.purple)
+            "Gris" -> return resources.getColor(R.color.gray)
+        }
+        return resources.getColor(R.color.gray)
     }
 }
