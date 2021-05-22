@@ -29,6 +29,7 @@
         app:numberOfVisibleDays="3"
         app:overlappingEventGap="1dp"
         app:showCurrentTimeFirst="true"
+        app:showFirstDayOfWeekFirst="true"
         app:showHeaderBottomShadow="true"
         app:showNowLine="true"
         app:showNowLineDot="true"

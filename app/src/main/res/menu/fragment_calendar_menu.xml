@@ -14,10 +14,10 @@
             android:title="@string/day" />
         <item
             android:id="@+id/viewBy3Day"
-            android:checked="true"
             android:title="@string/three_day" />
         <item
             android:id="@+id/viewByWeek"
+            android:checked="true"
             android:title="@string/week" />
     </group>
 </menu>

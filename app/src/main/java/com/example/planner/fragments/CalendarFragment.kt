@@ -56,6 +56,8 @@ class CalendarFragment : Fragment(),
             ).format(it.time)
         }
 
+        weekView.numberOfVisibleDays = 7
+
         viewModel.events.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events.entities)
         }
