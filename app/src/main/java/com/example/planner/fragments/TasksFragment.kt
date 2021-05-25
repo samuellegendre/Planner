@@ -29,7 +29,6 @@ import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
 import com.mikepenz.fastadapter.swipe_drag.SimpleSwipeDragCallback
-import kotlinx.android.synthetic.main.task_item.*
 import java.util.*
 
 class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
