@@ -19,6 +19,7 @@ import com.example.planner.dialogs.ModifyTaskDialog
 import com.example.planner.models.TaskItem
 import com.example.planner.utils.Task
 import com.example.planner.utils.Tasks
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
@@ -28,6 +29,7 @@ import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter.swipe.SimpleSwipeCallback
 import com.mikepenz.fastadapter.swipe_drag.SimpleSwipeDragCallback
+import kotlinx.android.synthetic.main.task_item.*
 import java.util.*
 
 class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
@@ -275,5 +277,15 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
             }
         }
         fastAdapter.notifyItemChanged(position)
+    }
+
+    override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        super.itemTouchStartDrag(viewHolder)
+        (viewHolder.itemView as MaterialCardView).isDragged = true
+    }
+
+    override fun itemTouchStopDrag(viewHolder: RecyclerView.ViewHolder) {
+        super.itemTouchStopDrag(viewHolder)
+        (viewHolder.itemView as MaterialCardView).isDragged = false
     }
 }
