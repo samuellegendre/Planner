@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -174,23 +175,37 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
                 inAscendingDateOrder = !inAscendingDateOrder
                 if (inAscendingDateOrder) {
                     tasks.sortTasks(
-                        compareBy<Task> { it.isChecked }
+                        compareBy<Task> { it.isChecked }.reversed()
+                            .thenBy { it.hasDate }.reversed()
                             .thenBy { it.calendar }
                             .thenBy { it.title },
-                        compareBy<TaskItem> { it.isChecked }
+                        compareBy<TaskItem> { it.isChecked }.reversed()
+                            .thenBy { it.hasDate }.reversed()
                             .thenBy { it.dateTime }
                             .thenBy { it.title }
                     )
+                    Toast.makeText(
+                        requireContext(),
+                        "La liste a été triée par ordre des dates ascendantes.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     tasks.sortTasks(
                         compareBy<Task> { it.isChecked }.reversed()
-                            .thenBy { it.calendar }
-                            .thenBy { it.title }.reversed(),
+                            .thenBy { it.hasDate }
+                            .thenBy { it.calendar }.reversed()
+                            .thenBy { it.title },
                         compareBy<TaskItem> { it.isChecked }.reversed()
-                            .thenBy { it.dateTime }
-                            .thenBy { it.title }.reversed()
+                            .thenBy { it.hasDate }
+                            .thenBy { it.dateTime }.reversed()
+                            .thenBy { it.title }
 
                     )
+                    Toast.makeText(
+                        requireContext(),
+                        "La liste a été triée par ordre des dates descendantes.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 true
             }
@@ -200,12 +215,22 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
                     tasks.sortTasks(
                         compareBy<Task> { it.isChecked }.thenBy { it.title },
                         compareBy<TaskItem> { it.isChecked }.thenBy { it.title })
+                    Toast.makeText(
+                        requireContext(),
+                        "La liste a été triée par ordre alphabétique croissant.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     tasks.sortTasks(
                         compareBy<Task> { it.isChecked }.reversed().thenBy { it.title }.reversed(),
                         compareBy<TaskItem> { it.isChecked }.reversed().thenBy { it.title }
                             .reversed()
                     )
+                    Toast.makeText(
+                        requireContext(),
+                        "La liste a été triée par ordre alphabétique décroissant.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 true
             }
