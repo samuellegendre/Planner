@@ -42,6 +42,6 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
 
     override fun onEventClick(data: Event) {
         val dialog = ModifyClassDialog(data)
-        dialog.show(calendarFragment.childFragmentManager, "test")
+        dialog.show(calendarFragment.childFragmentManager, "modifyClassDialog")
     }
 }

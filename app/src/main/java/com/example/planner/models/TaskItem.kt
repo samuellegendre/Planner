@@ -48,10 +48,15 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
         }
         if (hasDate!!) {
             holder.dateTime.visibility = View.VISIBLE
+            if (dateTime!! < Calendar.getInstance()) {
+                holder.dateTime.setTextColor(Color.RED)
+            } else {
+                holder.dateTime.setTextColor(Color.BLACK)
+            }
             if (hasTime!!) {
                 holder.dateTime.text =
                     SimpleDateFormat(
-                        "dd MMM yyyy HH:mm",
+                        "dd MMM yyyy à HH:mm",
                         Locale.getDefault()
                     ).format(dateTime?.time!!)
             } else {

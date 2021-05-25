@@ -233,7 +233,3 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         return resources.getColor(R.color.gray)
     }
 }
-
-private fun AutoCompleteTextView?.onItemSelectedListener(value: () -> Unit) {
-    Toast.makeText(this?.context, "Test", Toast.LENGTH_SHORT).show()
-}
