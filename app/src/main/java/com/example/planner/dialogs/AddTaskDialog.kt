@@ -61,6 +61,11 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             toolbar.setTitle(R.string.add_task)
             toolbar.inflateMenu(R.menu.dialog_add_menu)
             toolbar.setOnMenuItemClickListener {
+                if (!timeSwitch.isChecked) {
+                    calendar.set(Calendar.HOUR_OF_DAY, 0)
+                    calendar.set(Calendar.MINUTE, 0)
+                    calendar.set(Calendar.SECOND, 0)
+                }
                 listener.onAddTaskDialogPositiveClick(
                     this,
                     Task(

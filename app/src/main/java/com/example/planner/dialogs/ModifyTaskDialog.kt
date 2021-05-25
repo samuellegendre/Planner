@@ -68,6 +68,11 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.save -> {
+                        if (!timeSwitch.isChecked) {
+                            calendar.set(Calendar.HOUR_OF_DAY, 0)
+                            calendar.set(Calendar.MINUTE, 0)
+                            calendar.set(Calendar.SECOND, 0)
+                        }
                         listener.onModifyTaskDialogPositiveClick(
                             this,
                             Task(
