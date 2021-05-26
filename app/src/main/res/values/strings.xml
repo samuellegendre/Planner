@@ -31,6 +31,7 @@
     <string name="confirm_deletion">Supprimer les tâches finies ?</string>
     <string name="modify_class">Modifier le cours</string>
     <string name="color">Couleur</string>
+    <string name="no_task">La liste des tâches est vide</string>
 
     <string-array name="colors">
         <item>Rouge</item>

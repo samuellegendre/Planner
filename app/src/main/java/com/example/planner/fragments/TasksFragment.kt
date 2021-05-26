@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
@@ -59,9 +60,17 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
             val list = mutableListOf<Task>()
             list.add(tasks.itemToTask(item))
             tasks.removeTasks(list)
+
+            if (tasks.tasks.size != 0) {
+                noTask.visibility = View.GONE
+            } else {
+                noTask.visibility = View.VISIBLE
+            }
         }
         true
     }
+
+    private lateinit var noTask: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,6 +81,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
         setHasOptionsMenu(true)
 
         val view: View = inflater.inflate(R.layout.fragment_tasks, container, false)
+        noTask = view.findViewById(R.id.noTask)
 
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter)
@@ -138,6 +148,12 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
         touchHelper.attachToRecyclerView(recyclerView)
 
         fastAdapter.withSavedInstanceState(savedInstanceState)
+
+        if (tasks.tasks.size != 0) {
+            noTask.visibility = View.GONE
+        } else {
+            noTask.visibility = View.VISIBLE
+        }
 
         addTaskButton = view.findViewById(R.id.addTaskButton)
 
@@ -255,6 +271,13 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
     override fun onAddTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
         task.id = tasks.getLastId() + 1
         tasks.addTask(task)
+
+
+        if (tasks.tasks.size != 0) {
+            noTask.visibility = View.GONE
+        } else {
+            noTask.visibility = View.VISIBLE
+        }
     }
 
     override fun onModifyTaskDialogPositiveClick(dialog: DialogFragment, task: Task) {
@@ -265,6 +288,12 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
         val list = mutableListOf<Task>()
         list.add(task)
         tasks.removeTasks(list)
+
+        if (tasks.tasks.size != 0) {
+            noTask.visibility = View.GONE
+        } else {
+            noTask.visibility = View.VISIBLE
+        }
     }
 
     override fun confirmDeletionDialogPositiveClick(dialog: DialogFragment) {
@@ -274,6 +303,12 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
         if (!showDoneTasks) toggleShowDoneTasks(!showDoneTasks)
         tasks.removeTasks(checkedTasks)
         if (!showDoneTasks) toggleShowDoneTasks(showDoneTasks)
+
+        if (tasks.tasks.size != 0) {
+            noTask.visibility = View.GONE
+        } else {
+            noTask.visibility = View.VISIBLE
+        }
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
