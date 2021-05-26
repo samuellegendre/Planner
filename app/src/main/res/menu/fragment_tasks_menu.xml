@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="all">
-        <item
-            android:id="@+id/showDoneTasks"
-            android:checked="true"
-            android:title="@string/see_done_tasks" />
-    </group>
-
-    <item
-        android:id="@+id/deleteCheckedTasks"
-        android:title="@string/delete_checked_task" />
-
     <item
         android:id="@+id/actionSort"
         android:title="@string/sort">
@@ -29,5 +18,16 @@
         </menu>
 
     </item>
+
+    <item
+        android:id="@+id/deleteCheckedTasks"
+        android:title="@string/delete_checked_task" />
+
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/showDoneTasks"
+            android:checked="true"
+            android:title="@string/see_done_tasks" />
+    </group>
 
 </menu>
