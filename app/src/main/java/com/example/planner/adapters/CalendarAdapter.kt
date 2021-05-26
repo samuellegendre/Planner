@@ -2,11 +2,14 @@ package com.example.planner.adapters
 
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
+import com.example.planner.R
 import com.example.planner.dialogs.AddClassDialog
 import com.example.planner.dialogs.ModifyClassDialog
 import com.example.planner.fragments.CalendarFragment
 import com.example.planner.utils.CalendarSerializer
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.serialization.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Serializable
@@ -49,5 +52,19 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
     override fun onEmptyViewClick(time: Calendar) {
         val dialog = AddClassDialog(time)
         dialog.show(calendarFragment.childFragmentManager, "addClassDialog")
+    }
+
+    override fun onRangeChanged(firstVisibleDate: Calendar, lastVisibleDate: Calendar) {
+        val toolbar: MaterialToolbar = calendarFragment.requireActivity().findViewById(R.id.toolbar)
+        val time =
+            if (firstVisibleDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)) {
+                SimpleDateFormat("MMM", Locale.getDefault()).format(firstVisibleDate.time)
+                    .capitalize(Locale.ROOT)
+            } else {
+                SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(firstVisibleDate.time)
+                    .capitalize(Locale.ROOT)
+            }
+
+        toolbar.title = time
     }
 }

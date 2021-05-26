@@ -12,10 +12,12 @@ import com.example.planner.adapters.Event
 import com.example.planner.dialogs.AddClassDialog
 import com.example.planner.dialogs.ModifyClassDialog
 import com.example.planner.models.CalendarViewModel
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CalendarFragment : Fragment(),
     AddClassDialog.AddClassDialogListener,
@@ -50,8 +52,8 @@ class CalendarFragment : Fragment(),
             SimpleDateFormat(
                 "EEE",
                 Locale.getDefault()
-            ).format(it.time) + "\n" + SimpleDateFormat(
-                "MM-dd",
+            ).format(it.time)[0].toUpperCase() + "\n" + SimpleDateFormat(
+                "dd",
                 Locale.getDefault()
             ).format(it.time)
         }
@@ -70,6 +72,14 @@ class CalendarFragment : Fragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_calendar_menu, menu)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val toolbar: MaterialToolbar = requireActivity().findViewById(R.id.toolbar)
+        toolbar.title =
+            SimpleDateFormat("MMM", Locale.getDefault()).format(Calendar.getInstance().time)
+                .capitalize(Locale.ROOT)
     }
 
     override fun onResume() {
@@ -116,5 +126,4 @@ class CalendarFragment : Fragment(),
         viewModel.removeEvent(event)
         viewModel.saveEvents(requireContext())
     }
-
 }
