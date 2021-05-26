@@ -1,5 +1,6 @@
 package com.example.planner.fragments
 
+import android.animation.AnimatorInflater
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -12,6 +13,7 @@ import com.example.planner.adapters.Event
 import com.example.planner.dialogs.AddClassDialog
 import com.example.planner.dialogs.ModifyClassDialog
 import com.example.planner.models.CalendarViewModel
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_calendar.*
@@ -76,7 +78,13 @@ class CalendarFragment : Fragment(),
 
     override fun onStart() {
         super.onStart()
+
+        val appBarLayout: AppBarLayout = requireActivity().findViewById(R.id.appBarLayout)
         val toolbar: MaterialToolbar = requireActivity().findViewById(R.id.toolbar)
+
+        appBarLayout.stateListAnimator =
+            AnimatorInflater.loadStateListAnimator(context, R.animator.appbar_elevation_off)
+
         toolbar.title =
             SimpleDateFormat("MMM", Locale.getDefault()).format(Calendar.getInstance().time)
                 .capitalize(Locale.ROOT)
@@ -108,7 +116,12 @@ class CalendarFragment : Fragment(),
 
     override fun onPause() {
         super.onPause()
+
+        val appBarLayout: AppBarLayout = requireActivity().findViewById(R.id.appBarLayout)
+
         addClassButton.hide()
+        appBarLayout.stateListAnimator =
+            AnimatorInflater.loadStateListAnimator(context, R.animator.appbar_elevation_on)
     }
 
     override fun onAddClassDialogPositiveClick(dialog: DialogFragment, event: Event) {
