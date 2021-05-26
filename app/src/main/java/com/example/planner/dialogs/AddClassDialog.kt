@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
+class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePickerListener,
     TimePickDialog.TimePickerListener {
 
     private lateinit var listener: AddClassDialogListener
@@ -27,7 +27,7 @@ class AddClassDialog : DialogFragment(), DatePickDialog.DatePickerListener,
     private lateinit var startTimeButton: TextView
     private lateinit var endDateButton: TextView
     private lateinit var endTimeButton: TextView
-    private var startCalendar = Calendar.getInstance()
+    private var startCalendar = time
     private var endCalendar = Calendar.getInstance()
     private var dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())

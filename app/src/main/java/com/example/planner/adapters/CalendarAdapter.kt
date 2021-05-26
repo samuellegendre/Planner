@@ -2,6 +2,7 @@ package com.example.planner.adapters
 
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
+import com.example.planner.dialogs.AddClassDialog
 import com.example.planner.dialogs.ModifyClassDialog
 import com.example.planner.fragments.CalendarFragment
 import com.example.planner.utils.CalendarSerializer
@@ -43,5 +44,10 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
     override fun onEventClick(data: Event) {
         val dialog = ModifyClassDialog(data)
         dialog.show(calendarFragment.childFragmentManager, "modifyClassDialog")
+    }
+
+    override fun onEmptyViewClick(time: Calendar) {
+        val dialog = AddClassDialog(time)
+        dialog.show(calendarFragment.childFragmentManager, "addClassDialog")
     }
 }

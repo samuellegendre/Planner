@@ -61,7 +61,7 @@ class CalendarFragment : Fragment(),
         }
 
         addClassButton.setOnClickListener {
-            val dialog = AddClassDialog()
+            val dialog = AddClassDialog(Calendar.getInstance())
             dialog.show(childFragmentManager, "addClass")
         }
 
