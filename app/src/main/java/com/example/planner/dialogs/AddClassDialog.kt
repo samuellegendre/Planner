@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
@@ -73,8 +72,8 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
             toolbar.setTitle(R.string.add_class)
             toolbar.inflateMenu(R.menu.dialog_add_menu)
             toolbar.setOnMenuItemClickListener {
-                if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
-                    endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
+                if (endCalendar.timeInMillis - startCalendar.timeInMillis < 960000) {
+                    endCalendar.set(Calendar.MINUTE, startCalendar.get(Calendar.MINUTE) + 16)
                 }
                 listener.onAddClassDialogPositiveClick(
                     this, Event(

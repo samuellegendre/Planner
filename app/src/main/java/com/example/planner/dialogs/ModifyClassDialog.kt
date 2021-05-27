@@ -75,8 +75,8 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.save -> {
-                        if (allDaySwitch.isChecked && startCalendar.time == endCalendar.time) {
-                            endCalendar.set(Calendar.MINUTE, endCalendar.get(Calendar.MINUTE) + 1)
+                        if (endCalendar.timeInMillis - startCalendar.timeInMillis < 960000) {
+                            endCalendar.set(Calendar.MINUTE, startCalendar.get(Calendar.MINUTE) + 16)
                         }
                         listener.onModifyClassDialogPositiveClick(
                             this, Event(
@@ -218,7 +218,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             true
         }
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
+        toolbar.menu.getItem(0).isEnabled = validated
     }
 
     private fun disableButtons(isChecked: Boolean) {
