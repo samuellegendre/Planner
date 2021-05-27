@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
@@ -217,7 +218,7 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
             true
         }
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = validated
+        toolbar.menu.getItem(0).isEnabled = validated
     }
 
     private fun convertStringToColor(color: String): Int {
