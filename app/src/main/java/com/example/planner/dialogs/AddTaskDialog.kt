@@ -34,7 +34,7 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
         try {
             listener = parentFragment as AddTaskDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement AddTaskDialogListener"))
+            throw ClassCastException()
         }
     }
 
@@ -61,18 +61,20 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
             toolbar.setTitle(R.string.add_task)
             toolbar.inflateMenu(R.menu.dialog_add_menu)
             toolbar.setOnMenuItemClickListener {
+
                 if (!timeSwitch.isChecked) {
                     calendar.set(Calendar.HOUR_OF_DAY, 0)
                     calendar.set(Calendar.MINUTE, 0)
                     calendar.set(Calendar.SECOND, 0)
                 }
+
                 listener.onAddTaskDialogPositiveClick(
                     this,
                     Task(
                         0,
                         if (taskTitle.editText?.text.toString()
                                 .isBlank()
-                        ) "Sans titre" else taskTitle.editText?.text.toString(),
+                        ) resources.getString(R.string.no_title) else taskTitle.editText?.text.toString(),
                         taskDescription.editText?.text.toString(),
                         calendar,
                         dateSwitch.isChecked,
@@ -112,8 +114,8 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
                     resources.getStringArray(R.array.colors)
                 )
             )
-            autoCompleteTextView?.setText("Rouge", false)
-            palette.setColorFilter(convertStringToColor("Rouge"))
+            autoCompleteTextView?.setText(resources.getStringArray(R.array.colors)[0], false)
+            palette.setColorFilter(convertStringToColor(resources.getStringArray(R.array.colors)[0]))
             autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
                 palette.setColorFilter(
                     convertStringToColor(
@@ -130,6 +132,7 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
     override fun onStart() {
         super.onStart()
+
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT
         dialog.window!!.setLayout(width, height)
@@ -162,13 +165,13 @@ class AddTaskDialog : DialogFragment(), DatePickDialog.DatePickerListener,
 
     private fun convertStringToColor(color: String): Int {
         when (color) {
-            "Rouge" -> return resources.getColor(R.color.red)
-            "Orange" -> return resources.getColor(R.color.orange)
-            "Jaune" -> return resources.getColor(R.color.yellow)
-            "Vert" -> return resources.getColor(R.color.green)
-            "Bleu" -> return resources.getColor(R.color.blue)
-            "Violet" -> return resources.getColor(R.color.purple)
-            "Gris" -> return resources.getColor(R.color.gray)
+            resources.getStringArray(R.array.colors)[0] -> return resources.getColor(R.color.red)
+            resources.getStringArray(R.array.colors)[1] -> return resources.getColor(R.color.orange)
+            resources.getStringArray(R.array.colors)[2] -> return resources.getColor(R.color.yellow)
+            resources.getStringArray(R.array.colors)[3] -> return resources.getColor(R.color.green)
+            resources.getStringArray(R.array.colors)[4] -> return resources.getColor(R.color.blue)
+            resources.getStringArray(R.array.colors)[5] -> return resources.getColor(R.color.purple)
+            resources.getStringArray(R.array.colors)[6] -> return resources.getColor(R.color.gray)
         }
         return resources.getColor(R.color.gray)
     }

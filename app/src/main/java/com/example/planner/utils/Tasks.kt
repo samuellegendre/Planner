@@ -32,7 +32,6 @@ class Tasks(
 ) {
     private val fileName = "task_data"
     private val format = Json { prettyPrint = true }
-
     var tasks = mutableListOf<Task>()
     var items = mutableListOf<TaskItem>()
 

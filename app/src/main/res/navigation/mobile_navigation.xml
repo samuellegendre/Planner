@@ -16,4 +16,5 @@
         android:name="com.example.planner.fragments.TasksFragment"
         android:label="@string/tasks"
         tools:layout="@layout/fragment_tasks" />
+
 </navigation>

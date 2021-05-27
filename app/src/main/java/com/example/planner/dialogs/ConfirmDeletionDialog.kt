@@ -20,11 +20,7 @@ class ConfirmDeletionDialog : DialogFragment() {
         try {
             listener = parentFragment as ConfirmDeletionDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(
-                (context.toString() +
-                        " must implement ConfirmDeletionDialogListener")
-            )
-
+            throw ClassCastException()
         }
     }
 
@@ -43,6 +39,6 @@ class ConfirmDeletionDialog : DialogFragment() {
                     this.dismiss()
                 }
             builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        } ?: throw IllegalStateException()
     }
 }

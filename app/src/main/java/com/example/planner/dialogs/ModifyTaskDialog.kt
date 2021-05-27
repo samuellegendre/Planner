@@ -39,7 +39,7 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
         try {
             listener = parentFragment as ModifyTaskDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement AddTaskDialogListener"))
+            throw ClassCastException()
         }
     }
 
@@ -79,12 +79,12 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
                                 task.id,
                                 if (taskTitle.editText?.text.toString()
                                         .isBlank()
-                                ) "Sans titre" else taskTitle.editText?.text.toString(),
+                                ) resources.getString(R.string.no_title) else taskTitle.editText?.text.toString(),
                                 taskDescription.editText?.text.toString(),
                                 calendar,
                                 dateSwitch.isChecked,
                                 timeSwitch.isChecked,
-                                convertStringtoColor(autoCompleteTextView?.text.toString()),
+                                convertStringToColor(autoCompleteTextView?.text.toString()),
                                 task.isChecked
                             )
                         )
@@ -140,7 +140,7 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             palette.setColorFilter(task.color)
             autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
                 palette.setColorFilter(
-                    convertStringtoColor(
+                    convertStringToColor(
                         parent.adapter.getItem(position).toString()
                     )
                 )
@@ -154,6 +154,7 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
 
     override fun onStart() {
         super.onStart()
+
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT
         dialog.window!!.setLayout(width, height)
@@ -194,29 +195,29 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
         timeButton.isEnabled = isChecked
     }
 
-    private fun convertStringtoColor(color: String): Int {
+    private fun convertStringToColor(color: String): Int {
         when (color) {
-            "Rouge" -> return resources.getColor(R.color.red)
-            "Orange" -> return resources.getColor(R.color.orange)
-            "Jaune" -> return resources.getColor(R.color.yellow)
-            "Vert" -> return resources.getColor(R.color.green)
-            "Bleu" -> return resources.getColor(R.color.blue)
-            "Violet" -> return resources.getColor(R.color.purple)
-            "Gris" -> return resources.getColor(R.color.gray)
+            resources.getStringArray(R.array.colors)[0] -> return resources.getColor(R.color.red)
+            resources.getStringArray(R.array.colors)[1] -> return resources.getColor(R.color.orange)
+            resources.getStringArray(R.array.colors)[2] -> return resources.getColor(R.color.yellow)
+            resources.getStringArray(R.array.colors)[3] -> return resources.getColor(R.color.green)
+            resources.getStringArray(R.array.colors)[4] -> return resources.getColor(R.color.blue)
+            resources.getStringArray(R.array.colors)[5] -> return resources.getColor(R.color.purple)
+            resources.getStringArray(R.array.colors)[6] -> return resources.getColor(R.color.gray)
         }
         return resources.getColor(R.color.gray)
     }
 
     private fun convertColorToString(color: Int): String {
         when (color) {
-            resources.getColor(R.color.red) -> return "Rouge"
-            resources.getColor(R.color.orange) -> return "Orange"
-            resources.getColor(R.color.yellow) -> return "Jaune"
-            resources.getColor(R.color.green) -> return "Vert"
-            resources.getColor(R.color.blue) -> return "Bleu"
-            resources.getColor(R.color.purple) -> return "Violet"
-            resources.getColor(R.color.gray) -> return "Gris"
+            resources.getColor(R.color.red) -> return resources.getStringArray(R.array.colors)[0]
+            resources.getColor(R.color.orange) -> return resources.getStringArray(R.array.colors)[1]
+            resources.getColor(R.color.yellow) -> return resources.getStringArray(R.array.colors)[2]
+            resources.getColor(R.color.green) -> return resources.getStringArray(R.array.colors)[3]
+            resources.getColor(R.color.blue) -> return resources.getStringArray(R.array.colors)[4]
+            resources.getColor(R.color.purple) -> return resources.getStringArray(R.array.colors)[5]
+            resources.getColor(R.color.gray) -> return resources.getStringArray(R.array.colors)[6]
         }
-        return "Rouge"
+        return resources.getStringArray(R.array.colors)[0]
     }
 }

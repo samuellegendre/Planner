@@ -24,15 +24,12 @@ class TaskItem : AbstractItem<TaskItem.ViewHolder>(), IDraggable, ISwipeable {
     var hasTime: Boolean? = null
     var color: Int? = null
     var isChecked: Boolean? = null
-
     var swipedDirection: Int = 0
     var swipedAction: Runnable? = null
     override var isDraggable = true
     override var isSwipeable = true
-
     override val type: Int
         get() = R.id.task_item_id
-
     override val layoutRes: Int
         get() = R.layout.task_item
 

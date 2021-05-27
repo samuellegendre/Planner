@@ -41,10 +41,11 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         try {
             listener = parentFragment as AddClassDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement NoticeDialogListener"))
+            throw ClassCastException()
         }
     }
 
@@ -72,15 +73,17 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
             toolbar.setTitle(R.string.add_class)
             toolbar.inflateMenu(R.menu.dialog_add_menu)
             toolbar.setOnMenuItemClickListener {
+
                 if (endCalendar.timeInMillis - startCalendar.timeInMillis < 960000) {
                     endCalendar.set(Calendar.MINUTE, startCalendar.get(Calendar.MINUTE) + 16)
                 }
+
                 listener.onAddClassDialogPositiveClick(
                     this, Event(
                         0,
                         if (className.editText?.text.toString()
                                 .isBlank()
-                        ) "Sans titre" else className.editText?.text.toString(),
+                        ) resources.getString(R.string.no_title) else className.editText?.text.toString(),
                         classLocation.editText?.text.toString(),
                         startCalendar,
                         endCalendar,
@@ -129,8 +132,8 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
                     resources.getStringArray(R.array.colors)
                 )
             )
-            autoCompleteTextView?.setText("Rouge", false)
-            palette.setColorFilter(convertStringToColor("Rouge"))
+            autoCompleteTextView?.setText(resources.getStringArray(R.array.colors)[0], false)
+            palette.setColorFilter(convertStringToColor(resources.getStringArray(R.array.colors)[0]))
             autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
                 palette.setColorFilter(
                     convertStringToColor(
@@ -167,8 +170,10 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
 
     override fun onStart() {
         super.onStart()
+
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT
+
         dialog.window!!.setLayout(width, height)
         dialog.window!!.setWindowAnimations(R.style.Theme_Planner_FullScreenDialog_Animations)
     }
@@ -202,7 +207,6 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         button.text = timeFormat.format(calendar.time)
-
         calendarValidation()
     }
 
@@ -222,13 +226,13 @@ class AddClassDialog(time: Calendar) : DialogFragment(), DatePickDialog.DatePick
 
     private fun convertStringToColor(color: String): Int {
         when (color) {
-            "Rouge" -> return resources.getColor(R.color.red)
-            "Orange" -> return resources.getColor(R.color.orange)
-            "Jaune" -> return resources.getColor(R.color.yellow)
-            "Vert" -> return resources.getColor(R.color.green)
-            "Bleu" -> return resources.getColor(R.color.blue)
-            "Violet" -> return resources.getColor(R.color.purple)
-            "Gris" -> return resources.getColor(R.color.gray)
+            resources.getStringArray(R.array.colors)[0] -> return resources.getColor(R.color.red)
+            resources.getStringArray(R.array.colors)[1] -> return resources.getColor(R.color.orange)
+            resources.getStringArray(R.array.colors)[2] -> return resources.getColor(R.color.yellow)
+            resources.getStringArray(R.array.colors)[3] -> return resources.getColor(R.color.green)
+            resources.getStringArray(R.array.colors)[4] -> return resources.getColor(R.color.blue)
+            resources.getStringArray(R.array.colors)[5] -> return resources.getColor(R.color.purple)
+            resources.getStringArray(R.array.colors)[6] -> return resources.getColor(R.color.gray)
         }
         return resources.getColor(R.color.gray)
     }

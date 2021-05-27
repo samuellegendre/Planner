@@ -29,10 +29,11 @@ class TimePickDialog(private val button: TextView, private val calendar: Calenda
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         try {
             listener = parentFragment as TimePickerListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement OnDateSetListener"))
+            throw ClassCastException()
         }
     }
 

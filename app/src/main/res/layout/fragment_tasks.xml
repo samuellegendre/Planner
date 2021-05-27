@@ -25,7 +25,7 @@
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_margin"
+        android:layout_margin="16dp"
         android:contentDescription="@string/add"
         android:visibility="invisible"
         app:layout_anchor="@id/taskRecyclerView"

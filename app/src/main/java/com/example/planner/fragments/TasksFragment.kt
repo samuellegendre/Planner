@@ -39,18 +39,14 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
     ConfirmDeletionDialog.ConfirmDeletionDialogListener {
 
     private lateinit var addTaskButton: FloatingActionButton
-
     private lateinit var fastAdapter: FastAdapter<TaskItem>
     private lateinit var itemAdapter: ItemAdapter<TaskItem>
     private lateinit var tasks: Tasks
-
     private lateinit var touchCallback: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
-
     private var showDoneTasks = true
     private var inAscendingAlphabeticalOrder = false
     private var inAscendingDateOrder = false
-
     private val deleteHandler = Handler {
         val item = it.obj as TaskItem
 
@@ -69,7 +65,6 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
         }
         true
     }
-
     private lateinit var noTask: TextView
 
     override fun onCreateView(
@@ -171,6 +166,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
 
     override fun onResume() {
         super.onResume()
+
         addTaskButton.show()
     }
 
@@ -202,7 +198,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
                     )
                     Toast.makeText(
                         requireContext(),
-                        "La liste a été triée par ordre des dates ascendantes.",
+                        resources.getString(R.string.list_sorted_due_date_ascendant),
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
@@ -219,7 +215,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
                     )
                     Toast.makeText(
                         requireContext(),
-                        "La liste a été triée par ordre des dates descendantes.",
+                        resources.getString(R.string.list_sorted_due_date_descendant),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -233,7 +229,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
                         compareBy<TaskItem> { it.isChecked }.thenBy { it.title })
                     Toast.makeText(
                         requireContext(),
-                        "La liste a été triée par ordre alphabétique croissant.",
+                        resources.getString(R.string.list_sorted_alphabetical_ascendant),
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
@@ -244,7 +240,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
                     )
                     Toast.makeText(
                         requireContext(),
-                        "La liste a été triée par ordre alphabétique décroissant.",
+                        resources.getString(R.string.list_sorted_alphabetical_descendant),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -256,6 +252,7 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
 
     override fun onPause() {
         super.onPause()
+
         addTaskButton.hide()
     }
 

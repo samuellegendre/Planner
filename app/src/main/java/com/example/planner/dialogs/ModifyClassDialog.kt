@@ -42,10 +42,11 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         try {
             listener = parentFragment as ModifyClassDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement NoticeDialogListener"))
+            throw ClassCastException()
         }
     }
 
@@ -76,18 +77,21 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
                 when (it.itemId) {
                     R.id.save -> {
                         if (endCalendar.timeInMillis - startCalendar.timeInMillis < 960000) {
-                            endCalendar.set(Calendar.MINUTE, startCalendar.get(Calendar.MINUTE) + 16)
+                            endCalendar.set(
+                                Calendar.MINUTE,
+                                startCalendar.get(Calendar.MINUTE) + 16
+                            )
                         }
                         listener.onModifyClassDialogPositiveClick(
                             this, Event(
                                 event.id,
                                 if (className.editText?.text.toString()
                                         .isBlank()
-                                ) "Sans titre" else className.editText?.text.toString(),
+                                ) resources.getString(R.string.no_title) else className.editText?.text.toString(),
                                 classLocation.editText?.text.toString(),
                                 startCalendar,
                                 endCalendar,
-                                convertStringtoColor(autoCompleteTextView?.text.toString()),
+                                convertStringToColor(autoCompleteTextView?.text.toString()),
                                 allDaySwitch.isChecked
                             )
                         )
@@ -134,7 +138,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             palette.setColorFilter(event.color)
             autoCompleteTextView?.setOnItemClickListener { parent, _, position, _ ->
                 palette.setColorFilter(
-                    convertStringtoColor(
+                    convertStringToColor(
                         parent.adapter.getItem(position).toString()
                     )
                 )
@@ -168,6 +172,7 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
 
     override fun onStart() {
         super.onStart()
+
         val width = ViewGroup.LayoutParams.MATCH_PARENT
         val height = ViewGroup.LayoutParams.MATCH_PARENT
         dialog.window!!.setLayout(width, height)
@@ -231,29 +236,29 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
         }
     }
 
-    private fun convertStringtoColor(color: String): Int {
+    private fun convertStringToColor(color: String): Int {
         when (color) {
-            "Rouge" -> return resources.getColor(R.color.red)
-            "Orange" -> return resources.getColor(R.color.orange)
-            "Jaune" -> return resources.getColor(R.color.yellow)
-            "Vert" -> return resources.getColor(R.color.green)
-            "Bleu" -> return resources.getColor(R.color.blue)
-            "Violet" -> return resources.getColor(R.color.purple)
-            "Gris" -> return resources.getColor(R.color.gray)
+            resources.getStringArray(R.array.colors)[0] -> return resources.getColor(R.color.red)
+            resources.getStringArray(R.array.colors)[1] -> return resources.getColor(R.color.orange)
+            resources.getStringArray(R.array.colors)[2] -> return resources.getColor(R.color.yellow)
+            resources.getStringArray(R.array.colors)[3] -> return resources.getColor(R.color.green)
+            resources.getStringArray(R.array.colors)[4] -> return resources.getColor(R.color.blue)
+            resources.getStringArray(R.array.colors)[5] -> return resources.getColor(R.color.purple)
+            resources.getStringArray(R.array.colors)[6] -> return resources.getColor(R.color.gray)
         }
         return resources.getColor(R.color.gray)
     }
 
     private fun convertColorToString(color: Int): String {
         when (color) {
-            resources.getColor(R.color.red) -> return "Rouge"
-            resources.getColor(R.color.orange) -> return "Orange"
-            resources.getColor(R.color.yellow) -> return "Jaune"
-            resources.getColor(R.color.green) -> return "Vert"
-            resources.getColor(R.color.blue) -> return "Bleu"
-            resources.getColor(R.color.purple) -> return "Violet"
-            resources.getColor(R.color.gray) -> return "Gris"
+            resources.getColor(R.color.red) -> return resources.getStringArray(R.array.colors)[0]
+            resources.getColor(R.color.orange) -> return resources.getStringArray(R.array.colors)[1]
+            resources.getColor(R.color.yellow) -> return resources.getStringArray(R.array.colors)[2]
+            resources.getColor(R.color.green) -> return resources.getStringArray(R.array.colors)[3]
+            resources.getColor(R.color.blue) -> return resources.getStringArray(R.array.colors)[4]
+            resources.getColor(R.color.purple) -> return resources.getStringArray(R.array.colors)[5]
+            resources.getColor(R.color.gray) -> return resources.getStringArray(R.array.colors)[6]
         }
-        return "Rouge"
+        return resources.getStringArray(R.array.colors)[0]
     }
 }

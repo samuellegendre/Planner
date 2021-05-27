@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:paddingStart="6dp"
-            android:paddingEnd="@dimen/activity_margin"
+            android:paddingEnd="16dp"
             app:contentInsetStartWithNavigation="0dp"
             app:navigationIcon="@drawable/ic_close" />
 
@@ -96,7 +96,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="24dp"
                             android:layout_gravity="end|center_vertical"
-                            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+                            android:layout_marginStart="4dp"
                             android:checked="false" />
 
                     </LinearLayout>
@@ -111,7 +111,7 @@
                             android:id="@+id/startDateButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+                            android:layout_marginEnd="4dp"
                             android:layout_weight="1"
                             android:clickable="true"
                             android:focusable="true"
@@ -121,7 +121,7 @@
                             android:id="@+id/startTimeButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+                            android:layout_marginStart="4dp"
                             android:layout_weight="1"
                             android:clickable="true"
                             android:focusable="true"
@@ -140,7 +140,7 @@
                             android:id="@+id/endDateButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dialog_top_bottom_margins"
+                            android:layout_marginEnd="4dp"
                             android:layout_weight="1"
                             android:clickable="true"
                             android:focusable="true"
@@ -150,7 +150,7 @@
                             android:id="@+id/endTimeButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dialog_top_bottom_margins"
+                            android:layout_marginStart="4dp"
                             android:layout_weight="1"
                             android:clickable="true"
                             android:focusable="true"

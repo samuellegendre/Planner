@@ -92,6 +92,7 @@ class CalendarFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
+
         addClassButton.show()
     }
 
