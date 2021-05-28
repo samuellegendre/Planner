@@ -1,4 +1,4 @@
-package com.example.planner.dialogs
+package com.legendre.planner.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
-import com.example.planner.R
-import com.example.planner.utils.Task
+import com.legendre.planner.R
+import com.legendre.planner.utils.Task
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*

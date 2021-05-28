@@ -1,11 +1,11 @@
-package com.example.planner.dialogs
+package com.legendre.planner.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.planner.R
+import com.legendre.planner.R
 
 class ConfirmDeletionDialog : DialogFragment() {
     private lateinit var listener: ConfirmDeletionDialogListener

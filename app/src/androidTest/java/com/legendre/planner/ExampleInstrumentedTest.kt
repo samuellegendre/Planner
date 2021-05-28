@@ -1,4 +1,4 @@
-package com.example.planner
+package com.legendre.planner
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,10 +1,10 @@
-package com.example.planner.models
+package com.legendre.planner.models
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.planner.adapters.Event
+import com.legendre.planner.adapters.Event
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

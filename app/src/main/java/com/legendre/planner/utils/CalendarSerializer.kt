@@ -1,4 +1,4 @@
-package com.example.planner.utils
+package com.legendre.planner.utils
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

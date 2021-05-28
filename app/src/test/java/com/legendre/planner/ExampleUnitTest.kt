@@ -1,4 +1,4 @@
-package com.example.planner
+package com.legendre.planner
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.example.planner.models
+package com.legendre.planner.models
 
 import android.graphics.Color
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
@@ -7,7 +7,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planner.R
+import com.legendre.planner.R
 import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.swipe.ISwipeable

@@ -1,12 +1,12 @@
-package com.example.planner.adapters
+package com.legendre.planner.adapters
 
 import com.alamkanak.weekview.WeekView
 import com.alamkanak.weekview.WeekViewEntity
-import com.example.planner.R
-import com.example.planner.dialogs.AddClassDialog
-import com.example.planner.dialogs.ModifyClassDialog
-import com.example.planner.fragments.CalendarFragment
-import com.example.planner.utils.CalendarSerializer
+import com.legendre.planner.R
+import com.legendre.planner.dialogs.AddClassDialog
+import com.legendre.planner.dialogs.ModifyClassDialog
+import com.legendre.planner.fragments.CalendarFragment
+import com.legendre.planner.utils.CalendarSerializer
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat

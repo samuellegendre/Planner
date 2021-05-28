@@ -1,4 +1,4 @@
-package com.example.planner.fragments
+package com.legendre.planner.fragments
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planner.R
-import com.example.planner.dialogs.AddTaskDialog
-import com.example.planner.dialogs.ConfirmDeletionDialog
-import com.example.planner.dialogs.ModifyTaskDialog
-import com.example.planner.models.TaskItem
-import com.example.planner.utils.Task
-import com.example.planner.utils.Tasks
+import com.legendre.planner.R
+import com.legendre.planner.dialogs.AddTaskDialog
+import com.legendre.planner.dialogs.ConfirmDeletionDialog
+import com.legendre.planner.dialogs.ModifyTaskDialog
+import com.legendre.planner.models.TaskItem
+import com.legendre.planner.utils.Task
+import com.legendre.planner.utils.Tasks
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mikepenz.fastadapter.FastAdapter

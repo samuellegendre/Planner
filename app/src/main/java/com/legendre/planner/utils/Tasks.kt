@@ -1,7 +1,7 @@
-package com.example.planner.utils
+package com.legendre.planner.utils
 
 import android.content.Context
-import com.example.planner.models.TaskItem
+import com.legendre.planner.models.TaskItem
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.utils.DragDropUtil
