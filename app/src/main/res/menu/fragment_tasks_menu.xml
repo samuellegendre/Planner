@@ -14,7 +14,7 @@
             <item
                 android:id="@+id/actionSortByDueDate"
                 android:title="@string/sort_due_date" />
-
+            
         </menu>
 
     </item>
