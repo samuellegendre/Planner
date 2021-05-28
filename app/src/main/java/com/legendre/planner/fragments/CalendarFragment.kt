@@ -7,15 +7,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.alamkanak.weekview.WeekView
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.legendre.planner.R
 import com.legendre.planner.adapters.CalendarSimpleAdapter
 import com.legendre.planner.adapters.Event
 import com.legendre.planner.dialogs.AddClassDialog
 import com.legendre.planner.dialogs.ModifyClassDialog
 import com.legendre.planner.models.CalendarViewModel
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +54,7 @@ class CalendarFragment : Fragment(),
             SimpleDateFormat(
                 "EEE",
                 Locale.getDefault()
-            ).format(it.time)[0].toUpperCase() + "\n" + SimpleDateFormat(
+            ).format(it.time)[0].uppercaseChar() + "\n" + SimpleDateFormat(
                 "dd",
                 Locale.getDefault()
             ).format(it.time)
@@ -87,7 +87,7 @@ class CalendarFragment : Fragment(),
 
         toolbar.title =
             SimpleDateFormat("MMM", Locale.getDefault()).format(Calendar.getInstance().time)
-                .capitalize(Locale.ROOT)
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
     }
 
     override fun onResume() {

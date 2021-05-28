@@ -327,9 +327,9 @@ class TasksFragment : Fragment(), AddTaskDialog.AddTaskDialogListener,
             deleteHandler.removeMessages(message)
 
             item.swipedDirection = 0
-            val position = itemAdapter.getAdapterPosition(item)
-            if (position != RecyclerView.NO_POSITION) {
-                fastAdapter.notifyItemChanged(position)
+            val pos = itemAdapter.getAdapterPosition(item)
+            if (pos != RecyclerView.NO_POSITION) {
+                fastAdapter.notifyItemChanged(pos)
             }
         }
         fastAdapter.notifyItemChanged(position)

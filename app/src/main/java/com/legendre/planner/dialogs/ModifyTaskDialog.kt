@@ -65,8 +65,8 @@ class ModifyTaskDialog(private val task: Task) : DialogFragment(),
             }
             toolbar.setTitle(R.string.modify_task)
             toolbar.inflateMenu(R.menu.dialog_modify_menu)
-            toolbar.setOnMenuItemClickListener {
-                when (it.itemId) {
+            toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
                     R.id.save -> {
                         if (!timeSwitch.isChecked) {
                             calendar.set(Calendar.HOUR_OF_DAY, 0)

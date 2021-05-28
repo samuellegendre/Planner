@@ -59,10 +59,10 @@ class CalendarSimpleAdapter(private val calendarFragment: CalendarFragment) :
         val time =
             if (firstVisibleDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)) {
                 SimpleDateFormat("MMM", Locale.getDefault()).format(firstVisibleDate.time)
-                    .capitalize(Locale.ROOT)
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
             } else {
                 SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(firstVisibleDate.time)
-                    .capitalize(Locale.ROOT)
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
             }
 
         toolbar.title = time

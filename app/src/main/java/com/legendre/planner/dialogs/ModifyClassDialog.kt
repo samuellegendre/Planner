@@ -73,8 +73,8 @@ class ModifyClassDialog(private val event: Event) : DialogFragment(),
             }
             toolbar.setTitle(R.string.modify_class)
             toolbar.inflateMenu(R.menu.dialog_modify_menu)
-            toolbar.setOnMenuItemClickListener {
-                when (it.itemId) {
+            toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
                     R.id.save -> {
                         if (endCalendar.timeInMillis - startCalendar.timeInMillis < 960000) {
                             endCalendar.set(
